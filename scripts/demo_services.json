@@ -1,0 +1,481 @@
+{
+  "plomeria": [
+    {
+      "slug": "plomero-demo",
+      "name": "Mateo Rodríguez",
+      "title": "Reparaciones e instalaciones de plomería",
+      "years": 8,
+      "description": "Soluciones de plomería, reparación de fugas e instalaciones. Atención cuidadosa y trabajo explicado paso a paso.",
+      "mode": "onsite",
+      "existing": true,
+      "currency": "USD",
+      "price_minor": 1300,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-plomeria-2",
+      "name": "Valentina Ríos",
+      "title": "Instalación de sanitarios y grifería",
+      "years": 6,
+      "description": "Renueva tu baño o cocina con instalación de grifos, lavamanos y sanitarios. Revisamos conexiones y dejamos todo listo para usar.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 170000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-plomeria-3",
+      "name": "Andrés Salazar",
+      "title": "Destape y mantenimiento de desagües",
+      "years": 9,
+      "description": "Recupera el buen flujo de lavaplatos, duchas y sifones. Diagnóstico del atasco, limpieza y recomendaciones de mantenimiento.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 1900,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "informatica": [
+    {
+      "slug": "tecnico-demo",
+      "name": "Daniel Torres",
+      "title": "Diagnóstico y reparación de computadores",
+      "years": 6,
+      "description": "Diagnóstico y reparación de computadores. Te ayudo a recuperar la tranquilidad y a poner tus equipos a punto.",
+      "mode": "onsite",
+      "existing": true,
+      "currency": "USD",
+      "price_minor": 1600,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-informatica-2",
+      "name": "Camila Duarte",
+      "title": "Mantenimiento preventivo de computadores",
+      "years": 4,
+      "description": "Limpieza interna, revisión de temperaturas y optimización del sistema para que tu equipo vuelva a trabajar con fluidez.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 220000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-informatica-3",
+      "name": "Nicolás Pardo",
+      "title": "Instalación de SSD y ampliación de memoria",
+      "years": 7,
+      "description": "Actualiza tu portátil o computador de escritorio. Comprobamos compatibilidad, instalamos los componentes y verificamos su funcionamiento. Repuestos por separado.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 1900,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "diseno-grafico": [
+    {
+      "slug": "disenadora-demo",
+      "name": "Lucía Martínez",
+      "title": "Diseño de identidad visual",
+      "years": 5,
+      "description": "Identidades visuales con personalidad. Diseño logos, piezas digitales y presentaciones que cuentan tu historia.",
+      "mode": "remote",
+      "existing": true,
+      "currency": "USD",
+      "price_minor": 5000
+    },
+    {
+      "slug": "muestra-diseno-grafico-2",
+      "name": "Sofía Vega",
+      "title": "Diseño de piezas para redes sociales",
+      "years": 5,
+      "description": "Un conjunto de publicaciones e historias con una línea visual coherente para tu negocio. Incluye propuesta creativa y una ronda de ajustes.",
+      "mode": "remote",
+      "currency": "VES",
+      "price_minor": 360000
+    },
+    {
+      "slug": "muestra-diseno-grafico-3",
+      "name": "Martín Cano",
+      "title": "Presentaciones y catálogos digitales",
+      "years": 6,
+      "description": "Convierte tu contenido en una presentación clara o un catálogo atractivo. Diseño de portada, composición y archivos listos para compartir.",
+      "mode": "remote",
+      "currency": "USD",
+      "price_minor": 4800
+    }
+  ],
+  "programacion": [
+    {
+      "slug": "muestra-programacion-1",
+      "name": "Sebastián Lara",
+      "title": "Páginas web para pequeños negocios",
+      "years": 8,
+      "description": "Una web adaptable a celulares para presentar tu negocio, servicios y canales de contacto. Incluye estructura, diseño y puesta en marcha.",
+      "mode": "remote",
+      "currency": "USD",
+      "price_minor": 13000
+    },
+    {
+      "slug": "muestra-programacion-2",
+      "name": "Paula Méndez",
+      "title": "Automatización de tareas y reportes",
+      "years": 7,
+      "description": "Simplifica tareas repetitivas con formularios, integraciones y reportes. Definimos el proceso y entregamos una automatización documentada.",
+      "mode": "remote",
+      "currency": "VES",
+      "price_minor": 960000
+    },
+    {
+      "slug": "muestra-programacion-3",
+      "name": "Diego Roldán",
+      "title": "Desarrollo de tiendas virtuales",
+      "years": 9,
+      "description": "Catálogo, carrito y gestión de pedidos para empezar a vender en línea. Configuración del sitio y acompañamiento en las primeras pruebas.",
+      "mode": "remote",
+      "currency": "USD",
+      "price_minor": 24000
+    }
+  ],
+  "carpinteria": [
+    {
+      "slug": "muestra-carpinteria-1",
+      "name": "Miguel Herrera",
+      "title": "Muebles de madera a medida",
+      "years": 12,
+      "description": "Diseño y fabricación de muebles adaptados a tu espacio. Revisamos medidas, materiales y acabados antes de iniciar.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 8400,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-carpinteria-2",
+      "name": "Elena Rubio",
+      "title": "Reparación de puertas y cajones",
+      "years": 8,
+      "description": "Ajuste de bisagras, correderas y piezas de madera para recuperar el uso de tus muebles. Trabajo cuidadoso y acabados limpios.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 300000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-carpinteria-3",
+      "name": "Óscar Medina",
+      "title": "Instalación de repisas y organizadores",
+      "years": 7,
+      "description": "Aprovecha mejor tus paredes con repisas y organizadores bien nivelados. Revisamos el soporte y acordamos la distribución contigo.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 1900,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "cerrajeria": [
+    {
+      "slug": "muestra-cerrajeria-1",
+      "name": "Juan Castillo",
+      "title": "Instalación de cerraduras residenciales",
+      "years": 10,
+      "description": "Montaje de cerraduras y manijas nuevas para puertas del hogar. Revisamos medidas, alineación y funcionamiento al terminar.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 2400,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-cerrajeria-2",
+      "name": "Sara Peña",
+      "title": "Cambio de chapas y herrajes",
+      "years": 6,
+      "description": "Renueva chapas, cilindros y herrajes desgastados. Te ayudo a elegir piezas compatibles y las instalo con un acabado limpio.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 180000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-cerrajeria-3",
+      "name": "Ricardo León",
+      "title": "Mantenimiento de cerraduras y puertas",
+      "years": 11,
+      "description": "Ajuste de mecanismos, lubricación y corrección de cierres difíciles. Diagnóstico previo y explicación de las piezas que requieren cambio.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 1700,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "cerrajeria-automotriz": [
+    {
+      "slug": "muestra-cerrajeria-automotriz-1",
+      "name": "Manuel Suárez",
+      "title": "Duplicado de llaves para automóvil",
+      "years": 9,
+      "description": "Preparación de una llave de respaldo compatible con tu vehículo. Verificamos el modelo y realizamos pruebas de funcionamiento.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 3600,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-cerrajeria-automotriz-2",
+      "name": "Diana Acosta",
+      "title": "Reparación de controles y carcasas",
+      "years": 6,
+      "description": "Cambio de botones, baterías y carcasas de llaves de automóvil. Revisión del control y de su respuesta antes de entregarlo.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 190000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-cerrajeria-automotriz-3",
+      "name": "Luis Montoya",
+      "title": "Diagnóstico y configuración de controles",
+      "years": 8,
+      "description": "Revisión de controles automotrices y configuración de repuestos compatibles. Servicio coordinado según marca y modelo del vehículo.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 5000,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "electricidad": [
+    {
+      "slug": "muestra-electricidad-1",
+      "name": "Fernando Gil",
+      "title": "Instalación de lámparas y luminarias",
+      "years": 10,
+      "description": "Instalación y reemplazo de luminarias para iluminar mejor tu hogar. Revisamos conexiones y dejamos el área ordenada.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 1700,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-electricidad-2",
+      "name": "Laura Navarro",
+      "title": "Diagnóstico de fallas eléctricas",
+      "years": 7,
+      "description": "Revisión de circuitos, interruptores y conexiones para identificar fallas. Recibe un diagnóstico explicado y una propuesta de reparación.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 320000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-electricidad-3",
+      "name": "Esteban Cruz",
+      "title": "Instalación de tomacorrientes e interruptores",
+      "years": 9,
+      "description": "Renueva puntos eléctricos con accesorios adecuados a tu espacio. Verificamos el circuito y el funcionamiento de cada punto intervenido.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 2200,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "limpieza": [
+    {
+      "slug": "muestra-limpieza-1",
+      "name": "Mariela Ponce",
+      "title": "Limpieza general de apartamentos",
+      "years": 6,
+      "description": "Limpieza de pisos, superficies, cocina y baños para dejar tu hogar en orden. Alcance acordado según tamaño y necesidades del espacio.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 3000,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-limpieza-2",
+      "name": "Natalia Beltrán",
+      "title": "Limpieza profunda de cocinas y baños",
+      "years": 5,
+      "description": "Atención a grasa, juntas y zonas de uso frecuente. Trabajamos por áreas con productos adecuados a cada superficie.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 380000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-limpieza-3",
+      "name": "Julián Ortiz",
+      "title": "Lavado de muebles y tapizados",
+      "years": 7,
+      "description": "Limpieza de sofás, sillas y tapizados con evaluación previa del material. Tratamiento de manchas y recomendaciones de secado.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 3600,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "pintura": [
+    {
+      "slug": "muestra-pintura-1",
+      "name": "Ana Castillo",
+      "title": "Pintura de interiores por ambiente",
+      "years": 8,
+      "description": "Renueva una habitación o zona de tu hogar. Protegemos superficies, preparamos la pared y aplicamos el color elegido.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 5600,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-pintura-2",
+      "name": "Mauricio Rey",
+      "title": "Resane y reparación de paredes",
+      "years": 10,
+      "description": "Corrección de imperfecciones, pequeños agujeros y desgaste superficial. Dejamos la pared preparada para recibir un nuevo acabado.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 360000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-pintura-3",
+      "name": "Verónica López",
+      "title": "Acabados decorativos para paredes",
+      "years": 7,
+      "description": "Dale personalidad a tu espacio con texturas y combinaciones de color. Acordamos una muestra de acabado antes de ejecutar.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 7000,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "refrigeracion": [
+    {
+      "slug": "muestra-refrigeracion-1",
+      "name": "Héctor Sánchez",
+      "title": "Mantenimiento de aire acondicionado",
+      "years": 11,
+      "description": "Limpieza de filtros, revisión de drenaje y comprobación del funcionamiento. Mantén tu equipo en buenas condiciones de uso.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 3200,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-refrigeracion-2",
+      "name": "Carolina Patiño",
+      "title": "Diagnóstico y reparación de neveras",
+      "years": 8,
+      "description": "Revisión de temperatura, sellos y componentes para encontrar la causa de la falla. Cotización de repuestos antes de intervenir.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 360000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-refrigeracion-3",
+      "name": "Felipe Campos",
+      "title": "Instalación de aire acondicionado minisplit",
+      "years": 9,
+      "description": "Planeación del punto de instalación, montaje y pruebas de funcionamiento. Materiales y alcance definidos después de revisar el espacio.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 7600,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "electrodomesticos": [
+    {
+      "slug": "muestra-electrodomesticos-1",
+      "name": "Beatriz Cárdenas",
+      "title": "Diagnóstico y reparación de lavadoras",
+      "years": 10,
+      "description": "Revisión de fallas de llenado, drenaje y centrifugado. Diagnóstico explicado y reparación acordada antes de cambiar piezas.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 3000,
+      "parish_code": "VE010109",
+      "city": "Caracas"
+    },
+    {
+      "slug": "muestra-electrodomesticos-2",
+      "name": "Cristian Melo",
+      "title": "Mantenimiento de secadoras",
+      "years": 7,
+      "description": "Limpieza de filtros y conductos accesibles, revisión del giro y del secado. Mejora el cuidado de tu equipo con mantenimiento periódico.",
+      "mode": "onsite",
+      "currency": "VES",
+      "price_minor": 360000,
+      "parish_code": "VE231314",
+      "city": "Maracaibo"
+    },
+    {
+      "slug": "muestra-electrodomesticos-3",
+      "name": "Mónica Vargas",
+      "title": "Revisión de hornos y estufas eléctricas",
+      "years": 9,
+      "description": "Diagnóstico de controles, resistencias y conexiones de equipos eléctricos. Revisamos el estado y cotizamos la intervención necesaria.",
+      "mode": "onsite",
+      "currency": "USD",
+      "price_minor": 3200,
+      "parish_code": "VE081407",
+      "city": "Valencia"
+    }
+  ],
+  "traduccion": [
+    {
+      "slug": "muestra-traduccion-1",
+      "name": "Gabriela Rivas",
+      "title": "Traducción de inglés a español",
+      "years": 7,
+      "description": "Traducción de contenidos comerciales y documentos generales, con atención al tono y al contexto. Entrega digital y revisión final.",
+      "mode": "remote",
+      "currency": "USD",
+      "price_minor": 1800
+    },
+    {
+      "slug": "muestra-traduccion-2",
+      "name": "Tomás Ferrer",
+      "title": "Traducción de portugués a español",
+      "years": 5,
+      "description": "Adapta tus documentos y contenidos al público hispanohablante. Terminología consistente y entrega en formato editable.",
+      "mode": "remote",
+      "currency": "VES",
+      "price_minor": 190000
+    },
+    {
+      "slug": "muestra-traduccion-3",
+      "name": "Isabel Fuentes",
+      "title": "Revisión y corrección de textos bilingües",
+      "years": 9,
+      "description": "Pulimos claridad, gramática y coherencia en textos en español e inglés. Recibe la versión corregida y observaciones sobre los cambios.",
+      "mode": "remote",
+      "currency": "USD",
+      "price_minor": 1500
+    }
+  ]
+}

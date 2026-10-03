@@ -1,0 +1,19 @@
+# Robots.txt for SoyVinko (https://soyvinko.com)
+User-agent: *
+Allow: /
+
+# Vistas privadas o de sesión: sin barra final para cubrir también la ruta raíz de cada sección
+Disallow: /admin
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /wallet
+Disallow: /contracts
+Disallow: /requests
+Disallow: /opportunities
+Disallow: /profile
+Disallow: /support
+Disallow: /verify
+Disallow: /verificacion-movil
+Disallow: /kyc-mobile
+
+Sitemap: https://soyvinko.com/sitemap.xml

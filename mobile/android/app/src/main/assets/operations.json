@@ -1,0 +1,598 @@
+{
+  "accept_direct_request": {
+    "path": "/api/v1/requests/accept-direct-request",
+    "method": "POST"
+  },
+  "accept_proposal": {
+    "path": "/api/v1/requests/accept-proposal",
+    "method": "POST"
+  },
+  "accept_terms": {
+    "path": "/api/v1/contracts/accept-terms",
+    "method": "POST"
+  },
+  "activate_professional": {
+    "path": "/api/v1/professionals/activate-professional",
+    "method": "POST"
+  },
+  "activate_store": {
+    "path": "/api/v1/marketplace/activate-store",
+    "method": "POST"
+  },
+  "active_plans": {
+    "path": "/api/v1/wallet/active-plans",
+    "method": "GET"
+  },
+  "add_address_ve": {
+    "path": "/api/v1/account/add-address",
+    "method": "POST"
+  },
+  "add_branch_ve": {
+    "path": "/api/v1/professionals/add-branch",
+    "method": "POST"
+  },
+  "add_credential": {
+    "path": "/api/v1/professionals/add-credential",
+    "method": "POST"
+  },
+  "add_offering": {
+    "path": "/api/v1/professionals/add-offering",
+    "method": "POST"
+  },
+  "add_portfolio": {
+    "path": "/api/v1/professionals/add-portfolio",
+    "method": "POST"
+  },
+  "add_product": {
+    "path": "/api/v1/marketplace/add-product",
+    "method": "POST"
+  },
+  "add_product_image": {
+    "path": "/api/v1/marketplace/add-product-image",
+    "method": "POST"
+  },
+  "add_professional_contact": {
+    "path": "/api/v1/professionals/add-professional-contact",
+    "method": "POST"
+  },
+  "admin_advance_order": {
+    "path": "/api/v1/admin/admin-advance-order",
+    "method": "POST"
+  },
+  "admin_list": {
+    "path": "/api/v1/admin/admin-list",
+    "method": "GET"
+  },
+  "admin_overview": {
+    "path": "/api/v1/admin/admin-overview",
+    "method": "GET"
+  },
+  "advance_contract": {
+    "path": "/api/v1/contracts/advance-contract",
+    "method": "POST"
+  },
+  "advance_order": {
+    "path": "/api/v1/marketplace/advance-order",
+    "method": "POST"
+  },
+  "approve_escrow_refund": {
+    "path": "/api/v1/contracts/approve-escrow-refund",
+    "method": "POST"
+  },
+  "archive_address": {
+    "path": "/api/v1/account/archive-address",
+    "method": "POST"
+  },
+  "assign_role": {
+    "path": "/api/v1/admin/assign-role",
+    "method": "POST"
+  },
+  "attach_kyc_file": {
+    "path": "/api/v1/support/attach-kyc-file",
+    "method": "POST"
+  },
+  "attach_request_file": {
+    "path": "/api/v1/requests/attach-request-file",
+    "method": "POST"
+  },
+  "available_requests": {
+    "path": "/api/v1/requests/available-requests",
+    "method": "GET"
+  },
+  "cancel_contract": {
+    "path": "/api/v1/contracts/cancel-contract",
+    "method": "POST"
+  },
+  "cancel_request": {
+    "path": "/api/v1/requests/cancel-request",
+    "method": "POST"
+  },
+  "cancel_withdrawal": {
+    "path": "/api/v1/wallet/cancel-withdrawal",
+    "method": "POST"
+  },
+  "catalog": {
+    "path": "/api/v1/public/catalog",
+    "method": "GET"
+  },
+  "chat_messages": {
+    "path": "/api/v1/contracts/chat-messages",
+    "method": "GET"
+  },
+  "configure_category": {
+    "path": "/api/v1/admin/configure-category",
+    "method": "POST"
+  },
+  "configure_plan": {
+    "path": "/api/v1/admin/configure-plan",
+    "method": "POST"
+  },
+  "configure_vinko_exchange_rate": {
+    "path": "/api/v1/admin/configure-vinko-exchange-rate",
+    "method": "POST"
+  },
+  "configure_withdrawal_fee": {
+    "path": "/api/v1/admin/configure-withdrawal-fee",
+    "method": "POST"
+  },
+  "confirm_external_payment": {
+    "path": "/api/v1/contracts/confirm-external-payment",
+    "method": "POST"
+  },
+  "contract_contacts": {
+    "path": "/api/v1/contracts/contract-contacts",
+    "method": "GET"
+  },
+  "contract_detail": {
+    "path": "/api/v1/contracts/contract-detail",
+    "method": "GET"
+  },
+  "convert_money_to_vinkos": {
+    "path": "/api/v1/wallet/convert-money-to-vinkos",
+    "method": "POST"
+  },
+  "create_customer_request": {
+    "path": "/api/v1/requests/create-customer-request",
+    "method": "POST"
+  },
+  "create_order": {
+    "path": "/api/v1/marketplace/create-order",
+    "method": "POST"
+  },
+  "create_remote_request": {
+    "path": "/api/v1/requests/create-remote-request",
+    "method": "POST"
+  },
+  "create_request": {
+    "path": "/api/v1/requests/create-request",
+    "method": "POST"
+  },
+  "create_topup": {
+    "path": "/api/v1/wallet/create-topup",
+    "method": "POST"
+  },
+  "dashboard": {
+    "path": "/api/v1/account/dashboard",
+    "method": "GET"
+  },
+  "disable_payout_method": {
+    "path": "/api/v1/wallet/disable-payout-method",
+    "method": "POST"
+  },
+  "discover": {
+    "path": "/api/v1/public/discover",
+    "method": "GET"
+  },
+  "dispute_contract": {
+    "path": "/api/v1/contracts/dispute-contract",
+    "method": "POST"
+  },
+  "escrow_details": {
+    "path": "/api/v1/contracts/escrow-details",
+    "method": "GET"
+  },
+  "external_payment_reports": {
+    "path": "/api/v1/contracts/external-payment-reports",
+    "method": "GET"
+  },
+  "fund_contract": {
+    "path": "/api/v1/contracts/fund-contract",
+    "method": "POST"
+  },
+  "geo_municipalities": {
+    "path": "/api/v1/public/geo-municipalities",
+    "method": "GET"
+  },
+  "geo_parish": {
+    "path": "/api/v1/public/geo-parish",
+    "method": "GET"
+  },
+  "geo_parishes": {
+    "path": "/api/v1/public/geo-parishes",
+    "method": "GET"
+  },
+  "geo_states": {
+    "path": "/api/v1/public/geo-states",
+    "method": "GET"
+  },
+  "get_vinko_exchange_rates": {
+    "path": "/api/v1/wallet/get-vinko-exchange-rates",
+    "method": "GET"
+  },
+  "kyc_case": {
+    "path": "/api/v1/admin/kyc-case",
+    "method": "POST"
+  },
+  "locate_parish": {
+    "path": "/api/v1/public/locate-parish",
+    "method": "POST"
+  },
+  "location_status": {
+    "path": "/api/v1/contracts/location-status",
+    "method": "GET"
+  },
+  "manage_ticket": {
+    "path": "/api/v1/admin/manage-ticket",
+    "method": "POST"
+  },
+  "marketplace": {
+    "path": "/api/v1/public/marketplace",
+    "method": "GET"
+  },
+  "moderate_file": {
+    "path": "/api/v1/admin/moderate-file",
+    "method": "POST"
+  },
+  "moderate_request": {
+    "path": "/api/v1/admin/moderate-request",
+    "method": "POST"
+  },
+  "moderate_review": {
+    "path": "/api/v1/admin/moderate-review",
+    "method": "POST"
+  },
+  "money_history": {
+    "path": "/api/v1/wallet/money-history",
+    "method": "GET"
+  },
+  "money_wallet": {
+    "path": "/api/v1/wallet/money-wallet",
+    "method": "GET"
+  },
+  "my_account": {
+    "path": "/api/v1/account/my-account",
+    "method": "GET"
+  },
+  "my_contracts": {
+    "path": "/api/v1/contracts/my-contracts",
+    "method": "GET"
+  },
+  "my_credit_purchases": {
+    "path": "/api/v1/wallet/my-credit-purchases",
+    "method": "GET"
+  },
+  "my_favorites": {
+    "path": "/api/v1/professionals/my-favorites",
+    "method": "GET"
+  },
+  "my_files": {
+    "path": "/api/v1/support/my-files",
+    "method": "GET"
+  },
+  "my_kyc": {
+    "path": "/api/v1/support/my-kyc",
+    "method": "GET"
+  },
+  "my_notifications": {
+    "path": "/api/v1/account/my-notifications",
+    "method": "GET"
+  },
+  "my_orders": {
+    "path": "/api/v1/marketplace/my-orders",
+    "method": "GET"
+  },
+  "my_payout_methods": {
+    "path": "/api/v1/wallet/my-payout-methods",
+    "method": "GET"
+  },
+  "my_products": {
+    "path": "/api/v1/marketplace/my-products",
+    "method": "GET"
+  },
+  "my_professional": {
+    "path": "/api/v1/professionals/my-professional",
+    "method": "GET"
+  },
+  "my_proposals": {
+    "path": "/api/v1/requests/my-proposals",
+    "method": "GET"
+  },
+  "my_requests": {
+    "path": "/api/v1/requests/my-requests",
+    "method": "GET"
+  },
+  "my_sessions": {
+    "path": "/api/v1/account/my-sessions",
+    "method": "GET"
+  },
+  "my_tickets": {
+    "path": "/api/v1/support/my-tickets",
+    "method": "GET"
+  },
+  "my_topups": {
+    "path": "/api/v1/wallet/my-topups",
+    "method": "GET"
+  },
+  "my_wallet": {
+    "path": "/api/v1/wallet/my-wallet",
+    "method": "POST"
+  },
+  "my_withdrawals": {
+    "path": "/api/v1/wallet/my-withdrawals",
+    "method": "GET"
+  },
+  "navigate": {
+    "path": "/api/v1/contracts/navigate",
+    "method": "GET"
+  },
+  "nearby_professionals": {
+    "path": "/api/v1/public/nearby-professionals",
+    "method": "POST"
+  },
+  "open_ticket": {
+    "path": "/api/v1/support/open-ticket",
+    "method": "POST"
+  },
+  "payment_preferences": {
+    "path": "/api/v1/account/payment-preferences",
+    "method": "GET"
+  },
+  "professional_assets": {
+    "path": "/api/v1/professionals/professional-assets",
+    "method": "GET"
+  },
+  "professional_map_markers": {
+    "path": "/api/v1/public/professional-map-markers",
+    "method": "POST"
+  },
+  "professional_profile": {
+    "path": "/api/v1/professionals/professional-profile",
+    "method": "GET"
+  },
+  "professional_reviews": {
+    "path": "/api/v1/professionals/professional-reviews",
+    "method": "GET"
+  },
+  "propose_terms": {
+    "path": "/api/v1/contracts/propose-terms",
+    "method": "POST"
+  },
+  "protect_service_request": {
+    "path": "/api/v1/requests/protect-service-request",
+    "method": "POST"
+  },
+  "publish_request": {
+    "path": "/api/v1/requests/publish-request",
+    "method": "POST"
+  },
+  "quote_contract_funding": {
+    "path": "/api/v1/contracts/quote-contract-funding",
+    "method": "POST"
+  },
+  "quote_withdrawal": {
+    "path": "/api/v1/wallet/quote-withdrawal",
+    "method": "POST"
+  },
+  "rate_contract": {
+    "path": "/api/v1/contracts/rate-contract",
+    "method": "POST"
+  },
+  "read_notification": {
+    "path": "/api/v1/account/read-notification",
+    "method": "POST"
+  },
+  "refund_contract_credit": {
+    "path": "/api/v1/admin/refund-contract-credit",
+    "method": "POST"
+  },
+  "release_contract_funds": {
+    "path": "/api/v1/contracts/release-contract-funds",
+    "method": "POST"
+  },
+  "remove_branch": {
+    "path": "/api/v1/professionals/remove-branch",
+    "method": "POST"
+  },
+  "remove_contact": {
+    "path": "/api/v1/account/remove-contact",
+    "method": "POST"
+  },
+  "remove_credential": {
+    "path": "/api/v1/professionals/remove-credential",
+    "method": "POST"
+  },
+  "remove_offering": {
+    "path": "/api/v1/professionals/remove-offering",
+    "method": "POST"
+  },
+  "remove_portfolio_item": {
+    "path": "/api/v1/professionals/remove-portfolio-item",
+    "method": "POST"
+  },
+  "remove_product_image": {
+    "path": "/api/v1/marketplace/remove-product-image",
+    "method": "POST"
+  },
+  "remove_professional_contact": {
+    "path": "/api/v1/professionals/remove-professional-contact",
+    "method": "POST"
+  },
+  "remove_request_image": {
+    "path": "/api/v1/requests/remove-request-image",
+    "method": "POST"
+  },
+  "reply_ticket": {
+    "path": "/api/v1/support/reply-ticket",
+    "method": "POST"
+  },
+  "report_external_payment": {
+    "path": "/api/v1/contracts/report-external-payment",
+    "method": "POST"
+  },
+  "report_position": {
+    "path": "/api/v1/contracts/report-position",
+    "method": "POST"
+  },
+  "request_delivery_changes": {
+    "path": "/api/v1/contracts/request-delivery-changes",
+    "method": "POST"
+  },
+  "request_escrow_refund": {
+    "path": "/api/v1/contracts/request-escrow-refund",
+    "method": "POST"
+  },
+  "request_offering": {
+    "path": "/api/v1/requests/request-offering",
+    "method": "POST"
+  },
+  "request_proposals": {
+    "path": "/api/v1/requests/request-proposals",
+    "method": "GET"
+  },
+  "request_withdrawal": {
+    "path": "/api/v1/wallet/request-withdrawal",
+    "method": "POST"
+  },
+  "resolve_escrow_refund": {
+    "path": "/api/v1/admin/resolve-escrow-refund",
+    "method": "POST"
+  },
+  "respond_review": {
+    "path": "/api/v1/professionals/respond-review",
+    "method": "POST"
+  },
+  "review_kyc": {
+    "path": "/api/v1/admin/review-kyc",
+    "method": "POST"
+  },
+  "revoke_location": {
+    "path": "/api/v1/contracts/revoke-location",
+    "method": "POST"
+  },
+  "revoke_session": {
+    "path": "/api/v1/account/revoke-session",
+    "method": "POST"
+  },
+  "save_contact": {
+    "path": "/api/v1/account/save-contact",
+    "method": "POST"
+  },
+  "search_professionals": {
+    "path": "/api/v1/professionals/search-professionals",
+    "method": "GET"
+  },
+  "search_remote_professionals": {
+    "path": "/api/v1/professionals/search-remote-professionals",
+    "method": "GET"
+  },
+  "send_attachment": {
+    "path": "/api/v1/contracts/send-attachment",
+    "method": "POST"
+  },
+  "send_message": {
+    "path": "/api/v1/contracts/send-message",
+    "method": "POST"
+  },
+  "service_feed": {
+    "path": "/api/v1/requests/service-feed",
+    "method": "GET"
+  },
+  "set_branch_hours": {
+    "path": "/api/v1/professionals/set-branch-hours",
+    "method": "POST"
+  },
+  "set_coverage": {
+    "path": "/api/v1/professionals/set-coverage",
+    "method": "POST"
+  },
+  "set_favorite": {
+    "path": "/api/v1/professionals/set-favorite",
+    "method": "POST"
+  },
+  "set_offering_delivery": {
+    "path": "/api/v1/professionals/set-offering-delivery",
+    "method": "POST"
+  },
+  "set_payment_preference": {
+    "path": "/api/v1/account/set-payment-preference",
+    "method": "POST"
+  },
+  "set_professional_plan": {
+    "path": "/api/v1/admin/set-professional-plan",
+    "method": "POST"
+  },
+  "set_store_plan": {
+    "path": "/api/v1/admin/set-store-plan",
+    "method": "POST"
+  },
+  "set_store_status": {
+    "path": "/api/v1/admin/set-store-status",
+    "method": "POST"
+  },
+  "set_user_status": {
+    "path": "/api/v1/admin/set-user-status",
+    "method": "POST"
+  },
+  "share_location": {
+    "path": "/api/v1/contracts/share-location",
+    "method": "POST"
+  },
+  "start_purchase": {
+    "path": "/api/v1/wallet/start-purchase",
+    "method": "POST"
+  },
+  "store_products": {
+    "path": "/api/v1/marketplace/store-products",
+    "method": "GET"
+  },
+  "submit_delivery": {
+    "path": "/api/v1/contracts/submit-delivery",
+    "method": "POST"
+  },
+  "submit_proposal": {
+    "path": "/api/v1/requests/submit-proposal",
+    "method": "POST"
+  },
+  "support_ticket": {
+    "path": "/api/v1/admin/support-ticket",
+    "method": "POST"
+  },
+  "ticket_thread": {
+    "path": "/api/v1/support/ticket-thread",
+    "method": "GET"
+  },
+  "update_account": {
+    "path": "/api/v1/account/update-account",
+    "method": "POST"
+  },
+  "update_offering": {
+    "path": "/api/v1/professionals/update-offering",
+    "method": "POST"
+  },
+  "update_product": {
+    "path": "/api/v1/marketplace/update-product",
+    "method": "POST"
+  },
+  "update_professional": {
+    "path": "/api/v1/professionals/update-professional",
+    "method": "POST"
+  },
+  "update_shared_location": {
+    "path": "/api/v1/contracts/update-shared-location",
+    "method": "POST"
+  },
+  "withdraw_proposal": {
+    "path": "/api/v1/requests/withdraw-proposal",
+    "method": "POST"
+  }
+}

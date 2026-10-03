@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+psycopg[binary,pool]
+argon2-cffi
+PyJWT
+python-multipart
+email-validator
+cryptography
+pyotp
+Pillow
+httpx
+pytest
+ruff

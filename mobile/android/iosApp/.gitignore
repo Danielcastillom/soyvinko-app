@@ -1,0 +1,6 @@
+# XcodeGen lo genera en cada compilación a partir de project.yml.
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+build/

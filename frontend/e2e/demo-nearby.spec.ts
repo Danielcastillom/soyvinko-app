@@ -1,0 +1,30 @@
+import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
+
+test("las muestras aparecen a 50 km de la dirección de demostración y por categoría", async ({ page, context }) => {
+  const config = (await (await context.request.get("/api/v1/config")).json()).data;
+  expect(config.payment_mode).toBe("sandbox");
+  const access = readFileSync(new URL("../../.local-access.md", import.meta.url), "utf8");
+  const row = access.split("\n").find(line => line.startsWith("- cliente:"))!;
+  const values = [...row.matchAll(/`([^`]+)`/g)].map(match => match[1]);
+  const auth = await context.request.post("/api/v1/auth/login", { data: { email: values[0], password: values[1], client: "web" } });
+  expect(auth.ok()).toBe(true);
+  await page.goto("/explore");
+  await page.getByRole("button", { name: "Presenciales", exact: true }).click();
+  const address = page.getByLabel("Dirección para buscar");
+  const option = address.locator("option").filter({ hasText: "Casa de ejemplo" });
+  await expect(option).toHaveCount(1);
+  await address.selectOption((await option.getAttribute("value"))!);
+  await page.getByLabel("Radio de búsqueda").selectOption("50000");
+  await expect(page.locator(".professional-card")).toHaveCount(30);
+  await page.getByRole("tab", { name: "Ver mapa", exact: true }).click();
+  await expect(page.locator(".explore-map-status")).toContainText("30 profesionales en el mapa");
+  await page.screenshot({ path: "../docs/screenshots/demo-nearby-valera.png", fullPage: true });
+  const categories = (await (await context.request.get("/api/v1/public/catalog")).json()).data;
+  await page.getByLabel("Categoría", { exact: true }).selectOption(categories.find((c: any) => c.slug === "plomeria").id);
+  await expect(page.locator(".explore-map-status")).toContainText("3 profesionales en el mapa");
+  await page.getByRole("tab", { name: "Listado", exact: true }).click();
+  await expect(page.locator(".professional-card")).toHaveCount(3);
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

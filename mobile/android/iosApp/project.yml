@@ -1,0 +1,69 @@
+# App iOS de SoyVinko. ios-builder genera el .xcodeproj con XcodeGen en macOS (no se versiona).
+name: SoyVinko
+options:
+  bundleIdPrefix: com.soyvinko
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    MARKETING_VERSION: "1.2.0"
+    CURRENT_PROJECT_VERSION: "3"
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    # El script de Gradle necesita acceso al proyecto completo.
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+targets:
+  SoyVinko:
+    type: application
+    platform: iOS
+    sources:
+      - path: SoyVinko
+    info:
+      path: SoyVinko/Info.plist
+      properties:
+        CFBundleDisplayName: SoyVinko
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        ITSAppUsesNonExemptEncryption: false
+        CADisableMinimumFrameDurationOnPhone: true
+        UILaunchScreen:
+          UIColorName: AccentColor
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        NSLocationWhenInUseUsageDescription: SoyVinko usa tu ubicación para mostrarte profesionales cerca, guardar direcciones y compartir el trayecto de un servicio.
+        NSLocationAlwaysAndWhenInUseUsageDescription: Permite seguir compartiendo tu ubicación del servicio en curso aunque la app esté en segundo plano.
+        NSCameraUsageDescription: SoyVinko usa la cámara para la verificación de identidad y para fotos de solicitudes, entregas y chat.
+        NSPhotoLibraryUsageDescription: Elige fotos para tus solicitudes, entregas, portafolio, productos y chat.
+        UIBackgroundModes: [location]
+        LSApplicationQueriesSchemes: [whatsapp, comgooglemaps, waze, maps, tel, mailto, otpauth]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.soyvinko.app
+        PRODUCT_NAME: SoyVinko
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        FRAMEWORK_SEARCH_PATHS: $(inherited) $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
+        OTHER_LDFLAGS: $(inherited) -framework Shared -framework MapKit -framework CoreLocation -framework PhotosUI -framework AVFoundation -framework PDFKit -framework Security
+    preBuildScripts:
+      - name: Compilar Kotlin (módulo shared)
+        basedOnDependencyAnalysis: false
+        script: |
+          set -e
+          if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
+            echo "Compilación de Kotlin omitida (la hace el IDE)."
+            exit 0
+          fi
+          cd "$SRCROOT/.."
+          # El enlace del framework de Kotlin/Native necesita más memoria que la compilación de Android.
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8"
+schemes:
+  SoyVinko:
+    build:
+      targets:
+        SoyVinko: all
+    run:
+      config: Debug
+    archive:
+      config: Release

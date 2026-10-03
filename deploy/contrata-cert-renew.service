@@ -1,0 +1,6 @@
+[Unit]
+Description=Renew HTTPS certificate for contrata.contupana.pro
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/certbot renew --quiet --cert-name contrata.contupana.pro --config-dir /home/davebas/.config/letsencrypt-contrata --work-dir /home/davebas/.cache/letsencrypt-contrata --logs-dir /home/davebas/.local/state/letsencrypt-contrata --deploy-hook /home/davebas/chamba/deploy/reload-nginx.sh

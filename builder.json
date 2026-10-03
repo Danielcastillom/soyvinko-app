@@ -1,0 +1,16 @@
+{
+  "project": "SoyVinko",
+  "platform": "ios",
+  "github": {
+    "owner": "mesario-app",
+    "repo": "soyvinko"
+  },
+  "ios": {
+    "path": "mobile/android/iosApp",
+    "scheme": "SoyVinko",
+    "bundleId": "com.soyvinko.app"
+  },
+  "kmp": {
+    "jdkVersion": "17"
+  }
+}
