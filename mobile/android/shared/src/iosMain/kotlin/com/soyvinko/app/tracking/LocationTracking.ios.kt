@@ -26,7 +26,9 @@ import platform.darwin.NSObject
  * Seguimiento con la app en segundo plano: CLLocationManager con allowsBackgroundLocationUpdates
  * (requiere UIBackgroundModes = location en Info.plist). iOS muestra el indicador azul mientras dura.
  */
-private object IosTracker : NSObject(), CLLocationManagerDelegateProtocol {
+private object IosTracker {
+    // Kotlin/Native no admite un `object` que herede de NSObject: el delegado es una clase aparte.
+    private val delegate = TrackerDelegate()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var manager: CLLocationManager? = null
     private var heartbeat: Job? = null
@@ -42,7 +44,7 @@ private object IosTracker : NSObject(), CLLocationManagerDelegateProtocol {
         mode = trackingMode
         LocationTracking.update { TrackingSession(contractId, trackingMode, label) }
         manager = CLLocationManager().apply {
-            delegate = this@IosTracker
+            delegate = this@IosTracker.delegate
             desiredAccuracy = kCLLocationAccuracyBest
             distanceFilter = 10.0
             allowsBackgroundLocationUpdates = true
@@ -80,13 +82,17 @@ private object IosTracker : NSObject(), CLLocationManagerDelegateProtocol {
         }
     }
 
-    @OptIn(ExperimentalForeignApi::class)
-    override fun locationManager(manager: CLLocationManager, didUpdateLocations: List<*>) {
-        val loc = didUpdateLocations.lastOrNull() as? CLLocation ?: return
+    fun onLocation(loc: CLLocation) {
         val (lat, lon) = loc.coordinate.useContents { latitude to longitude }
         val fix = GeoPos(lat, lon, loc.horizontalAccuracy.takeIf { it >= 0 }?.toFloat())
         lastFix = fix
         if (nowMs() - lastSent >= 10_000) send(fix)
+    }
+}
+
+private class TrackerDelegate : NSObject(), CLLocationManagerDelegateProtocol {
+    override fun locationManager(manager: CLLocationManager, didUpdateLocations: List<*>) {
+        (didUpdateLocations.lastOrNull() as? CLLocation)?.let(IosTracker::onLocation)
     }
 
     @ObjCSignatureOverride
