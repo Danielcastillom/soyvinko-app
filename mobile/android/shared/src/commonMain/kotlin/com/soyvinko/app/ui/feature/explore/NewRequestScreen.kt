@@ -57,6 +57,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -174,7 +175,7 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
 
     fun validate(): Map<String, String> = buildMap {
         if (!direct && category.isBlank()) put("category", "Elige una categoría.")
-        if (!direct && title.trim().length !in 5..160) put("title", "Escribe un título de 5 a 160 caracteres.")
+        if (!direct && title.isBlank()) put("title", "Elige un rubro.")
         if (description.trim().length < 10) put("description", "Describe lo que necesitas con al menos 10 caracteres.")
         if (!direct && amount.isNotBlank() && (budget == null || budget <= 0)) put("amount", "Escribe un monto válido mayor que cero, por ejemplo 1.500,00.")
         if (mode == "onsite" && address == null) put("address", "Elige la dirección donde necesitas el servicio.")
@@ -247,13 +248,27 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
                     Column {
-                        SectionLabel(if (direct) "Solicitar un servicio" else "Publicar una necesidad")
-                        Text(if (direct) "Cuéntale qué necesitas" else "¿Qué necesitas resolver?", style = MaterialTheme.typography.headlineSmall)
-                        Text(
-                            if (direct) "Los datos del servicio ya están seleccionados." else "Recibe propuestas de varios profesionales y elige quién te ayuda.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Vinko.Muted,
-                        )
+                        if (direct) {
+                            SectionLabel("Solicitar un servicio")
+                            Text("Cuéntale qué necesitas", style = MaterialTheme.typography.headlineSmall)
+                            Text(
+                                "Los datos del servicio ya están seleccionados.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Vinko.Muted,
+                            )
+                        } else {
+                            Text(
+                                "¿Qué deseas anunciar?",
+                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                                color = Vinko.Primary,
+                            )
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                "Vincula con los mejores clientes y proveedores de Venezuela",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Vinko.Muted,
+                            )
+                        }
                     }
 
                     if (direct && service == null) {
@@ -308,11 +323,6 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
                                 color = Vinko.Muted,
                             )
                         }
-                    } else {
-                        Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                            ModeCard(Icons.Outlined.Place, "Presencial", "Un profesional va al lugar", openMode == "onsite", Modifier.weight(1f).fillMaxHeight(), !saving) { openMode = "onsite" }
-                            ModeCard(Icons.Outlined.Public, "Remoto", "Trabajan desde cualquier lugar", openMode == "remote", Modifier.weight(1f).fillMaxHeight(), !saving) { openMode = "remote" }
-                        }
                     }
 
                     VCard {
@@ -321,29 +331,97 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
                         if (!direct) {
                             SelectField(
                                 label = "Categoría",
-                                options = categories.ordered().map { it.id to it.name },
+                                options = listOf(
+                                    "Profesionales" to "Profesionales",
+                                    "Técnicos" to "Técnicos",
+                                    "Generales" to "Generales",
+                                ),
                                 selected = category,
                                 onSelect = {
                                     category = it
-                                    errors = errors - "category"
+                                    title = ""
+                                    errors = errors - "category" - "title"
                                 },
                                 error = errors["category"],
-                                placeholder = "Elige una categoría",
-                                icons = { id -> categoryIcon(categories.firstOrNull { it.id == id }?.slug) },
+                                placeholder = "Selecciona la categoría",
                                 enabled = !saving,
                             )
                             Spacer(Modifier.height(8.dp))
-                            VinkoTextField(
-                                value = title,
-                                onValueChange = {
-                                    title = it.take(160)
+
+                            val availableRubros = remember(category) {
+                                when (category) {
+                                    "Profesionales" -> listOf(
+                                        "Arquitectura / Diseño de Interiores",
+                                        "Community Manager / Especialista en Redes",
+                                        "Comunicaciones / Relaciones Públicas",
+                                        "Contabilidad / Administración",
+                                        "Desarrollo de Software / Programación",
+                                        "Diseño Gráfico",
+                                        "Diseño Web",
+                                        "Fotografía",
+                                        "Ingeniería Ambiental",
+                                        "Ingeniería Biomédica",
+                                        "Ingeniería Civil",
+                                        "Ingeniería de Telecomunicaciones",
+                                        "Ingeniería Eléctrica",
+                                        "Ingeniería en Sistemas",
+                                        "Ingeniería Industrial",
+                                        "Ingeniería Mecánica",
+                                        "Legal",
+                                        "Medicina",
+                                        "Mercadeo",
+                                        "Nutricionista",
+                                        "Odontología",
+                                        "Psicología",
+                                        "Publicidad",
+                                        "Tutoría / Clases Particulares",
+                                        "Videografía / Edición de Video",
+                                    )
+                                    "Técnicos" -> listOf(
+                                        "Aire Acondicionado / Refrigeración",
+                                        "Albañilería / Construcción",
+                                        "Carpintería",
+                                        "Cerrajería",
+                                        "Computadoras / Celulares",
+                                        "Electricidad",
+                                        "Fumigación / Control de Plagas",
+                                        "Herrería / Soldadura",
+                                        "Línea Blanca",
+                                        "Mecánica Automotríz",
+                                        "Pintores de Interiores / Exteriores",
+                                        "Plomería / Fontanería",
+                                    )
+                                    "Generales" -> listOf(
+                                        "Chofer",
+                                        "Cisterna",
+                                        "Cuidado de Adultos Mayores",
+                                        "Cuidado de Niños (Niñera)",
+                                        "Grúa",
+                                        "Jardinería",
+                                        "Lavado de Autos",
+                                        "Limpieza",
+                                        "Mandados",
+                                        "Manicura",
+                                        "Mudanzas / Fletes",
+                                        "Paseo de Mascotas",
+                                        "Peluquería",
+                                        "Zapatero",
+                                    )
+                                    else -> emptyList()
+                                }
+                            }
+
+                            SelectField(
+                                label = "Rubro",
+                                options = availableRubros.map { it to it },
+                                selected = title,
+                                onSelect = {
+                                    title = it
                                     errors = errors - "title"
                                 },
-                                label = "Título de tu solicitud",
                                 error = errors["title"],
-                                supporting = "Ejemplo: necesito reparar una fuga en la cocina.",
-                                capitalization = KeyboardCapitalization.Sentences,
-                                enabled = !saving,
+                                placeholder = if (category.isEmpty()) "Primero selecciona una categoría" else "Selecciona el rubro",
+                                enabled = !saving && category.isNotEmpty(),
                             )
                             Spacer(Modifier.height(8.dp))
                         }
@@ -356,7 +434,7 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
                             label = when {
                                 direct -> "Explica la falla o lo que necesitas"
                                 mode == "remote" -> "Requisitos y resultado esperado"
-                                else -> "Describe lo que necesitas"
+                                else -> "Requerimiento"
                             },
                             error = errors["description"],
                             supporting = "Describe el problema y el resultado que esperas. Añade fotos debajo si te ayudan a explicarlo.",
@@ -454,14 +532,17 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
                     }
 
                     VCard {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            IconTile(Icons.Outlined.AddPhotoAlternate)
-                            Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) {
-                                Text("Fotos de referencia", style = MaterialTheme.typography.titleSmall)
-                                Text("Opcional · hasta 6 fotos JPG, PNG o WEBP de 10 MB cada una.", style = MaterialTheme.typography.bodySmall, color = Vinko.Muted)
-                            }
-                        }
+                        Text(
+                            "Fotos Referenciales",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Vinko.Primary,
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "Opcional · hasta 6 fotos JPG, PNG o WEBP de 10 MB cada una.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Vinko.Muted,
+                        )
                         if (photos.isNotEmpty()) {
                             Spacer(Modifier.height(12.dp))
                             PhotoGrid(photos.size) { i ->
@@ -486,11 +567,33 @@ fun NewRequestScreen(nav: NavHostController, professional: String, offering: Str
                             }
                         }
                         Spacer(Modifier.height(12.dp))
-                        SecondaryButton(
-                            if (photos.isEmpty()) "Seleccionar fotos" else "Añadir fotos (${photos.size}/$MAX_PHOTOS)",
-                            onClick = pickPhotos,
-                            enabled = photos.size < MAX_PHOTOS && !saving,
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(Color(0xFFEDE9FE))
+                                .clickable(enabled = photos.size < MAX_PHOTOS && !saving, onClick = pickPhotos),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
+                            ) {
+                                Icon(
+                                    Icons.Outlined.AddPhotoAlternate,
+                                    contentDescription = null,
+                                    tint = Vinko.Primary,
+                                    modifier = Modifier.size(22.dp),
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    if (photos.isEmpty()) "Agregar Fotos de Referencia" else "Añadir fotos (${photos.size}/$MAX_PHOTOS)",
+                                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                                    color = Vinko.Primary,
+                                )
+                            }
+                        }
                         Text(
                             "Muestra la falla o el trabajo que necesitas. Evita rostros, documentos y datos de contacto.",
                             style = MaterialTheme.typography.bodySmall,

@@ -1,6 +1,7 @@
 package com.soyvinko.app.ui.feature.wallet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,13 +19,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBalance
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.material.icons.outlined.VerifiedUser
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -36,9 +40,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.soyvinko.app.data.ApiException
 import com.soyvinko.app.ui.common.LocalApp
 import com.soyvinko.app.ui.common.LocalUser
@@ -52,6 +59,12 @@ import com.soyvinko.app.ui.theme.Vinko
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+
+enum class PayoutCategory(val label: String) {
+    BANK("Banco"),
+    PAGO_MOVIL("Pago Móvil"),
+    CRYPTO("Cripto USDT"),
+}
 
 /** Bancos venezolanos (frontend/src/venezuelanBanks.ts). */
 data class Bank(val code: String, val name: String, val pagoMovil: Boolean = true)
@@ -114,14 +127,15 @@ fun validatePayout(
     return null
 }
 
-/** Formulario nativo de AddPayoutMethodModal.tsx: transferencia bancaria o Pago Móvil. */
+/** Formulario nativo de AddPayoutMethodModal.tsx: transferencia bancaria, Pago Móvil o Cripto USDT. */
 @Composable
 fun AddPayoutMethodScreen(onBack: () -> Unit, onSaved: (message: String) -> Unit) {
     val app = LocalApp.current
     val user = LocalUser.current
     val scope = rememberCoroutineScope()
+    val clipboard = LocalClipboardManager.current
 
-    var bankTransfer by rememberSaveable { mutableStateOf(true) }
+    var category by rememberSaveable { mutableStateOf(PayoutCategory.BANK) }
     var account by rememberSaveable { mutableStateOf("") }
     var bankCode by rememberSaveable { mutableStateOf(VENEZUELAN_BANKS.first().code) }
     var accountType by rememberSaveable { mutableStateOf("corriente") }
@@ -129,6 +143,8 @@ fun AddPayoutMethodScreen(onBack: () -> Unit, onSaved: (message: String) -> Unit
     var pmBank by rememberSaveable { mutableStateOf(VENEZUELAN_BANKS.first().code) }
     var prefix by rememberSaveable { mutableStateOf(PHONE_PREFIXES.first()) }
     var phone by rememberSaveable { mutableStateOf("") }
+    var cryptoNetwork by rememberSaveable { mutableStateOf(CryptoNetwork.TRC20) }
+    var cryptoAddress by rememberSaveable { mutableStateOf("") }
     var docType by rememberSaveable { mutableStateOf(if (user.isCompany) "J" else "V") }
     var docNumber by rememberSaveable { mutableStateOf("") }
     var holder by rememberSaveable { mutableStateOf(user.businessName?.takeIf { user.isCompany } ?: user.name) }
@@ -137,19 +153,44 @@ fun AddPayoutMethodScreen(onBack: () -> Unit, onSaved: (message: String) -> Unit
     var error by rememberSaveable { mutableStateOf<String?>(null) }
 
     val detected = if (account.length >= 4) bankByCode(account.take(4)) else null
-    val selectedBank = bankByCode(if (bankTransfer) bankCode else pmBank)
+    val selectedBank = bankByCode(if (category == PayoutCategory.BANK) bankCode else pmBank)
 
     fun submit() {
-        error = validatePayout(bankTransfer, account, bankCode, phone, prefix, docNumber, holder)
+        if (category == PayoutCategory.CRYPTO) {
+            error = validateCryptoAddress(cryptoNetwork, cryptoAddress)
+            if (error != null) return
+            val body = buildMap<String, String> {
+                put("method_type", "crypto")
+                put("currency", "USD")
+                put("crypto_network", cryptoNetwork.id)
+                put("crypto_address", cryptoAddress.trim())
+                alias.trim().takeIf { it.isNotEmpty() }?.let { put("label", it) }
+            }
+            busy = true
+            scope.launch {
+                try {
+                    app.api.raw("POST", "/api/v1/integrations/payout-methods", JsonObject(body.mapValues { JsonPrimitive(it.value) }))
+                    onSaved("Billetera USDT (${cryptoNetwork.networkName}) registrada y verificada con éxito.")
+                } catch (e: ApiException) {
+                    error = listOfNotNull(e.message, e.fieldErrors.values.firstOrNull()?.takeIf { it != e.message }).joinToString(" ")
+                } finally {
+                    busy = false
+                }
+            }
+            return
+        }
+
+        val isBank = category == PayoutCategory.BANK
+        error = validatePayout(isBank, account, bankCode, phone, prefix, docNumber, holder)
         if (error != null) return
         val body = buildMap<String, String> {
-            put("method_type", if (bankTransfer) "bank_transfer" else "pago_movil")
-            put("currency", if (bankTransfer) currency.code else "VES")
+            put("method_type", if (isBank) "bank_transfer" else "pago_movil")
+            put("currency", if (isBank) currency.code else "VES")
             put("document_type", docType)
             put("document_number", docNumber)
             put("holder_name", holder.trim())
             alias.trim().takeIf { it.isNotEmpty() }?.let { put("label", it) }
-            if (bankTransfer) {
+            if (isBank) {
                 put("bank_code", bankCode)
                 put("account_number", account)
                 put("account_type", accountType)
@@ -179,16 +220,29 @@ fun AddPayoutMethodScreen(onBack: () -> Unit, onSaved: (message: String) -> Unit
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             Segmented(
-                options = listOf(true to "Transferencia", false to "Pago Móvil"),
-                selected = bankTransfer,
+                options = listOf(
+                    PayoutCategory.BANK to "Banco",
+                    PayoutCategory.PAGO_MOVIL to "Pago Móvil",
+                    PayoutCategory.CRYPTO to "Cripto USDT",
+                ),
+                selected = category,
                 onSelect = {
-                    bankTransfer = it
+                    category = it
                     error = null
                 },
-                icons = { if (it) Icons.Outlined.AccountBalance else Icons.Outlined.PhoneAndroid },
+                icons = {
+                    when (it) {
+                        PayoutCategory.BANK -> Icons.Outlined.AccountBalance
+                        PayoutCategory.PAGO_MOVIL -> Icons.Outlined.PhoneAndroid
+                        PayoutCategory.CRYPTO -> Icons.Outlined.AccountBalanceWallet
+                    }
+                },
             )
             Text(
-                "Por seguridad, la cuenta debe estar a tu nombre: el documento del titular tiene que coincidir con tu verificación de identidad aprobada y tu correo debe estar confirmado.",
+                if (category == PayoutCategory.CRYPTO)
+                    "Los retiros de tu saldo USD se transferirán en USDT a la paridad 1:1 directamente a tu billetera personal o cuenta Binance."
+                else
+                    "Por seguridad, la cuenta debe estar a tu nombre: el documento del titular tiene que coincidir con tu verificación de identidad aprobada y tu correo debe estar confirmado.",
                 style = MaterialTheme.typography.bodySmall,
                 color = Vinko.Muted,
             )
@@ -196,156 +250,251 @@ fun AddPayoutMethodScreen(onBack: () -> Unit, onSaved: (message: String) -> Unit
             error?.let { Banner(it) }
 
             VCard(padding = 18.dp) {
-                if (bankTransfer) {
-                    SectionLabel("Cuenta bancaria")
+                when (category) {
+                    PayoutCategory.BANK -> {
+                        SectionLabel("Cuenta bancaria")
+                        Spacer(Modifier.height(12.dp))
+                        OutlinedTextField(
+                            value = account,
+                            onValueChange = { raw ->
+                                val digits = raw.filter(Char::isDigit).take(20)
+                                account = digits
+                                if (digits.length >= 4) bankByCode(digits.take(4))?.let { bankCode = it.code }
+                                error = null
+                            },
+                            label = { Text("Número de cuenta (20 dígitos)") },
+                            placeholder = { Text("01340000000000000000", color = Vinko.Subtle) },
+                            singleLine = true,
+                            supportingText = { Text("${account.length}/20 dígitos") },
+                            trailingIcon = detected?.let {
+                                {
+                                    Row(
+                                        Modifier.padding(end = 10.dp).background(Vinko.MintBg, RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 4.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = Vinko.Mint, modifier = Modifier.size(14.dp))
+                                        Spacer(Modifier.width(4.dp))
+                                        Text(it.name.substringBefore(" ("), style = MaterialTheme.typography.labelMedium, color = Vinko.Mint, maxLines = 1)
+                                    }
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = fieldColors(),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Dropdown(
+                            label = "Banco receptor",
+                            options = VENEZUELAN_BANKS,
+                            selected = bankByCode(bankCode) ?: VENEZUELAN_BANKS.first(),
+                            text = { "${it.code} · ${it.name}" },
+                            onSelect = { bankCode = it.code },
+                        )
+                        Spacer(Modifier.height(14.dp))
+                        FieldLabel("Tipo de cuenta")
+                        Segmented(
+                            options = listOf("corriente" to "Corriente", "ahorro" to "Ahorro"),
+                            selected = accountType,
+                            onSelect = { accountType = it },
+                        )
+                        Spacer(Modifier.height(14.dp))
+                        FieldLabel("Moneda de la cuenta")
+                        Segmented(
+                            options = listOf(Cur.VES to "Bs · Bolívares", Cur.USD to "US$ · Divisas"),
+                            selected = currency,
+                            onSelect = { currency = it },
+                        )
+                    }
+                    PayoutCategory.PAGO_MOVIL -> {
+                        SectionLabel("Pago Móvil")
+                        Spacer(Modifier.height(12.dp))
+                        Dropdown(
+                            label = "Banco de Pago Móvil",
+                            options = VENEZUELAN_BANKS.filter { it.pagoMovil },
+                            selected = bankByCode(pmBank) ?: VENEZUELAN_BANKS.first(),
+                            text = { "${it.code} · ${it.name}" },
+                            onSelect = { pmBank = it.code },
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Dropdown(
+                                label = "Prefijo",
+                                options = PHONE_PREFIXES,
+                                selected = prefix,
+                                text = { it },
+                                onSelect = { prefix = it },
+                                modifier = Modifier.weight(0.42f),
+                            )
+                            OutlinedTextField(
+                                value = phone,
+                                onValueChange = { phone = it.filter(Char::isDigit).take(7); error = null },
+                                label = { Text("Celular") },
+                                placeholder = { Text("1234567", color = Vinko.Subtle) },
+                                singleLine = true,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                                shape = RoundedCornerShape(14.dp),
+                                colors = fieldColors(),
+                                modifier = Modifier.weight(0.58f),
+                            )
+                        }
+                        Text(
+                            "Prefijo móvil (0414, 0424, 0412, 0416, 0426) y 7 dígitos.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Vinko.Muted,
+                            modifier = Modifier.padding(start = 4.dp, top = 6.dp),
+                        )
+                    }
+                    PayoutCategory.CRYPTO -> {
+                        SectionLabel("Billetera USDT / Criptomoneda")
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "Recibe tus retiros de saldo USD en USDT (1:1) directamente a tu billetera personal o cuenta Binance.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Vinko.Muted,
+                        )
+                        Spacer(Modifier.height(14.dp))
+                        FieldLabel("Red de retiro")
+                        Dropdown(
+                            label = "Selecciona la red",
+                            options = CryptoNetwork.entries,
+                            selected = cryptoNetwork,
+                            text = { it.displayName },
+                            onSelect = {
+                                cryptoNetwork = it
+                                error = null
+                            },
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFF9FAFB), RoundedCornerShape(10.dp))
+                                .border(1.dp, Color(0xFFE5E7EB), RoundedCornerShape(10.dp))
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Column {
+                                Text("Comisión de red", fontSize = 11.sp, color = Vinko.Muted)
+                                Text(
+                                    if (cryptoNetwork.estimatedFeeUsd == 0.0) "0 USDT (Gratis)" else "${cryptoNetwork.estimatedFeeUsd} USDT",
+                                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                    fontSize = 13.sp,
+                                    color = if (cryptoNetwork.estimatedFeeUsd == 0.0) Vinko.Mint else Vinko.Ink,
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.End) {
+                                Text("Tiempo estimado", fontSize = 11.sp, color = Vinko.Muted)
+                                Text(cryptoNetwork.confirmationTime, fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold, fontSize = 13.sp, color = Vinko.Primary)
+                            }
+                        }
+                        Spacer(Modifier.height(14.dp))
+                        OutlinedTextField(
+                            value = cryptoAddress,
+                            onValueChange = {
+                                cryptoAddress = it.trim()
+                                error = null
+                            },
+                            label = {
+                                Text(if (cryptoNetwork == CryptoNetwork.BINANCE_PAY) "Binance Pay ID o Correo" else "Dirección de Billetera (${cryptoNetwork.networkName})")
+                            },
+                            placeholder = {
+                                Text(
+                                    if (cryptoNetwork == CryptoNetwork.BINANCE_PAY) "284910284 o correo@binance.com"
+                                    else if (cryptoNetwork == CryptoNetwork.TRC20) "TYDjhZp64zVinkoofficialDepositTrc20X9"
+                                    else "0x71C8A68B4b035105260580979EceA3F0E37785F6",
+                                    color = Vinko.Subtle,
+                                )
+                            },
+                            singleLine = true,
+                            trailingIcon = {
+                                IconButton(onClick = {
+                                    clipboard.getText()?.text?.let {
+                                        cryptoAddress = it.trim()
+                                        error = null
+                                    }
+                                }) {
+                                    Icon(Icons.Outlined.ContentPaste, contentDescription = "Pegar", tint = Vinko.Primary)
+                                }
+                            },
+                            shape = RoundedCornerShape(14.dp),
+                            colors = fieldColors(),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        OutlinedTextField(
+                            value = alias,
+                            onValueChange = { alias = it.take(80) },
+                            label = { Text("Alias (opcional)") },
+                            placeholder = { Text("Mi billetera ${cryptoNetwork.symbol}") },
+                            leadingIcon = { Icon(Icons.Outlined.Sell, contentDescription = null, tint = Vinko.Lavender) },
+                            singleLine = true,
+                            shape = RoundedCornerShape(14.dp),
+                            colors = fieldColors(),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
+            }
+
+            if (category != PayoutCategory.CRYPTO) {
+                VCard(padding = 18.dp) {
+                    SectionLabel("Titular")
+                    Spacer(Modifier.height(12.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Dropdown(
+                            label = "Tipo",
+                            options = DOCUMENT_TYPES,
+                            selected = DOCUMENT_TYPES.first { it.first == docType },
+                            text = { it.first },
+                            menuText = { it.second },
+                            onSelect = { docType = it.first },
+                            modifier = Modifier.weight(0.32f),
+                        )
+                        OutlinedTextField(
+                            value = docNumber,
+                            onValueChange = { docNumber = it.filter(Char::isDigit).take(10); error = null },
+                            label = { Text("Cédula o RIF") },
+                            leadingIcon = { Icon(Icons.Outlined.Badge, contentDescription = null, tint = Vinko.Lavender) },
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = fieldColors(),
+                            modifier = Modifier.weight(0.68f),
+                        )
+                    }
                     Spacer(Modifier.height(12.dp))
                     OutlinedTextField(
-                        value = account,
-                        onValueChange = { raw ->
-                            val digits = raw.filter(Char::isDigit).take(20)
-                            account = digits
-                            if (digits.length >= 4) bankByCode(digits.take(4))?.let { bankCode = it.code }
-                            error = null
-                        },
-                        label = { Text("Número de cuenta (20 dígitos)") },
-                        placeholder = { Text("01340000000000000000", color = Vinko.Subtle) },
+                        value = holder,
+                        onValueChange = { holder = it.take(120); error = null },
+                        label = { Text("Nombre completo o razón social") },
+                        leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null, tint = Vinko.Lavender) },
                         singleLine = true,
-                        supportingText = { Text("${account.length}/20 dígitos") },
-                        trailingIcon = detected?.let {
-                            {
-                                Row(
-                                    Modifier.padding(end = 10.dp).background(Vinko.MintBg, RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = Vinko.Mint, modifier = Modifier.size(14.dp))
-                                    Spacer(Modifier.width(4.dp))
-                                    Text(it.name.substringBefore(" ("), style = MaterialTheme.typography.labelMedium, color = Vinko.Mint, maxLines = 1)
-                                }
-                            }
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        supportingText = { Text("Debe coincidir con el titular registrado en el banco.") },
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                         shape = RoundedCornerShape(14.dp),
                         colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
                     )
-                    Spacer(Modifier.height(8.dp))
-                    Dropdown(
-                        label = "Banco receptor",
-                        options = VENEZUELAN_BANKS,
-                        selected = bankByCode(bankCode) ?: VENEZUELAN_BANKS.first(),
-                        text = { "${it.code} · ${it.name}" },
-                        onSelect = { bankCode = it.code },
-                    )
-                    Spacer(Modifier.height(14.dp))
-                    FieldLabel("Tipo de cuenta")
-                    Segmented(
-                        options = listOf("corriente" to "Corriente", "ahorro" to "Ahorro"),
-                        selected = accountType,
-                        onSelect = { accountType = it },
-                    )
-                    Spacer(Modifier.height(14.dp))
-                    FieldLabel("Moneda de la cuenta")
-                    Segmented(
-                        options = listOf(Cur.VES to "Bs · Bolívares", Cur.USD to "US$ · Divisas"),
-                        selected = currency,
-                        onSelect = { currency = it },
-                    )
-                } else {
-                    SectionLabel("Pago Móvil")
-                    Spacer(Modifier.height(12.dp))
-                    Dropdown(
-                        label = "Banco de Pago Móvil",
-                        options = VENEZUELAN_BANKS.filter { it.pagoMovil },
-                        selected = bankByCode(pmBank) ?: VENEZUELAN_BANKS.first(),
-                        text = { "${it.code} · ${it.name}" },
-                        onSelect = { pmBank = it.code },
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Dropdown(
-                            label = "Prefijo",
-                            options = PHONE_PREFIXES,
-                            selected = prefix,
-                            text = { it },
-                            onSelect = { prefix = it },
-                            modifier = Modifier.weight(0.42f),
-                        )
-                        OutlinedTextField(
-                            value = phone,
-                            onValueChange = { phone = it.filter(Char::isDigit).take(7); error = null },
-                            label = { Text("Celular") },
-                            placeholder = { Text("1234567", color = Vinko.Subtle) },
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                            shape = RoundedCornerShape(14.dp),
-                            colors = fieldColors(),
-                            modifier = Modifier.weight(0.58f),
-                        )
-                    }
-                    Text(
-                        "Prefijo móvil (0414, 0424, 0412, 0416, 0426) y 7 dígitos.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Vinko.Muted,
-                        modifier = Modifier.padding(start = 4.dp, top = 6.dp),
-                    )
-                }
-            }
-
-            VCard(padding = 18.dp) {
-                SectionLabel("Titular")
-                Spacer(Modifier.height(12.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Dropdown(
-                        label = "Tipo",
-                        options = DOCUMENT_TYPES,
-                        selected = DOCUMENT_TYPES.first { it.first == docType },
-                        text = { it.first },
-                        menuText = { it.second },
-                        onSelect = { docType = it.first },
-                        modifier = Modifier.weight(0.32f),
-                    )
+                    Spacer(Modifier.height(4.dp))
                     OutlinedTextField(
-                        value = docNumber,
-                        onValueChange = { docNumber = it.filter(Char::isDigit).take(10); error = null },
-                        label = { Text("Cédula o RIF") },
-                        leadingIcon = { Icon(Icons.Outlined.Badge, contentDescription = null, tint = Vinko.Lavender) },
+                        value = alias,
+                        onValueChange = { alias = it.take(80) },
+                        label = { Text("Alias (opcional)") },
+                        placeholder = {
+                            Text(
+                                if (category == PayoutCategory.BANK) "${selectedBank?.name?.substringBefore(" (") ?: "Banco"} personal" else "Pago Móvil ${selectedBank?.name?.substringBefore(" (").orEmpty()}",
+                                color = Vinko.Subtle,
+                            )
+                        },
+                        leadingIcon = { Icon(Icons.Outlined.Sell, contentDescription = null, tint = Vinko.Lavender) },
                         singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         shape = RoundedCornerShape(14.dp),
                         colors = fieldColors(),
-                        modifier = Modifier.weight(0.68f),
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
-                Spacer(Modifier.height(12.dp))
-                OutlinedTextField(
-                    value = holder,
-                    onValueChange = { holder = it.take(120); error = null },
-                    label = { Text("Nombre completo o razón social") },
-                    leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null, tint = Vinko.Lavender) },
-                    singleLine = true,
-                    supportingText = { Text("Debe coincidir con el titular registrado en el banco.") },
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-                    shape = RoundedCornerShape(14.dp),
-                    colors = fieldColors(),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                Spacer(Modifier.height(4.dp))
-                OutlinedTextField(
-                    value = alias,
-                    onValueChange = { alias = it.take(80) },
-                    label = { Text("Alias (opcional)") },
-                    placeholder = {
-                        Text(
-                            if (bankTransfer) "${selectedBank?.name?.substringBefore(" (") ?: "Banco"} personal" else "Pago Móvil ${selectedBank?.name?.substringBefore(" (").orEmpty()}",
-                            color = Vinko.Subtle,
-                        )
-                    },
-                    leadingIcon = { Icon(Icons.Outlined.Sell, contentDescription = null, tint = Vinko.Lavender) },
-                    singleLine = true,
-                    shape = RoundedCornerShape(14.dp),
-                    colors = fieldColors(),
-                    modifier = Modifier.fillMaxWidth(),
-                )
             }
 
             Row(

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -347,7 +348,10 @@ fun DeliveryDialog(ctx: ContractCtx, onDismiss: () -> Unit, onDone: () -> Unit) 
     }
 }
 
+private val RATING_TAGS = listOf("Puntual", "Muy profesional", "Excelente atención", "Buen precio", "Trabajo limpio", "100% Recomendado")
+
 /** rate_contract: 1 a 5 estrellas, recomendación y comentario (se publica de inmediato). */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RateDialog(ctx: ContractCtx, initial: Dlg.Rate, onDismiss: () -> Unit, onDone: () -> Unit) {
     val app = LocalApp.current
@@ -374,16 +378,76 @@ fun RateDialog(ctx: ContractCtx, initial: Dlg.Rate, onDismiss: () -> Unit, onDon
         error = error,
         confirmEnabled = rating in 1..5,
     ) {
-        StarPicker(rating) { rating = it }
-        Text(
-            when (rating) { 1 -> "Muy malo"; 2 -> "Malo"; 3 -> "Regular"; 4 -> "Bueno"; 5 -> "Excelente"; else -> "Toca las estrellas para calificar" },
-            style = MaterialTheme.typography.labelLarge, color = if (rating == 0) Vinko.Muted else Vinko.Ink,
-        )
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Recomiendo a esta persona", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            StarPicker(rating, size = 44.dp) { rating = it }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                when (rating) {
+                    1 -> "⭐ Muy insatisfecho"
+                    2 -> "⭐⭐ Necesita mejorar"
+                    3 -> "⭐⭐⭐ Regular"
+                    4 -> "⭐⭐⭐⭐ Buen servicio"
+                    5 -> "⭐⭐⭐⭐⭐ ¡Excelente trabajo!"
+                    else -> "Toca las estrellas para calificar"
+                },
+                style = MaterialTheme.typography.titleSmall,
+                color = if (rating == 0) Vinko.Muted else Vinko.Primary,
+            )
+        }
+
+        Spacer(Modifier.height(4.dp))
+        Text("Aspectos destacados", style = MaterialTheme.typography.labelMedium, color = Vinko.Muted)
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            RATING_TAGS.forEach { tag ->
+                val included = comment.contains(tag, ignoreCase = true)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(if (included) Vinko.Tint else Color.White)
+                        .border(1.dp, if (included) Vinko.Primary else Vinko.Line, RoundedCornerShape(50))
+                        .clickable {
+                            comment = if (included) {
+                                comment.replace(tag, "").replace("  ", " ").trim()
+                            } else {
+                                if (comment.isBlank()) tag else "$comment · $tag"
+                            }
+                        }
+                        .padding(horizontal = 10.dp, vertical = 6.dp),
+                ) {
+                    Text(
+                        tag,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (included) Vinko.Primary else Vinko.Ink,
+                    )
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(Vinko.Cream)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Recomiendo este profesional", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
             Switch(recommends, { recommends = it }, colors = SwitchDefaults.colors(checkedTrackColor = Vinko.Primary))
         }
-        MultilineField(comment, { comment = it }, "Cuéntanos sobre el trabajo realizado", supporting = "Opcional · se publica en el perfil", maxLength = 4000)
+
+        MultilineField(
+            comment,
+            { comment = it },
+            "Cuéntanos tu experiencia",
+            supporting = "Opcional · se mostrará en el perfil público del profesional",
+            maxLength = 4000,
+        )
     }
 }
 

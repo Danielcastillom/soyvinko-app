@@ -50,9 +50,9 @@ def upload(
             raise HTTPException(415, "Usa imágenes JPG, PNG o WEBP; PDF solo para documentos.") from None
     key = str(uuid4()) + extension
     folder = settings.data_dir / "files"
-    folder.mkdir(parents=True, exist_ok=True, mode=0o700)
+    folder.mkdir(parents=True, exist_ok=True, mode=0o755)
     path = folder / key
-    path.touch(mode=0o600)
+    path.touch(mode=0o644)
     path.write_bytes(clean)
     try:
         ident = call(

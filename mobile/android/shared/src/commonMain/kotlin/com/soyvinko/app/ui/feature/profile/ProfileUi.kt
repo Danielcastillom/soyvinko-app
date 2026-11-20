@@ -1,5 +1,13 @@
 package com.soyvinko.app.ui.feature.profile
 
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.material.icons.outlined.CameraAlt
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
+import com.soyvinko.app.ui.common.LocalApp
+import com.soyvinko.app.ui.common.rememberApiImageLoader
+import com.soyvinko.app.ui.common.ApiImage
 import com.soyvinko.app.ui.common.nowInstant
 import kotlinx.datetime.Instant
 import androidx.compose.foundation.background
@@ -57,6 +65,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.soyvinko.app.data.ApiException
 import com.soyvinko.app.ui.common.LocalSnackbar
 import com.soyvinko.app.ui.common.s
@@ -179,37 +188,37 @@ fun MenuRow(
     onClick: () -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 10.dp, vertical = 12.dp),
+        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        com.soyvinko.app.ui.common.IconTile(icon, tint, bg)
-        Spacer(Modifier.width(12.dp))
+        com.soyvinko.app.ui.common.IconTile(icon, tint, bg, size = 32.dp)
+        Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.titleSmall)
+            Text(title, style = MaterialTheme.typography.titleSmall, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             if (subtitle != null) {
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = Vinko.Muted, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, fontSize = 11.sp, color = Vinko.Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
         if (badge != null && badge > 0) {
             CountBadge(badge)
             Spacer(Modifier.width(6.dp))
         }
-        Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = Vinko.Lilac, modifier = Modifier.size(20.dp))
+        Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = null, tint = Vinko.Lilac, modifier = Modifier.size(16.dp))
     }
     if (!last) Divider()
 }
 
 @Composable
 fun Divider(modifier: Modifier = Modifier) =
-    Box(modifier.fillMaxWidth().padding(horizontal = 10.dp).height(1.dp).background(Vinko.Line))
+    Box(modifier.fillMaxWidth().padding(horizontal = 10.dp).height(0.6.dp).background(Vinko.Line))
 
 @Composable
 fun CountBadge(count: Int, color: Color = Vinko.Coral) {
     Box(
-        Modifier.background(color, CircleShape).padding(horizontal = 8.dp, vertical = 2.dp),
+        Modifier.background(color, CircleShape).padding(horizontal = 6.dp, vertical = 1.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(if (count > 99) "99+" else count.toString(), style = MaterialTheme.typography.labelMedium, color = Color.White)
+        Text(if (count > 99) "99+" else count.toString(), style = MaterialTheme.typography.labelSmall, fontSize = 10.sp, color = Color.White)
     }
 }
 
@@ -217,14 +226,14 @@ fun CountBadge(count: Int, color: Color = Vinko.Coral) {
 @Composable
 fun Pill(text: String, fg: Color, bg: Color, icon: ImageVector? = null) {
     Row(
-        Modifier.background(bg, RoundedCornerShape(50)).padding(horizontal = 10.dp, vertical = 4.dp),
+        Modifier.background(bg, RoundedCornerShape(50)).padding(horizontal = 8.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) {
-            Icon(icon, contentDescription = null, tint = fg, modifier = Modifier.size(14.dp))
+            Icon(icon, contentDescription = null, tint = fg, modifier = Modifier.size(12.dp))
             Spacer(Modifier.width(4.dp))
         }
-        Text(text, style = MaterialTheme.typography.labelMedium, color = fg)
+        Text(text, style = MaterialTheme.typography.labelSmall, fontSize = 11.sp, color = fg)
     }
 }
 
@@ -238,23 +247,92 @@ fun InfoRow(label: String, value: String, modifier: Modifier = Modifier) {
     }
 }
 
-/** Círculo con la inicial del nombre. */
+/** Círculo con foto o inicial del nombre y fallback transparente. */
 @Composable
-fun Avatar(name: String, size: Dp = 64.dp, light: Boolean = true) {
+fun Avatar(
+    name: String,
+    size: Dp = 64.dp,
+    light: Boolean = true,
+    photoUrl: String? = null,
+    onClick: (() -> Unit)? = null,
+) {
+    val app = LocalApp.current
+    var hasError by remember(photoUrl) { mutableStateOf(false) }
     Box(
         Modifier
             .size(size)
+            .clip(CircleShape)
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .background(if (light) Color.White.copy(alpha = 0.16f) else Vinko.Tint, CircleShape)
-            .border(2.dp, if (light) Color.White.copy(alpha = 0.35f) else Vinko.Lilac, CircleShape),
+            .border(2.dp, if (light) Color.White.copy(alpha = 0.45f) else Vinko.Primary.copy(alpha = 0.35f), CircleShape),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             name.trim().take(1).uppercase().ifEmpty { "V" },
             fontFamily = Manrope,
             fontWeight = FontWeight.ExtraBold,
-            style = MaterialTheme.typography.headlineSmall,
+            style = if (size >= 56.dp) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleMedium,
             color = if (light) Color.White else Vinko.Primary,
         )
+        if (!photoUrl.isNullOrBlank() && !hasError) {
+            val url = when {
+                photoUrl.startsWith("http") -> photoUrl
+                photoUrl.startsWith("/") -> app.api.absoluteUrl(photoUrl)
+                else -> app.api.absoluteUrl("/api/v1/files/$photoUrl")
+            }
+            AsyncImage(
+                model = url,
+                imageLoader = rememberApiImageLoader(),
+                contentDescription = name,
+                contentScale = ContentScale.Crop,
+                onState = { state ->
+                    if (state is AsyncImagePainter.State.Error) {
+                        hasError = true
+                    }
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
+}
+
+/** Avatar con botón flotante para cambiar la foto (cámara/galería). */
+@Composable
+fun EditableAvatar(
+    name: String,
+    photoUrl: String? = null,
+    size: Dp = 92.dp,
+    loading: Boolean = false,
+    onClick: () -> Unit,
+) {
+    Box(contentAlignment = Alignment.BottomEnd) {
+        Avatar(
+            name = name,
+            size = size,
+            light = false,
+            photoUrl = photoUrl,
+            onClick = onClick,
+        )
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+                .background(Vinko.Primary)
+                .border(2.dp, Color.White, CircleShape)
+                .clickable(enabled = !loading, onClick = onClick),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (loading) {
+                CircularProgressIndicator(Modifier.size(16.dp), color = Color.White, strokeWidth = 2.dp)
+            } else {
+                Icon(
+                    Icons.Outlined.CameraAlt,
+                    contentDescription = "Cambiar foto",
+                    tint = Color.White,
+                    modifier = Modifier.size(17.dp),
+                )
+            }
+        }
     }
 }
 

@@ -1,0 +1,1149 @@
+{
+  "updatedAt": "2026-10-30 23:24:29",
+  "fileCount": 285,
+  "totalSizeBytes": 5156792,
+  "stackName": "Proyecto General",
+  "topExtensions": ".py (61), .sql (48), .tsx (29), .json (24), .md (21), .js (19), .ts (18), .xml (13)",
+  "files": [
+    {
+      "rel": ".env.example",
+      "size": 192
+    },
+    {
+      "rel": ".gitignore",
+      "size": 779
+    },
+    {
+      "rel": "README.md",
+      "size": 10804
+    },
+    {
+      "rel": "backend/.env.example",
+      "size": 1258
+    },
+    {
+      "rel": "backend/Dockerfile",
+      "size": 569
+    },
+    {
+      "rel": "backend/app/__init__.py",
+      "size": 29
+    },
+    {
+      "rel": "backend/app/core/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/core/db.py",
+      "size": 2729
+    },
+    {
+      "rel": "backend/app/core/errors.py",
+      "size": 17283
+    },
+    {
+      "rel": "backend/app/core/profile.py",
+      "size": 372
+    },
+    {
+      "rel": "backend/app/core/routing.py",
+      "size": 3904
+    },
+    {
+      "rel": "backend/app/core/security.py",
+      "size": 3943
+    },
+    {
+      "rel": "backend/app/core/settings.py",
+      "size": 2772
+    },
+    {
+      "rel": "backend/app/main.py",
+      "size": 4481
+    },
+    {
+      "rel": "backend/app/modules/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/account/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/account/router.py",
+      "size": 62
+    },
+    {
+      "rel": "backend/app/modules/admin/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/admin/router.py",
+      "size": 60
+    },
+    {
+      "rel": "backend/app/modules/auth/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/auth/router.py",
+      "size": 28286
+    },
+    {
+      "rel": "backend/app/modules/contracts/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/contracts/router.py",
+      "size": 64
+    },
+    {
+      "rel": "backend/app/modules/files/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/files/router.py",
+      "size": 4296
+    },
+    {
+      "rel": "backend/app/modules/integrations/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/integrations/router.py",
+      "size": 16852
+    },
+    {
+      "rel": "backend/app/modules/marketplace/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/marketplace/router.py",
+      "size": 66
+    },
+    {
+      "rel": "backend/app/modules/professionals/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/professionals/router.py",
+      "size": 68
+    },
+    {
+      "rel": "backend/app/modules/public/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/public/router.py",
+      "size": 61
+    },
+    {
+      "rel": "backend/app/modules/requests/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/requests/router.py",
+      "size": 63
+    },
+    {
+      "rel": "backend/app/modules/support/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/support/kyc_ocr.py",
+      "size": 7297
+    },
+    {
+      "rel": "backend/app/modules/support/router.py",
+      "size": 9406
+    },
+    {
+      "rel": "backend/app/modules/transport/__init__.py",
+      "size": 19
+    },
+    {
+      "rel": "backend/app/modules/transport/router.py",
+      "size": 64
+    },
+    {
+      "rel": "backend/app/modules/wallet/__init__.py",
+      "size": 0
+    },
+    {
+      "rel": "backend/app/modules/wallet/router.py",
+      "size": 61
+    },
+    {
+      "rel": "backend/app/operations.json",
+      "size": 107036
+    },
+    {
+      "rel": "backend/app/worker.py",
+      "size": 2691
+    },
+    {
+      "rel": "backend/data/mail/14397c0d-d06f-4bdf-ae41-10d231094e9c.eml",
+      "size": 646
+    },
+    {
+      "rel": "backend/data/mail/534b5783-59cf-4451-81b0-185b37f85dff.eml",
+      "size": 643
+    },
+    {
+      "rel": "backend/data/mail/94249062-815b-44d9-baf3-1b5cd4522932.eml",
+      "size": 643
+    },
+    {
+      "rel": "backend/data/mail/a20b6712-b24e-4907-89f8-6974ac20cecb.eml",
+      "size": 650
+    },
+    {
+      "rel": "backend/data/mail/b9eb7fd7-5458-4035-821e-009907bfafa2.eml",
+      "size": 640
+    },
+    {
+      "rel": "backend/data/mail/de00582d-8dbe-4caa-8370-82cd3832b0de.eml",
+      "size": 643
+    },
+    {
+      "rel": "backend/data/mail/f69fd33b-6b8d-445d-a23c-b5aa5bb444e3.eml",
+      "size": 649
+    },
+    {
+      "rel": "backend/pyproject.toml",
+      "size": 123
+    },
+    {
+      "rel": "backend/requirements.in",
+      "size": 160
+    },
+    {
+      "rel": "backend/requirements.txt",
+      "size": 796
+    },
+    {
+      "rel": "backend/tests/conftest.py",
+      "size": 2788
+    },
+    {
+      "rel": "backend/tests/test_api.py",
+      "size": 27691
+    },
+    {
+      "rel": "backend/tests/test_customer_requests.py",
+      "size": 18208
+    },
+    {
+      "rel": "backend/tests/test_deployment.py",
+      "size": 1977
+    },
+    {
+      "rel": "backend/tests/test_explore_map.py",
+      "size": 4179
+    },
+    {
+      "rel": "backend/tests/test_professional_activation.py",
+      "size": 2793
+    },
+    {
+      "rel": "backend/tests/test_registration.py",
+      "size": 2895
+    },
+    {
+      "rel": "backend/tests/test_venezuela.py",
+      "size": 7497
+    },
+    {
+      "rel": "backups/auto-publication-history-20260911.json",
+      "size": 2409
+    },
+    {
+      "rel": "backups/auto-publication-nginx-before-20260911T142100Z.conf",
+      "size": 1619
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/50x.html",
+      "size": 497
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/AddressWizard-Bv15CceJ.js",
+      "size": 9966
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Admin-DuC58MqR.js",
+      "size": 11023
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Auth-DAAt7LRF.js",
+      "size": 3764
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Contracts-CEXvYTsd.js",
+      "size": 15978
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Dashboard-DhOOWJYc.js",
+      "size": 3735
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Explore-nUoa_MT-.js",
+      "size": 24040
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Marketplace-BJ36Jiga.js",
+      "size": 8348
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Profile-C0SLHuM1.js",
+      "size": 18126
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/RequestPhotos-Ds8cttvZ.js",
+      "size": 3329
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Requests-Bxa8wyZF.js",
+      "size": 16048
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Support-D3FF0QiI.js",
+      "size": 2285
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/Wallet-CPoVoRCn.js",
+      "size": 11581
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/arrow-left-DywddBM7.js",
+      "size": 153
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/arrow-right-laXf01mU.js",
+      "size": 153
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/download-CrExgigu.js",
+      "size": 251
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/index-BYIMTSmP.js",
+      "size": 301509
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/index-CsUWseO_.css",
+      "size": 44359
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/mapbox-qyXVN1sI.js",
+      "size": 149258
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/mapbox-vh-t_kPv.css",
+      "size": 15095
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/paperclip-BRMr60UH.js",
+      "size": 289
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/assets/rolldown-runtime-CbXtAM7H.js",
+      "size": 589
+    },
+    {
+      "rel": "backups/auto-publication-web-before-20260911T142100Z/index.html",
+      "size": 631
+    },
+    {
+      "rel": "backups/chamba-20260911T022906Z.dump",
+      "size": 576773
+    },
+    {
+      "rel": "backups/chamba-20260911T024805Z.dump",
+      "size": 586436
+    },
+    {
+      "rel": "backups/chamba-20260911T035102Z.dump",
+      "size": 617256
+    },
+    {
+      "rel": "backups/customer-requests-code-20260911T043740Z.json",
+      "size": 412
+    },
+    {
+      "rel": "backups/customer-requests-history-after-20260911T043740Z.json",
+      "size": 975
+    },
+    {
+      "rel": "backups/customer-requests-history-before-20260911T043740Z.json",
+      "size": 975
+    },
+    {
+      "rel": "backups/demo-relocation-20260911T045343Z.json",
+      "size": 28437
+    },
+    {
+      "rel": "backups/demo-relocation-protected-after-20260911T045343Z.json",
+      "size": 1167
+    },
+    {
+      "rel": "backups/demo-relocation-protected-before-20260911T045343Z.json",
+      "size": 1167
+    },
+    {
+      "rel": "backups/registration-images-20260911T030840Z.json",
+      "size": 531
+    },
+    {
+      "rel": "backups/venezuela-history-after-20260911T035145Z.json",
+      "size": 1045
+    },
+    {
+      "rel": "backups/venezuela-history-before-20260911T035145Z.json",
+      "size": 1045
+    },
+    {
+      "rel": "backups/venezuela-images-20260911T035145Z.json",
+      "size": 522
+    },
+    {
+      "rel": "builder.json",
+      "size": 272
+    },
+    {
+      "rel": "compose.yaml",
+      "size": 2207
+    },
+    {
+      "rel": "db/migrations/001_model.sql",
+      "size": 31594
+    },
+    {
+      "rel": "db/migrations/002_contract_workflows.sql",
+      "size": 31320
+    },
+    {
+      "rel": "db/migrations/003_billing_marketplace.sql",
+      "size": 14711
+    },
+    {
+      "rel": "db/migrations/004_queries_admin_security.sql",
+      "size": 22008
+    },
+    {
+      "rel": "db/migrations/005_catalog.sql",
+      "size": 1828
+    },
+    {
+      "rel": "db/migrations/006_media_operations.sql",
+      "size": 13722
+    },
+    {
+      "rel": "db/migrations/007_consistency_and_payments.sql",
+      "size": 8890
+    },
+    {
+      "rel": "db/migrations/008_default_privileges.sql",
+      "size": 1154
+    },
+    {
+      "rel": "db/migrations/009_remote_and_money_model.sql",
+      "size": 17412
+    },
+    {
+      "rel": "db/migrations/010_money_wallet_api.sql",
+      "size": 18211
+    },
+    {
+      "rel": "db/migrations/011_remote_service_api.sql",
+      "size": 17958
+    },
+    {
+      "rel": "db/migrations/012_escrow_and_deliveries.sql",
+      "size": 18796
+    },
+    {
+      "rel": "db/migrations/013_money_trigger_integrity.sql",
+      "size": 859
+    },
+    {
+      "rel": "db/migrations/014_delivery_ownership_and_quotes.sql",
+      "size": 5550
+    },
+    {
+      "rel": "db/migrations/015_visible_funding_status.sql",
+      "size": 1256
+    },
+    {
+      "rel": "db/migrations/016_http_auth_and_portal.sql",
+      "size": 16455
+    },
+    {
+      "rel": "db/migrations/017_portal_management.sql",
+      "size": 11000
+    },
+    {
+      "rel": "db/migrations/018_admin_withdrawal_queue.sql",
+      "size": 1207
+    },
+    {
+      "rel": "db/migrations/019_portal_audit_and_media.sql",
+      "size": 2951
+    },
+    {
+      "rel": "db/migrations/020_external_payment_history.sql",
+      "size": 846
+    },
+    {
+      "rel": "db/migrations/021_withdrawal_currency_projection.sql",
+      "size": 1968
+    },
+    {
+      "rel": "db/migrations/022_venezuela_geography.sql",
+      "size": 13280
+    },
+    {
+      "rel": "db/migrations/024_venezuela_currency_and_addresses.sql",
+      "size": 5090
+    },
+    {
+      "rel": "db/migrations/025_service_requests_and_reference_photos.sql",
+      "size": 16038
+    },
+    {
+      "rel": "db/migrations/026_contract_reference_photos.sql",
+      "size": 1182
+    },
+    {
+      "rel": "db/migrations/027_explore_map_markers.sql",
+      "size": 2589
+    },
+    {
+      "rel": "db/migrations/028_automatic_request_publication.sql",
+      "size": 5871
+    },
+    {
+      "rel": "db/migrations/029_corporate_clients_venezuela.sql",
+      "size": 6056
+    },
+    {
+      "rel": "db/migrations/030_personal_kyc_and_my_kyc.sql",
+      "size": 696
+    },
+    {
+      "rel": "db/migrations/031_business_model_and_admin_marketplace.sql",
+      "size": 16237
+    },
+    {
+      "rel": "db/migrations/032_general_marketplace_update.sql",
+      "size": 616
+    },
+    {
+      "rel": "db/migrations/033_login_email_code.sql",
+      "size": 2305
+    },
+    {
+      "rel": "db/migrations/034_vinko_credits_and_exchange_rates.sql",
+      "size": 14963
+    },
+    {
+      "rel": "db/migrations/035_independent_merchant_and_contracts.sql",
+      "size": 6025
+    },
+    {
+      "rel": "db/migrations/036_merchant_direct_contracts_and_requests.sql",
+      "size": 4797
+    },
+    {
+      "rel": "db/migrations/037_audit_hardening.sql",
+      "size": 6412
+    },
+    {
+      "rel": "db/migrations/038_money_identity_retention.sql",
+      "size": 8771
+    },
+    {
+      "rel": "db/migrations/039_address_names_and_rls.sql",
+      "size": 1587
+    },
+    {
+      "rel": "db/migrations/040_upload_auto_approval.sql",
+      "size": 1428
+    },
+    {
+      "rel": "db/migrations/041_location_live_and_profile_management.sql",
+      "size": 15685
+    },
+    {
+      "rel": "db/migrations/042_profile_avatar_and_contact_images.sql",
+      "size": 7424
+    },
+    {
+      "rel": "db/migrations/043_marketplace_open_seller.sql",
+      "size": 5749
+    },
+    {
+      "rel": "db/migrations/044_transport_and_deliveries.sql",
+      "size": 19977
+    },
+    {
+      "rel": "db/migrations/045_shipment_cargo_photo_and_bargain.sql",
+      "size": 11918
+    },
+    {
+      "rel": "db/migrations/046_wallet_payments.sql",
+      "size": 11039
+    },
+    {
+      "rel": "db/migrations/047_marketplace_entitlements_fix.sql",
+      "size": 604
+    },
+    {
+      "rel": "db/migrations/048_rider_route_coordinates.sql",
+      "size": 2576
+    },
+    {
+      "rel": "deploy/contrata-cert-renew.service",
+      "size": 396
+    },
+    {
+      "rel": "deploy/contrata-cert-renew.timer",
+      "size": 176
+    },
+    {
+      "rel": "deploy/contrata.http.conf",
+      "size": 258
+    },
+    {
+      "rel": "deploy/contrata.nginx.conf",
+      "size": 2571
+    },
+    {
+      "rel": "deploy/reload-nginx.sh",
+      "size": 103
+    },
+    {
+      "rel": "docs/IMPLEMENTATION_PLAN.md",
+      "size": 8439
+    },
+    {
+      "rel": "docs/api-reference.md",
+      "size": 35879
+    },
+    {
+      "rel": "docs/backend-web.md",
+      "size": 12940
+    },
+    {
+      "rel": "docs/customer-requests.md",
+      "size": 9170
+    },
+    {
+      "rel": "docs/data-dictionary.md",
+      "size": 96353
+    },
+    {
+      "rel": "docs/deployment.md",
+      "size": 6499
+    },
+    {
+      "rel": "docs/explore-map.md",
+      "size": 3695
+    },
+    {
+      "rel": "docs/integration.md",
+      "size": 13636
+    },
+    {
+      "rel": "docs/mi-chamba-descripcion-funcional-tecnica.md",
+      "size": 26455
+    },
+    {
+      "rel": "docs/model.md",
+      "size": 8213
+    },
+    {
+      "rel": "docs/openapi.json",
+      "size": 274498
+    },
+    {
+      "rel": "docs/payments.md",
+      "size": 12834
+    },
+    {
+      "rel": "docs/profile-activation-and-demo-area.md",
+      "size": 5077
+    },
+    {
+      "rel": "docs/route-coverage.md",
+      "size": 14294
+    },
+    {
+      "rel": "docs/service-samples.md",
+      "size": 7347
+    },
+    {
+      "rel": "docs/venezuela-geolocation.md",
+      "size": 9324
+    },
+    {
+      "rel": "docs/verification.md",
+      "size": 23675
+    },
+    {
+      "rel": "frontend/Dockerfile",
+      "size": 279
+    },
+    {
+      "rel": "frontend/e2e/customer-requests.spec.ts",
+      "size": 11801
+    },
+    {
+      "rel": "frontend/e2e/demo-nearby.spec.ts",
+      "size": 2139
+    },
+    {
+      "rel": "frontend/e2e/deployment.spec.ts",
+      "size": 2512
+    },
+    {
+      "rel": "frontend/e2e/explore-map-live.spec.ts",
+      "size": 4438
+    },
+    {
+      "rel": "frontend/e2e/explore-map.spec.ts",
+      "size": 10375
+    },
+    {
+      "rel": "frontend/e2e/portal.spec.ts",
+      "size": 13025
+    },
+    {
+      "rel": "frontend/e2e/professional-activation.spec.ts",
+      "size": 3394
+    },
+    {
+      "rel": "frontend/e2e/registration-live.spec.ts",
+      "size": 2639
+    },
+    {
+      "rel": "frontend/e2e/registration.spec.ts",
+      "size": 3672
+    },
+    {
+      "rel": "frontend/e2e/service-samples.spec.ts",
+      "size": 3282
+    },
+    {
+      "rel": "frontend/e2e/venezuela.spec.ts",
+      "size": 8317
+    },
+    {
+      "rel": "frontend/index.html",
+      "size": 4633
+    },
+    {
+      "rel": "frontend/nginx.conf",
+      "size": 2241
+    },
+    {
+      "rel": "frontend/package-lock.json",
+      "size": 34091
+    },
+    {
+      "rel": "frontend/package.json",
+      "size": 721
+    },
+    {
+      "rel": "frontend/playwright.config.ts",
+      "size": 570
+    },
+    {
+      "rel": "frontend/public/downloads/android/latest.json",
+      "size": 504
+    },
+    {
+      "rel": "frontend/public/robots.txt",
+      "size": 462
+    },
+    {
+      "rel": "frontend/public/site.webmanifest",
+      "size": 775
+    },
+    {
+      "rel": "frontend/public/sitemap.xml",
+      "size": 1243
+    },
+    {
+      "rel": "frontend/src/AddPayoutMethodModal.tsx",
+      "size": 15205
+    },
+    {
+      "rel": "frontend/src/AddressWizard.tsx",
+      "size": 18020
+    },
+    {
+      "rel": "frontend/src/ExploreMap.tsx",
+      "size": 11749
+    },
+    {
+      "rel": "frontend/src/PersonalKycWizard.tsx",
+      "size": 47886
+    },
+    {
+      "rel": "frontend/src/RequestPhotos.tsx",
+      "size": 5368
+    },
+    {
+      "rel": "frontend/src/VinkoIcons.tsx",
+      "size": 14194
+    },
+    {
+      "rel": "frontend/src/api.ts",
+      "size": 5878
+    },
+    {
+      "rel": "frontend/src/components/AuthShowcase.tsx",
+      "size": 6152
+    },
+    {
+      "rel": "frontend/src/components/CookieConsent.tsx",
+      "size": 10155
+    },
+    {
+      "rel": "frontend/src/components/ErrorBoundary.tsx",
+      "size": 1621
+    },
+    {
+      "rel": "frontend/src/components/MoneyWallet.tsx",
+      "size": 27146
+    },
+    {
+      "rel": "frontend/src/components.tsx",
+      "size": 20234
+    },
+    {
+      "rel": "frontend/src/context.tsx",
+      "size": 3266
+    },
+    {
+      "rel": "frontend/src/location.tsx",
+      "size": 5634
+    },
+    {
+      "rel": "frontend/src/main.tsx",
+      "size": 27114
+    },
+    {
+      "rel": "frontend/src/mapbox.ts",
+      "size": 617
+    },
+    {
+      "rel": "frontend/src/operations.json",
+      "size": 15549
+    },
+    {
+      "rel": "frontend/src/pages/Admin.tsx",
+      "size": 72738
+    },
+    {
+      "rel": "frontend/src/pages/Auth.tsx",
+      "size": 39592
+    },
+    {
+      "rel": "frontend/src/pages/Contracts.tsx",
+      "size": 43919
+    },
+    {
+      "rel": "frontend/src/pages/CookiePolicy.tsx",
+      "size": 9688
+    },
+    {
+      "rel": "frontend/src/pages/Dashboard.tsx",
+      "size": 22186
+    },
+    {
+      "rel": "frontend/src/pages/Explore.tsx",
+      "size": 41364
+    },
+    {
+      "rel": "frontend/src/pages/LegalNotice.tsx",
+      "size": 5573
+    },
+    {
+      "rel": "frontend/src/pages/Marketplace.tsx",
+      "size": 44565
+    },
+    {
+      "rel": "frontend/src/pages/MobileKycPage.tsx",
+      "size": 29032
+    },
+    {
+      "rel": "frontend/src/pages/PrivacyPolicy.tsx",
+      "size": 17441
+    },
+    {
+      "rel": "frontend/src/pages/Profile.tsx",
+      "size": 85284
+    },
+    {
+      "rel": "frontend/src/pages/Requests.tsx",
+      "size": 27505
+    },
+    {
+      "rel": "frontend/src/pages/Support.tsx",
+      "size": 3927
+    },
+    {
+      "rel": "frontend/src/pages/TermsOfService.tsx",
+      "size": 13594
+    },
+    {
+      "rel": "frontend/src/pages/Wallet.tsx",
+      "size": 20881
+    },
+    {
+      "rel": "frontend/src/professionalSlug.ts",
+      "size": 199
+    },
+    {
+      "rel": "frontend/src/serviceImages.ts",
+      "size": 2519
+    },
+    {
+      "rel": "frontend/src/styles.css",
+      "size": 243411
+    },
+    {
+      "rel": "frontend/src/venezuelanBanks.ts",
+      "size": 3884
+    },
+    {
+      "rel": "frontend/tsconfig.json",
+      "size": 470
+    },
+    {
+      "rel": "frontend/tsconfig.tsbuildinfo",
+      "size": 949
+    },
+    {
+      "rel": "frontend/vite.config.ts",
+      "size": 291
+    },
+    {
+      "rel": "mobile/android/.gitignore",
+      "size": 79
+    },
+    {
+      "rel": "mobile/android/README.md",
+      "size": 7320
+    },
+    {
+      "rel": "mobile/android/app/build.gradle.kts",
+      "size": 4547
+    },
+    {
+      "rel": "mobile/android/app/proguard-rules.pro",
+      "size": 396
+    },
+    {
+      "rel": "mobile/android/app/src/main/AndroidManifest.xml",
+      "size": 3141
+    },
+    {
+      "rel": "mobile/android/app/src/main/assets/operations.json",
+      "size": 103863
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/drawable/ic_launcher_background.xml",
+      "size": 238
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/drawable/ic_launcher_foreground.xml",
+      "size": 560
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/drawable/ic_logo_mark.xml",
+      "size": 656
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+      "size": 344
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/values/colors.xml",
+      "size": 212
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/values/strings.xml",
+      "size": 71
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/values/themes.xml",
+      "size": 681
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/xml/data_extraction_rules.xml",
+      "size": 343
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/xml/file_paths.xml",
+      "size": 196
+    },
+    {
+      "rel": "mobile/android/app/src/main/res/xml/network_security_config.xml",
+      "size": 330
+    },
+    {
+      "rel": "mobile/android/build.gradle.kts",
+      "size": 440
+    },
+    {
+      "rel": "mobile/android/gradle/libs.versions.toml",
+      "size": 5575
+    },
+    {
+      "rel": "mobile/android/gradle/wrapper/gradle-wrapper.properties",
+      "size": 253
+    },
+    {
+      "rel": "mobile/android/gradle.properties",
+      "size": 529
+    },
+    {
+      "rel": "mobile/android/gradlew",
+      "size": 8762
+    },
+    {
+      "rel": "mobile/android/gradlew.bat",
+      "size": 2966
+    },
+    {
+      "rel": "mobile/android/iosApp/.gitignore",
+      "size": 125
+    },
+    {
+      "rel": "mobile/android/iosApp/README.md",
+      "size": 1971
+    },
+    {
+      "rel": "mobile/android/iosApp/SoyVinko/Assets.xcassets/AccentColor.colorset/Contents.json",
+      "size": 230
+    },
+    {
+      "rel": "mobile/android/iosApp/SoyVinko/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "size": 178
+    },
+    {
+      "rel": "mobile/android/iosApp/SoyVinko/Assets.xcassets/Contents.json",
+      "size": 51
+    },
+    {
+      "rel": "mobile/android/iosApp/SoyVinko/ContentView.swift",
+      "size": 533
+    },
+    {
+      "rel": "mobile/android/iosApp/SoyVinko/SoyVinkoApp.swift",
+      "size": 141
+    },
+    {
+      "rel": "mobile/android/iosApp/project.yml",
+      "size": 3160
+    },
+    {
+      "rel": "mobile/android/local.properties",
+      "size": 31
+    },
+    {
+      "rel": "mobile/android/scripts/gen-operations.py",
+      "size": 886
+    },
+    {
+      "rel": "mobile/android/scripts/publish-release.sh",
+      "size": 4891
+    },
+    {
+      "rel": "mobile/android/settings.gradle.kts",
+      "size": 345
+    },
+    {
+      "rel": "mobile/android/shared/build.gradle.kts",
+      "size": 2784
+    },
+    {
+      "rel": "mobile/android/shared/src/commonMain/composeResources/drawable/ic_logo_mark.xml",
+      "size": 656
+    },
+    {
+      "rel": "output/imagegen/services/category-prompts.md",
+      "size": 9330
+    },
+    {
+      "rel": "output/imagegen/services/prompts.md",
+      "size": 3975
+    },
+    {
+      "rel": "roles_dump.sql",
+      "size": 4141
+    },
+    {
+      "rel": "scripts/bootstrap_backend.py",
+      "size": 1692
+    },
+    {
+      "rel": "scripts/db.py",
+      "size": 3911
+    },
+    {
+      "rel": "scripts/demo_services.json",
+      "size": 17252
+    },
+    {
+      "rel": "scripts/dev.py",
+      "size": 2687
+    },
+    {
+      "rel": "scripts/export_http_registry.py",
+      "size": 5382
+    },
+    {
+      "rel": "scripts/export_schema_docs.py",
+      "size": 3756
+    },
+    {
+      "rel": "scripts/import_venezuela_geography.py",
+      "size": 3798
+    },
+    {
+      "rel": "scripts/localize_venezuela_samples.py",
+      "size": 6699
+    },
+    {
+      "rel": "scripts/relocate_demo_services.py",
+      "size": 9879
+    },
+    {
+      "rel": "scripts/seed_demo.py",
+      "size": 6019
+    },
+    {
+      "rel": "scripts/seed_marketplace_products.py",
+      "size": 9444
+    },
+    {
+      "rel": "scripts/seed_service_samples.py",
+      "size": 6508
+    },
+    {
+      "rel": "scripts/verify_ve_payouts.py",
+      "size": 4541
+    },
+    {
+      "rel": "tests/run.py",
+      "size": 34152
+    },
+    {
+      "rel": "tests/test_money.py",
+      "size": 26343
+    }
+  ]
+}

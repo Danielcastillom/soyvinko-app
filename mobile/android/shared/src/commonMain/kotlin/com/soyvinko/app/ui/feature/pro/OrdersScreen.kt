@@ -23,12 +23,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.LocalShipping
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
@@ -55,10 +57,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.soyvinko.app.ui.common.AppMode
 import com.soyvinko.app.ui.common.EmptyBox
 import com.soyvinko.app.ui.common.LoadingBox
 import com.soyvinko.app.ui.common.LocalApp
+import com.soyvinko.app.ui.common.LocalAppMode
+import com.soyvinko.app.ui.common.LocalOpenDrawer
 import com.soyvinko.app.ui.common.LocalUser
+import com.soyvinko.app.ui.common.PollWhileVisible
 import com.soyvinko.app.ui.common.ResourceView
 import com.soyvinko.app.ui.common.ScreenScaffold
 import com.soyvinko.app.ui.common.StatusBadge
@@ -92,9 +98,24 @@ fun OrdersScreen(nav: NavHostController) {
     val storeNames = catalog.data.objects().associate { it.s("store_id") to it.s("store_name") }
     var filter by rememberSaveable { mutableStateOf("all") }
 
+    // Actualiza periódicamente las órdenes mientras la pantalla está en foco
+    PollWhileVisible(15_000) {
+        orders.reload()
+    }
+
+    val mode = LocalAppMode.current
+    val openDrawer = LocalOpenDrawer.current
+
     ScreenScaffold(
-        "Mis pedidos",
-        onBack = { nav.popBackStack() },
+        "Consulta de órdenes",
+        onBack = if (mode == AppMode.SELLER) null else { { nav.popBackStack() } },
+        navigationIcon = if (mode == AppMode.SELLER) {
+            {
+                IconButton(onClick = openDrawer) {
+                    Icon(Icons.Outlined.Menu, contentDescription = "Menú", tint = Vinko.Ink)
+                }
+            }
+        } else null,
         actions = {
             IconButton(onClick = orders.reload) { Icon(Icons.Outlined.Refresh, contentDescription = "Actualizar", tint = Vinko.Ink) }
         },
@@ -147,10 +168,12 @@ fun OrdersScreen(nav: NavHostController) {
     }
 }
 
-private fun paymentLabel(status: String?): Pair<String, Color> = when (status) {
-    "buyer_reported" -> "Pago reportado por el comprador" to Vinko.Amber
-    "seller_confirmed" -> "Pago confirmado por el vendedor" to Vinko.Mint
-    "disputed" -> "Pago en disputa" to Vinko.Coral
+private fun paymentLabel(status: String?, method: String? = null): Pair<String, Color> = when {
+    method == "wallet" || status == "paid" -> "Pagado con Saldo de Wallet" to Vinko.Mint
+    status == "refunded" -> "Reembolsado a tu Wallet" to Vinko.Mint
+    status == "buyer_reported" -> "Pago reportado por el comprador" to Vinko.Amber
+    status == "seller_confirmed" -> "Pago confirmado por el vendedor" to Vinko.Mint
+    status == "disputed" -> "Pago en disputa" to Vinko.Coral
     else -> "Pago por acordar directamente" to Vinko.Muted
 }
 
@@ -165,6 +188,10 @@ fun OrderCard(o: JsonObject, me: String, storeName: String?, onChanged: () -> Un
     val buyer = o.s("customer_id") == me
     val status = o.s("status")
     val currency = o.s("currency")?.trim()
+    val paymentMethod = o.s("payment_method")
+    val paymentStatus = o.s("payment_status")
+    val isPaid = paymentStatus == "paid" || paymentStatus == "seller_confirmed"
+    var payWalletConfirm by remember { mutableStateOf(false) }
     var confirm by remember { mutableStateOf<String?>(null) }
     var sharing by remember { mutableStateOf(false) }
     var reporting by remember { mutableStateOf(false) }
@@ -224,8 +251,17 @@ fun OrderCard(o: JsonObject, me: String, storeName: String?, onChanged: () -> Un
         Spacer(Modifier.height(6.dp))
         KeyValue("Total acordado", money(o.l("total_minor"), currency), strong = true, valueColor = Vinko.Primary)
         if (status != "cancelled" && status != "pending") {
-            val (label, color) = paymentLabel(o.s("payment_status"))
-            IconLine(Icons.Outlined.Payments, label, tint = color, color = color)
+            val (label, color) = paymentLabel(paymentStatus, paymentMethod)
+            IconLine(if (isPaid) Icons.Outlined.CheckCircle else Icons.Outlined.Payments, label, tint = color, color = color)
+        }
+        if (paymentMethod == "wallet" && isPaid) {
+            Spacer(Modifier.height(8.dp))
+            Notice(
+                Icons.Outlined.AccountBalanceWallet,
+                "Pagado con Saldo de Wallet SoyVinko. Transacción garantizada.",
+                Vinko.Mint,
+                Vinko.MintBg
+            )
         }
 
         val hint = when {
@@ -243,6 +279,17 @@ fun OrderCard(o: JsonObject, me: String, storeName: String?, onChanged: () -> Un
         }
 
         val buttons = buildList<@Composable () -> Unit> {
+            if (buyer && !isPaid && (status == "pending" || status == "accepted")) {
+                add {
+                    SmallButton(
+                        "Pagar con Wallet",
+                        onClick = { payWalletConfirm = true },
+                        icon = Icons.Outlined.AccountBalanceWallet,
+                        tone = Tone.Primary,
+                        enabled = !action.busy
+                    )
+                }
+            }
             if (!buyer && status == "pending") add { SmallButton("Aceptar pedido", onClick = { advance("accept", "Pedido aceptado.") }, icon = Icons.Outlined.Check, loading = action.busy) }
             if (!buyer && status == "accepted") add { SmallButton("Marcar como enviado", onClick = { advance("dispatch", "Pedido marcado como enviado.") }, icon = Icons.Outlined.LocalShipping, loading = action.busy) }
             if (buyer && (status == "accepted" || status == "dispatched")) add { SmallButton("Confirmar recepción", onClick = { confirm = "receive" }, icon = Icons.Outlined.CheckCircle, enabled = !action.busy) }
@@ -255,7 +302,7 @@ fun OrderCard(o: JsonObject, me: String, storeName: String?, onChanged: () -> Un
                     }
                 }, icon = Icons.Outlined.LocationOn, tone = Tone.Outline, enabled = !action.busy)
             }
-            if (buyer && (status == "accepted" || status == "dispatched" || status == "delivered")) add {
+            if (buyer && !isPaid && (status == "accepted" || status == "dispatched" || status == "delivered")) add {
                 SmallButton("Reportar pago", onClick = { form.reset(); reporting = true }, icon = Icons.Outlined.Payments, tone = Tone.Outline)
             }
             if (status == "accepted" || status == "dispatched" || status == "delivered") add {
@@ -275,6 +322,23 @@ fun OrderCard(o: JsonObject, me: String, storeName: String?, onChanged: () -> Un
             Spacer(Modifier.height(12.dp))
             PaymentReports(id, me)
         }
+    }
+
+    if (payWalletConfirm) {
+        ConfirmDialog(
+            "¿Pagar con saldo de tu Wallet?",
+            "Se debitarán ${money(o.l("total_minor"), currency)} de tu wallet para pagar al vendedor de forma instantánea y segura. El pedido quedará marcado como pagado.",
+            "Pagar ahora",
+            onConfirm = {
+                payWalletConfirm = false
+                action.run("¡Pedido pagado con éxito con saldo de tu Wallet!") {
+                    app.ops.call("pay_order_with_wallet", "order" to id)
+                    ProSignals.wallet++
+                    onChanged()
+                }
+            },
+            onDismiss = { payWalletConfirm = false },
+        )
     }
 
     when (confirm) {

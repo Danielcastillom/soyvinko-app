@@ -33,6 +33,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Shield
@@ -44,6 +45,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -63,9 +65,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -115,7 +119,10 @@ private data class TopupFor(val currency: Cur, val suggestedMinor: Long? = null)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WalletScreen(onNavigate: (String) -> Unit) {
+fun WalletScreen(
+    onNavigate: (String) -> Unit,
+    onBack: (() -> Unit)? = null,
+) {
     val app = LocalApp.current
     val snackbar = LocalSnackbar.current
     val scope = rememberCoroutineScope()
@@ -160,6 +167,7 @@ fun WalletScreen(onNavigate: (String) -> Unit) {
 
     ScreenScaffold(
         title = "Mi wallet",
+        onBack = onBack,
         actions = {
             IconButton(onClick = { info = true }) {
                 Icon(Icons.AutoMirrored.Outlined.HelpOutline, contentDescription = "¿Qué son los Vinkos?", tint = Vinko.Primary)
@@ -614,6 +622,7 @@ private fun TopupSheet(
 ) {
     val app = LocalApp.current
     val scope = rememberCoroutineScope()
+    val clipboard = LocalClipboardManager.current
     val c = request.currency
     var amount by remember { mutableStateOf(request.suggestedMinor?.let(::rawFromMinor) ?: "") }
     val minor = parseMinor(amount) ?: 0L
@@ -625,6 +634,11 @@ private fun TopupSheet(
     var pending by remember { mutableStateOf(false) }
     val quick = if (c == Cur.VES) listOf(5_000L, 10_000L, 25_000L, 50_000L) else listOf(10L, 25L, 50L, 100L)
 
+    var payWithCrypto by remember { mutableStateOf(c == Cur.USD) }
+    var cryptoNetwork by remember { mutableStateOf(CryptoNetwork.TRC20) }
+    var txHash by remember { mutableStateOf("") }
+    var copiedAddress by remember { mutableStateOf(false) }
+
     WalletSheet(onDismiss = { if (!busy) onDismiss() }) { close ->
         if (pending) {
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -635,7 +649,10 @@ private fun TopupSheet(
                 Text("Recarga registrada", style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    "Tu recarga de ${money(minor, c.code)} quedó pendiente. La acreditaremos en cuanto se confirme el pago.",
+                    if (payWithCrypto && c == Cur.USD)
+                        "Tu recarga de ${money(minor, c.code)} en USDT (${cryptoNetwork.displayName}) quedó registrada. Se acreditará en cuanto se verifique la transacción en blockchain."
+                    else
+                        "Tu recarga de ${money(minor, c.code)} quedó pendiente. La acreditaremos en cuanto se confirme el pago.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Vinko.Muted,
                     textAlign = TextAlign.Center,
@@ -653,6 +670,16 @@ private fun TopupSheet(
                 color = Vinko.Muted,
             )
             Spacer(Modifier.height(16.dp))
+
+            if (c == Cur.USD) {
+                Segmented(
+                    options = listOf(true to "Cripto (USDT)", false to "Internacional"),
+                    selected = payWithCrypto,
+                    onSelect = { payWithCrypto = it },
+                )
+                Spacer(Modifier.height(14.dp))
+            }
+
             AmountField(
                 value = amount,
                 onValueChange = { amount = it; error = null },
@@ -675,6 +702,77 @@ private fun TopupSheet(
                     }
                 }
             }
+
+            if (c == Cur.USD && payWithCrypto) {
+                Spacer(Modifier.height(14.dp))
+                FieldLabel("Red de depósito USDT")
+                Dropdown(
+                    label = "Red de criptomoneda",
+                    options = CryptoNetwork.entries,
+                    selected = cryptoNetwork,
+                    text = { it.displayName },
+                    onSelect = {
+                        cryptoNetwork = it
+                        copiedAddress = false
+                    },
+                )
+                Spacer(Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF9FAFB), RoundedCornerShape(12.dp))
+                        .border(1.dp, Color(0xFFE5E7EB), RoundedCornerShape(12.dp))
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Text(if (cryptoNetwork == CryptoNetwork.BINANCE_PAY) "Binance Pay ID Oficial" else "Dirección oficial de depósito", fontSize = 12.sp, color = Vinko.Muted)
+                        Text("1 USD = 1.00 USDT", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Vinko.Mint)
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White, RoundedCornerShape(8.dp))
+                            .border(1.dp, Color(0xFFE5E7EB), RoundedCornerShape(8.dp))
+                            .padding(horizontal = 10.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            cryptoNetwork.depositAddress,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f),
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        IconButton(
+                            onClick = {
+                                clipboard.setText(AnnotatedString(cryptoNetwork.depositAddress))
+                                copiedAddress = true
+                            },
+                            modifier = Modifier.size(28.dp),
+                        ) {
+                            Icon(Icons.Outlined.ContentCopy, contentDescription = "Copiar", tint = if (copiedAddress) Vinko.Mint else Vinko.Primary, modifier = Modifier.size(16.dp))
+                        }
+                    }
+                    if (copiedAddress) {
+                        Text("¡Dirección copiada al portapapeles!", fontSize = 11.sp, color = Vinko.Mint, fontWeight = FontWeight.SemiBold)
+                    }
+                    OutlinedTextField(
+                        value = txHash,
+                        onValueChange = { txHash = it.trim(); error = null },
+                        label = { Text("Hash TxID o comprobante") },
+                        placeholder = { Text("Pega el hash de la transacción", color = Vinko.Subtle) },
+                        singleLine = true,
+                        shape = RoundedCornerShape(10.dp),
+                        colors = fieldColors(),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
+
             if (sandbox) {
                 Spacer(Modifier.height(14.dp))
                 Banner("Portal de demostración: la recarga se simula y no mueve dinero real.", BannerTone.Info)
@@ -691,6 +789,13 @@ private fun TopupSheet(
                 secondary = "Cancelar",
                 onSecondary = close,
                 onPrimary = {
+                    if (c == Cur.USD && payWithCrypto && txHash.isNotBlank()) {
+                        val hashErr = validateTxHash(cryptoNetwork, txHash)
+                        if (hashErr != null) {
+                            error = hashErr
+                            return@SheetActions
+                        }
+                    }
                     busy = true
                     error = null
                     scope.launch {

@@ -106,10 +106,10 @@ fun UpdateScreen(update: UpdateCheck.Available, phase: UpdatePhase?, onRetry: ()
                         PrimaryButton("Dar permiso", onClick = { context.startActivity(AppInstaller.permissionSettings(context)) })
                     }
                     UpdatePhase.Installing -> {
-                        Text("Instalando…", style = MaterialTheme.typography.titleMedium)
+                        Text("Instalando actualización…", style = MaterialTheme.typography.titleMedium)
                         LinearProgressIndicator(Modifier.fillMaxWidth().height(8.dp), color = Vinko.Primary, trackColor = Vinko.Tint)
                         Text(
-                            "Si Android te lo pide, toca \"Actualizar\". SoyVinko se cerrará al terminar; ábrela de nuevo.",
+                            "Instalando versión ${release.versionName}. Si Android te lo pide, confirma \"Actualizar\". La aplicación se reiniciará automáticamente al terminar.",
                             style = MaterialTheme.typography.bodySmall,
                             color = Vinko.Muted,
                         )

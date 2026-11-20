@@ -28,22 +28,30 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Build
+import androidx.compose.material.icons.outlined.DirectionsCar
+import androidx.compose.material.icons.outlined.LocalShipping
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.Verified
 import androidx.compose.material.icons.outlined.ZoomOutMap
@@ -57,6 +65,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -74,19 +83,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.soyvinko.app.data.Ops
 import com.soyvinko.app.ui.common.EmptyBox
@@ -94,6 +107,9 @@ import com.soyvinko.app.ui.common.ErrorBox
 import com.soyvinko.app.ui.common.GeoPos
 import com.soyvinko.app.ui.common.IconTile
 import com.soyvinko.app.ui.common.LocalApp
+import com.soyvinko.app.ui.common.LocalUser
+import com.soyvinko.app.ui.theme.Manrope
+import androidx.compose.ui.text.style.TextAlign
 import com.soyvinko.app.ui.common.VCard
 import com.soyvinko.app.ui.common.b
 import com.soyvinko.app.ui.common.l
@@ -103,10 +119,13 @@ import com.soyvinko.app.ui.common.obj
 import com.soyvinko.app.ui.common.objects
 import com.soyvinko.app.ui.common.rememberResource
 import com.soyvinko.app.ui.common.s
+import com.soyvinko.app.ui.components.BrandLogo
 import com.soyvinko.app.ui.components.PrimaryButton
 import com.soyvinko.app.ui.components.SectionLabel
+import com.soyvinko.app.ui.feature.pro.MarketCart
 import com.soyvinko.app.ui.screens.HeroGradient
 import com.soyvinko.app.ui.shell.Routes
+import com.soyvinko.app.ui.theme.Majesticons
 import com.soyvinko.app.ui.theme.Vinko
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
@@ -180,6 +199,7 @@ fun ExploreScreen(
     autoLocate: Boolean = true,
     startWithMap: Boolean = false,
     startWithFilters: Boolean = false,
+    onOpenDrawer: (() -> Unit)? = null,
 ) {
     val app = LocalApp.current
     val scope = rememberCoroutineScope()
@@ -197,6 +217,15 @@ fun ExploreScreen(
 
     val geo = rememberDeviceLocation(initialLocation, autoLocate)
     val zone = rememberManualZone(persist = autoLocate && initialLocation == null)
+
+    val navEntry = nav.currentBackStackEntry
+    val savedCat by navEntry?.savedStateHandle?.getStateFlow<String?>("selected_category", null)?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(null) }
+    LaunchedEffect(savedCat) {
+        if (!savedCat.isNullOrBlank()) {
+            category = savedCat!!
+            navEntry?.savedStateHandle?.remove<String>("selected_category")
+        }
+    }
 
     val cats = rememberResource { app.ops.call("catalog").categories() }
     val account = rememberResource { app.ops.call("my_account").obj() }
@@ -246,16 +275,22 @@ fun ExploreScreen(
                 onOpen = { nav.navigate(Routes.professional(it)) },
             )
         } else {
+            HomeTopBar(
+                onOpenDrawer = onOpenDrawer,
+                onFavorites = { nav.navigate(Routes.FAVORITES) },
+                onCart = { nav.navigate(Routes.CART) },
+            )
+
             val listState = rememberLazyListState()
-            val resultsIndex = if (mode != "remote") 4 else 3
+            val resultsIndex = 3
             PullToRefreshBox(
                 isRefreshing = data.loading && rows != null,
                 onRefresh = { data.reload() },
                 modifier = Modifier.fillMaxSize(),
             ) {
                 LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(bottom = 24.dp)) {
-                    item(key = "hero") {
-                        Hero(
+                    item(key = "header_search") {
+                        HeaderSearchBlock(
                             geo = geo,
                             search = search,
                             onSearch = { search = it },
@@ -263,80 +298,32 @@ fun ExploreScreen(
                                 focus.clearFocus()
                                 scope.launch { listState.animateScrollToItem(resultsIndex) }
                             },
-                            onFavorites = { nav.navigate(Routes.FAVORITES) },
-                            onRequests = { nav.navigate(Routes.REQUESTS) },
+                            onProfile = { nav.navigate(Routes.PROFILE) },
+                            onChooseZone = { chooseZone = true },
+                        )
+                    }
+                    item(key = "service_buttons") {
+                        HomeServiceButtons(
+                            onDelivery = { nav.navigate(Routes.TRANSPORT_NEW) },
+                            onRider = { nav.navigate(Routes.TRANSPORT) },
+                            onMarketplace = { nav.navigate(Routes.MARKETPLACE) },
+                            onGrua = { nav.navigate(Routes.TRANSPORT) },
                         )
                     }
                     item(key = "categories") {
-                        CategoriesRow(categories.ordered(), cats.loading && cats.data == null, category) {
-                            category = it
-                        }
-                    }
-                    item(key = "filters") {
-                        Row(Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Segmented(
-                                options = listOf("" to "Todos", "onsite" to "Presenciales", "remote" to "Remotos"),
-                                selected = mode,
-                                onSelect = { mode = it },
-                                modifier = Modifier.weight(1f),
-                            )
-                            Spacer(Modifier.width(10.dp))
-                            FilterButton(filterCount) { showFilters = true }
-                        }
-                    }
-                    if (mode != "remote") item(key = "location") {
-                        LocationCard(
-                            title = locationTitle,
-                            subtitle = when {
-                                searchPoint != null -> "Ordenados por distancia · radio de ${radius / 1000} km"
-                                geo.status == GeoStatus.Locating -> "Buscando tu ubicación…"
-                                else -> geo.error.ifEmpty { "Permite tu ubicación o elige una zona en el mapa." }
-                            },
-                            located = searchPoint != null,
-                            locating = geo.status == GeoStatus.Locating,
-                            onLocate = {
-                                address = ""
-                                zone.point = null
-                                zone.area = null
-                                geo.locate()
-                            },
-                            onZone = { chooseZone = true },
-                            onChange = { showFilters = true },
+                        CategoriesRow(
+                            categories = categories.ordered().take(4),
+                            loading = cats.loading && cats.data == null,
+                            selected = category,
+                            onViewAll = { nav.navigate(Routes.CATEGORIES) },
+                            onSelect = { category = it },
                         )
                     }
-                    item(key = "results") {
-                        ResultsHeader(
-                            count = profiles.size,
-                            loading = rows == null && data.loading,
-                            search = search,
-                            mapDisabled = mode == "remote",
-                            onMap = { showMap = true },
-                        )
-                    }
-                    when {
-                        rows == null && data.loading -> items(2) {
-                            Box(Modifier.padding(horizontal = 20.dp, vertical = 7.dp)) { ProfessionalCardSkeleton() }
-                        }
-                        rows == null -> item { ErrorBox(data.error ?: "Inténtalo de nuevo.", data.reload) }
-                        profiles.isEmpty() -> item {
-                            EmptyBox(
-                                "Aún no encontramos un profesional",
-                                if (search.isNotBlank()) "No hay resultados para “${search.trim()}”. Prueba con otras palabras o categorías."
-                                else "Prueba otra categoría o amplía la zona de búsqueda.",
-                                "Publicar una solicitud",
-                            ) { nav.navigate(Routes.newRequest()) }
-                        }
-                        else -> itemsIndexed(profiles, key = { _, p -> p.id }) { i, p ->
-                            ProfessionalCard(
-                                p,
-                                byId,
-                                i,
-                                onClick = { nav.navigate(Routes.professional(p.id)) },
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 7.dp),
-                            )
-                        }
+                    item(key = "verified_carousel") {
+                        VerifiedProvidersCarousel(profiles, onViewAll = { nav.navigate(Routes.CATEGORIES) }) { nav.navigate(Routes.professional(it)) }
                     }
                     item(key = "cta") { PublishCta { nav.navigate(Routes.newRequest()) } }
+                    item(key = "ad_banner") { AdBanner() }
                 }
             }
         }
@@ -396,108 +383,284 @@ fun ExploreScreen(
 }
 
 @Composable
-private fun Hero(
-    geo: DeviceLocation,
-    search: String,
-    onSearch: (String) -> Unit,
-    onSubmit: () -> Unit,
+private fun HomeTopBar(
+    onOpenDrawer: (() -> Unit)?,
     onFavorites: () -> Unit,
-    onRequests: () -> Unit,
+    onCart: () -> Unit,
 ) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .background(HeroGradient, RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
-            .statusBarsPadding()
-            .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 22.dp),
+    Surface(
+        color = Color.White,
+        shadowElevation = 1.dp,
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.weight(1f)) {
-                Row(
-                    Modifier
-                        .clip(RoundedCornerShape(50))
-                        .background(Color.White.copy(alpha = 0.14f))
-                        .clickable(enabled = geo.area == null && geo.status != GeoStatus.Locating) { geo.locate() }
-                        .padding(horizontal = 12.dp, vertical = 7.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(Icons.Outlined.Place, contentDescription = null, tint = Vinko.Lilac, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(6.dp))
-                    Text(
-                        when {
-                            geo.area != null -> geo.area!!.areaLabel()
-                            geo.status == GeoStatus.Locating -> "Buscando tu ubicación…"
-                            else -> "Venezuela · Usar mi ubicación"
-                        },
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Color.White,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .statusBarsPadding(),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(46.dp)
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (onOpenDrawer != null) {
+                    IconButton(onClick = onOpenDrawer) {
+                        Icon(Icons.Outlined.Menu, contentDescription = "Menú", tint = Vinko.Primary)
+                    }
+                } else {
+                    Spacer(Modifier.width(44.dp))
+                }
+
+                Spacer(Modifier.weight(1f))
+                Text(
+                    "Vinko",
+                    fontFamily = Manrope,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 24.sp,
+                    color = Vinko.Primary,
+                )
+                Spacer(Modifier.weight(1f))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (MarketCart.count > 0) {
+                        Box(contentAlignment = Alignment.TopEnd) {
+                            IconButton(onClick = onCart) {
+                                Icon(Icons.Outlined.ShoppingCart, contentDescription = "Carrito", tint = Vinko.Primary)
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .padding(top = 4.dp, end = 4.dp)
+                                    .background(Vinko.Coral, CircleShape)
+                                    .padding(horizontal = 5.dp, vertical = 1.dp),
+                            ) {
+                                Text(
+                                    "${MarketCart.count}",
+                                    color = Color.White,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
+                        }
+                    }
+                    IconButton(onClick = onFavorites) {
+                        Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Favoritos", tint = Vinko.Primary)
+                    }
                 }
             }
-            IconButton(onClick = onFavorites) {
-                Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Favoritos", tint = Color.White)
-            }
-            IconButton(onClick = onRequests) {
-                Icon(Icons.Outlined.Description, contentDescription = "Mis solicitudes", tint = Color.White)
-            }
-        }
-        Column(Modifier.padding(end = 12.dp)) {
-            Spacer(Modifier.height(14.dp))
-            Text(
-                buildAnnotatedString {
-                    append("Personas de confianza para ")
-                    withStyle(SpanStyle(color = Vinko.Lilac)) { append("hacerlo realidad.") }
-                },
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.White,
-            )
-            Spacer(Modifier.height(6.dp))
-            Text(
-                "Profesionales verificados, trato humano y pagos protegidos.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.8f),
-            )
-            Spacer(Modifier.height(16.dp))
-            TextField(
-                value = search,
-                onValueChange = onSearch,
-                placeholder = { Text("¿Qué servicio o profesional necesitas?", maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null, tint = Vinko.Primary) },
-                trailingIcon = if (search.isNotEmpty()) {
-                    { IconButton(onClick = { onSearch("") }) { Icon(Icons.Outlined.Close, contentDescription = "Borrar búsqueda", tint = Vinko.Muted) } }
-                } else null,
-                singleLine = true,
-                shape = RoundedCornerShape(16.dp),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Vinko.Primary,
-                ),
-                modifier = Modifier.fillMaxWidth(),
-            )
         }
     }
 }
 
 @Composable
-private fun CategoriesRow(categories: List<Category>, loading: Boolean, selected: String, onSelect: (String) -> Unit) {
-    Column(Modifier.padding(top = 22.dp)) {
-        Column(Modifier.padding(horizontal = 20.dp)) {
-            SectionLabel("Explora por especialidad")
-            Text("¿Por dónde empezamos hoy?", style = MaterialTheme.typography.titleLarge)
+private fun HeaderSearchBlock(
+    geo: DeviceLocation,
+    search: String,
+    onSearch: (String) -> Unit,
+    onSubmit: () -> Unit,
+    onProfile: (() -> Unit)? = null,
+    onChooseZone: () -> Unit = {},
+) {
+    val user = LocalUser.current
+    val app = LocalApp.current
+    val avatarId = user.avatarFileId ?: app.avatarFileId
+
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+    ) {
+        // Fila de Ubicación compacta, "Otra ubicación" alineada con la ubicación y Avatar a la derecha
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable { geo.locate() }
+                    .padding(vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    Icons.Outlined.Place,
+                    contentDescription = null,
+                    tint = Vinko.Primary,
+                    modifier = Modifier.size(18.dp),
+                )
+                Spacer(Modifier.width(6.dp))
+                Column {
+                    Text(
+                        "Ubicación",
+                        fontSize = 9.sp,
+                        color = Vinko.Subtle,
+                        fontWeight = FontWeight.Medium,
+                    )
+                    Text(
+                        when {
+                            geo.area != null -> geo.area!!.areaLabel()
+                            geo.status == GeoStatus.Locating -> "Ubicando…"
+                            else -> "Caracas, Chacao"
+                        },
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Vinko.Ink,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+
+            Spacer(Modifier.width(12.dp))
+
+            Surface(
+                onClick = onChooseZone,
+                shape = RoundedCornerShape(10.dp),
+                color = Vinko.Tint,
+                modifier = Modifier.height(30.dp),
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Icon(
+                        Icons.Outlined.Map,
+                        contentDescription = "Otra ubicación",
+                        tint = Vinko.Primary,
+                        modifier = Modifier.size(13.dp),
+                    )
+                    Text(
+                        "Otra ubicación",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 11.sp,
+                        color = Vinko.Primary,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+
+            Spacer(Modifier.weight(1f))
+
+            Avatar(
+                initials = user.name,
+                size = 34.dp,
+                border = false,
+                photoUrl = avatarId,
+                onClick = onProfile,
+            )
         }
-        Spacer(Modifier.height(12.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            if (loading) items(4) { Box(Modifier.size(112.dp, 84.dp).background(Vinko.Tint, RoundedCornerShape(16.dp))) }
-            else {
-                item(key = "all") { CategoryTile(null, "Todas", selected.isEmpty()) { onSelect("") } }
-                items(categories, key = { it.id }) { c ->
+
+        Spacer(Modifier.height(6.dp))
+
+        // Barra de búsqueda compacta con bordes redondeados y fondo gris suave sin cortes de texto
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = Vinko.FieldBg,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(44.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 12.dp),
+            ) {
+                Icon(
+                    Icons.Outlined.Search,
+                    contentDescription = null,
+                    tint = Vinko.Subtle,
+                    modifier = Modifier.size(18.dp),
+                )
+                Spacer(Modifier.width(8.dp))
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterStart,
+                ) {
+                    if (search.isEmpty()) {
+                        Text(
+                            "¿Qué servicio necesitas hoy?",
+                            color = Vinko.Subtle,
+                            fontFamily = Manrope,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                    BasicTextField(
+                        value = search,
+                        onValueChange = onSearch,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
+                        textStyle = TextStyle(
+                            fontFamily = Manrope,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 13.sp,
+                            color = Vinko.Ink,
+                        ),
+                        cursorBrush = SolidColor(Vinko.Primary),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+                if (search.isNotEmpty()) {
+                    IconButton(
+                        onClick = { onSearch("") },
+                        modifier = Modifier.size(26.dp),
+                    ) {
+                        Icon(
+                            Icons.Outlined.Close,
+                            contentDescription = "Borrar búsqueda",
+                            tint = Vinko.Muted,
+                            modifier = Modifier.size(15.dp),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CategoriesRow(
+    categories: List<Category>,
+    loading: Boolean,
+    selected: String,
+    onViewAll: () -> Unit = {},
+    onSelect: (String) -> Unit,
+) {
+    Column(Modifier.padding(top = 10.dp)) {
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text("Servicios más solicitados", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            }
+            TextButton(onClick = onViewAll, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)) {
+                Text("Ver todas", color = Vinko.Primary, style = MaterialTheme.typography.labelMedium)
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (loading) {
+                repeat(4) {
+                    Box(Modifier.size(64.dp, 64.dp).background(Vinko.FieldBg, RoundedCornerShape(12.dp)))
+                }
+            } else {
+                val fixedCats = categories.take(4)
+                fixedCats.forEach { c ->
                     CategoryTile(c, c.shortName(), selected == c.id) { onSelect(if (selected == c.id) "" else c.id) }
                 }
             }
@@ -507,37 +670,41 @@ private fun CategoriesRow(categories: List<Category>, loading: Boolean, selected
 
 @Composable
 private fun CategoryTile(category: Category?, label: String, selected: Boolean, onClick: () -> Unit) {
-    val shape = RoundedCornerShape(16.dp)
-    Box(
-        Modifier
-            .size(112.dp, 84.dp)
-            .clip(shape)
-            .clickable(onClick = onClick)
-            .then(if (selected) Modifier.border(3.dp, Vinko.Primary, shape) else Modifier),
+    val shape = RoundedCornerShape(12.dp)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.width(66.dp).clickable(onClick = onClick),
     ) {
-        if (category == null) {
-            Box(Modifier.fillMaxSize().background(HeroGradient))
-            Icon(Icons.Outlined.Apps, contentDescription = null, tint = Vinko.Lilac, modifier = Modifier.padding(12.dp).size(22.dp))
-        } else {
-            Cover(serviceImage(category.slug), category.slug.length, Modifier.fillMaxSize())
-            if (serviceImage(category.slug) == null) {
-                Icon(categoryIcon(category.slug), contentDescription = null, tint = Color.White, modifier = Modifier.padding(12.dp).size(22.dp))
+        Box(
+            Modifier
+                .size(56.dp)
+                .clip(shape)
+                .background(if (selected) Vinko.Tint else Vinko.FieldBg)
+                .then(if (selected) Modifier.border(2.dp, Vinko.Primary, shape) else Modifier.border(1.dp, Vinko.Line, shape)),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (category == null) {
+                Icon(Icons.Outlined.Apps, contentDescription = null, tint = Vinko.Primary, modifier = Modifier.size(24.dp))
+            } else {
+                val img = serviceImage(category.slug)
+                if (img != null) {
+                    Cover(img, category.slug.length, Modifier.fillMaxSize())
+                } else {
+                    Icon(categoryIcon(category.slug), contentDescription = null, tint = Vinko.Primary, modifier = Modifier.size(26.dp))
+                }
             }
         }
+        Spacer(Modifier.height(4.dp))
         Text(
             label,
-            style = MaterialTheme.typography.labelMedium,
-            color = Color.White,
-            maxLines = 2,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            fontSize = 11.sp,
+            color = Vinko.Primary,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.align(Alignment.BottomStart).padding(horizontal = 10.dp, vertical = 8.dp),
+            textAlign = TextAlign.Center,
         )
-        if (selected) {
-            Box(
-                Modifier.align(Alignment.TopEnd).padding(8.dp).size(22.dp).background(Vinko.Primary, CircleShape),
-                contentAlignment = Alignment.Center,
-            ) { Icon(Icons.Outlined.Check, contentDescription = "Seleccionada", tint = Color.White, modifier = Modifier.size(14.dp)) }
-        }
     }
 }
 
@@ -546,60 +713,27 @@ private fun FilterButton(count: Int, onClick: () -> Unit) {
     Box {
         Box(
             Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(14.dp))
+                .size(40.dp)
+                .clip(RoundedCornerShape(12.dp))
                 .background(Color.White)
-                .border(1.dp, Vinko.Line, RoundedCornerShape(14.dp))
+                .border(1.dp, Vinko.Line, RoundedCornerShape(12.dp))
                 .clickable(onClick = onClick),
             contentAlignment = Alignment.Center,
-        ) { Icon(Icons.Outlined.Tune, contentDescription = "Filtros", tint = Vinko.Primary) }
+        ) { Icon(Icons.Outlined.Tune, contentDescription = "Filtros", tint = Vinko.Primary, modifier = Modifier.size(20.dp)) }
         if (count > 0) {
             Box(
-                Modifier.align(Alignment.TopEnd).offset(x = 4.dp, y = (-4).dp).size(18.dp).background(Vinko.Coral, CircleShape),
+                Modifier.align(Alignment.TopEnd).offset(x = 3.dp, y = (-3).dp).size(16.dp).background(Vinko.Coral, CircleShape),
                 contentAlignment = Alignment.Center,
-            ) { Text("$count", style = MaterialTheme.typography.labelSmall, color = Color.White) }
-        }
-    }
-}
-
-@Composable
-private fun LocationCard(
-    title: String,
-    subtitle: String,
-    located: Boolean,
-    locating: Boolean,
-    onLocate: () -> Unit,
-    onZone: () -> Unit,
-    onChange: () -> Unit,
-) {
-    VCard(Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp), padding = 14.dp) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconTile(if (located) Icons.Outlined.MyLocation else Icons.Outlined.Place)
-            Spacer(Modifier.width(12.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = Vinko.Muted, maxLines = 2)
-            }
-            when {
-                locating -> CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp, color = Vinko.Primary)
-                located -> TextButton(onClick = onChange) { Text("Cambiar", color = Vinko.Primary) }
-            }
-        }
-        if (!located && !locating) {
-            Spacer(Modifier.height(10.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Pill("Usar mi ubicación", selected = true, onClick = onLocate, icon = Icons.Outlined.MyLocation)
-                Pill("Elegir en el mapa", selected = false, onClick = onZone, icon = Icons.Outlined.Map)
-            }
+            ) { Text("$count", style = MaterialTheme.typography.labelSmall, fontSize = 9.sp, color = Color.White) }
         }
     }
 }
 
 @Composable
 private fun ResultsHeader(count: Int, loading: Boolean, search: String, mapDisabled: Boolean, onMap: () -> Unit) {
-    Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 26.dp, bottom = 8.dp)) {
-        SectionLabel("Encuentra tu match")
-        Text("Talento para lo que necesitas", style = MaterialTheme.typography.titleLarge)
+    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp)) {
+        SectionLabel("Encuentra tu proveedor de confianza")
+        Text("Proveedores verificados cerca de ti", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Text(
             when {
                 loading -> "Buscando profesionales…"
@@ -607,9 +741,10 @@ private fun ResultsHeader(count: Int, loading: Boolean, search: String, mapDisab
                     if (search.isNotBlank()) " para “${search.trim()}”" else ""
             },
             style = MaterialTheme.typography.bodySmall,
+            fontSize = 11.sp,
             color = Vinko.Muted,
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(8.dp))
         Segmented(
             options = listOf("list" to "Listado", "map" to "Ver mapa"),
             selected = "list",
@@ -634,25 +769,145 @@ private fun PublishCta(onClick: () -> Unit) {
         Modifier
             .padding(start = 20.dp, end = 20.dp, top = 18.dp)
             .fillMaxWidth()
-            .background(HeroGradient, RoundedCornerShape(20.dp))
             .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("¿No encuentras lo que buscas?", style = MaterialTheme.typography.titleLarge, color = Color.White)
-        Spacer(Modifier.height(6.dp))
         Text(
-            "Publica lo que necesitas y recibe propuestas de profesionales calificados. Es gratis.",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.8f),
+            "Anuncia gratis tu requerimiento y encuentra tu proveedor ideal",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = Vinko.Primary,
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(14.dp))
         Button(
             onClick = onClick,
             shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Vinko.Primary),
+            colors = ButtonDefaults.buttonColors(containerColor = Vinko.Primary, contentColor = Color.White),
         ) {
-            Text("Publicar una solicitud", style = MaterialTheme.typography.labelLarge)
+            Text("Publicar solicitud", style = MaterialTheme.typography.labelLarge)
             Spacer(Modifier.width(6.dp))
             Icon(Icons.AutoMirrored.Outlined.ArrowForward, contentDescription = null, modifier = Modifier.size(18.dp))
+        }
+    }
+}
+
+@Composable
+private fun HomeServiceButtons(
+    onDelivery: () -> Unit,
+    onRider: () -> Unit,
+    onMarketplace: () -> Unit,
+    onGrua: () -> Unit,
+) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            ServiceShortcutButton(
+                title = "Delivery",
+                subtitle = "Envía y recibe de forma segura",
+                icon = Icons.Outlined.LocalShipping,
+                modifier = Modifier.weight(1f),
+                onClick = onDelivery,
+            )
+            ServiceShortcutButton(
+                title = "Rider",
+                subtitle = "Viaja con nuestros conductores",
+                icon = Icons.Outlined.DirectionsCar,
+                modifier = Modifier.weight(1f),
+                onClick = onRider,
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            ServiceShortcutButton(
+                title = "Marketplace",
+                subtitle = "Compra y vende localmente",
+                icon = Icons.Outlined.Storefront,
+                modifier = Modifier.weight(1f),
+                onClick = onMarketplace,
+            )
+            ServiceShortcutButton(
+                title = "Grúa",
+                subtitle = "Recibe atención inmediata con la grúa más cercana",
+                icon = Icons.Outlined.Build,
+                modifier = Modifier.weight(1f),
+                onClick = onGrua,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ServiceShortcutButton(
+    title: String,
+    subtitle: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(14.dp),
+        color = Vinko.Tint,
+        border = androidx.compose.foundation.BorderStroke(1.dp, Vinko.Primary),
+        modifier = modifier.height(72.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, CircleShape)
+                    .border(1.dp, Vinko.Primary.copy(alpha = 0.3f), CircleShape),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = title,
+                    tint = Vinko.Primary,
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Vinko.Primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (subtitle.isNotEmpty()) {
+                    Spacer(Modifier.height(1.dp))
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 10.sp,
+                        color = Color.Black,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 12.sp,
+                    )
+                }
+            }
         }
     }
 }
@@ -998,5 +1253,135 @@ private fun MapProCard(pro: Pro, marker: JsonObject, category: String, onOpen: (
             Spacer(Modifier.width(4.dp))
             Icon(Icons.AutoMirrored.Outlined.ArrowForward, contentDescription = null, tint = Vinko.Primary, modifier = Modifier.size(16.dp))
         }
+    }
+}
+
+@Composable
+private fun VerifiedProvidersCarousel(profiles: List<Pro>, onViewAll: () -> Unit = {}, onOpen: (String) -> Unit) {
+    val verifiedPros = remember(profiles) {
+        profiles.filter { it.verified }.take(6).ifEmpty { profiles.take(6) }
+    }
+    if (verifiedPros.isEmpty()) return
+    Column(Modifier.padding(top = 16.dp)) {
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Proveedores verificados cerca de ti", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            TextButton(onClick = onViewAll, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)) {
+                Text("Ver más", color = Vinko.Primary, style = MaterialTheme.typography.labelMedium)
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(verifiedPros, key = { p -> p.id }) { p ->
+                VerifiedProCard(p, onClick = { onOpen(p.id) })
+            }
+        }
+    }
+}
+
+@Composable
+private fun VerifiedProCard(p: Pro, onClick: () -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = Color.White,
+        shadowElevation = 2.dp,
+        modifier = Modifier
+            .width(118.dp)
+            .clickable(onClick = onClick),
+    ) {
+        Column(
+            Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Avatar(initials = p.name, size = 52.dp, photoUrl = null)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = p.name,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                fontSize = 13.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Outlined.Verified,
+                    contentDescription = "Verificado",
+                    tint = Vinko.Mint,
+                    modifier = Modifier.size(14.dp),
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    text = "Verificado",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 11.sp,
+                    color = Vinko.Mint,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
+            Spacer(Modifier.height(6.dp))
+            RatingRow(p.rating, p.reviewCount)
+        }
+    }
+}
+
+@Composable
+private fun AdBanner() {
+    Column(
+        Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
+            .fillMaxWidth()
+            .background(Color.White, RoundedCornerShape(16.dp))
+            .border(1.dp, Vinko.Line, RoundedCornerShape(16.dp))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                "ESPACIO PUBLICITARIO",
+                style = MaterialTheme.typography.labelSmall,
+                fontSize = 9.sp,
+                fontWeight = FontWeight.Bold,
+                color = Vinko.Subtle,
+            )
+            Box(
+                modifier = Modifier
+                    .background(Vinko.Tint, RoundedCornerShape(4.dp))
+                    .padding(horizontal = 6.dp, vertical = 2.dp),
+            ) {
+                Text(
+                    "Anuncio",
+                    fontSize = 8.sp,
+                    color = Vinko.Primary,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            "Impulsa tu negocio con Vinko",
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold,
+            color = Vinko.Ink,
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Anuncia tus servicios o productos ante miles de clientes potenciales en tu zona.",
+            style = MaterialTheme.typography.bodySmall,
+            color = Vinko.Muted,
+            textAlign = TextAlign.Center,
+        )
     }
 }

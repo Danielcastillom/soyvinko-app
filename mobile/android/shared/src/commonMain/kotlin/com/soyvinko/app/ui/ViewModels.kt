@@ -93,6 +93,22 @@ class LoginViewModel(private val auth: AuthRepository) : ViewModel() {
     var resendIn by mutableStateOf(0)
         private set
 
+    val isBiometricAvailable: Boolean get() = auth.isBiometricEnabled()
+    val biometricEmail: String? get() = auth.biometricEmail()
+
+    init {
+        auth.biometricEmail()?.let { savedEmail ->
+            if (savedEmail.isNotBlank()) email = savedEmail
+        }
+    }
+
+    fun loginWithBiometrics(onLoggedIn: (User) -> Unit) {
+        run {
+            val user = auth.loginWithBiometrics()
+            onLoggedIn(user)
+        }
+    }
+
     enum class Step { Credentials, Code }
 
     fun submitCredentials(onLoggedIn: (User) -> Unit) {

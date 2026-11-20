@@ -13,7 +13,10 @@ private const val NOTICE = "wallet_notice"
 /** Punto de entrada de la sección: registra sus pantallas. */
 fun NavGraphBuilder.walletGraph(nav: NavHostController) {
     composable(Routes.WALLET) {
-        WalletScreen(onNavigate = { nav.navigate(it) })
+        WalletScreen(
+            onNavigate = { nav.navigate(it) },
+            onBack = { nav.popBackStack() },
+        )
     }
     composable(Routes.WALLET_HISTORY) {
         WalletHistoryScreen(onBack = { nav.popBackStack() })

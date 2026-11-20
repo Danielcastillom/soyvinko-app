@@ -743,6 +743,30 @@
     "set": false,
     "args": [
       {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_action",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "advance_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/advance-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
         "name": "p_contract",
         "type": "uuid",
         "required": true
@@ -1162,6 +1186,45 @@
     "module": "requests",
     "method": "GET",
     "path": "/api/v1/requests/available-requests"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_radius_km",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "available_shipments",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "transport",
+    "method": "GET",
+    "path": "/api/v1/transport/available-shipments"
   },
   {
     "set": false,
@@ -1959,6 +2022,363 @@
     "set": false,
     "args": [
       {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_origin_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_destination_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_fare_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "create_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/create-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_origin_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_destination_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_fare_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_cargo_image_file_id",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_passenger_count",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_is_bargain",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_estimated_fare_minor",
+        "type": "bigint",
+        "required": false
+      }
+    ],
+    "name": "create_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/create-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_origin_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_destination_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_fare_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_cargo_image_file_id",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_passenger_count",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_is_bargain",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_estimated_fare_minor",
+        "type": "bigint",
+        "required": false
+      },
+      {
+        "name": "p_payment_method",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "create_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/create-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
         "name": "p_currency",
         "type": "text",
         "required": true
@@ -2350,8 +2770,8 @@
     "args": [],
     "name": "get_vinko_exchange_rates",
     "roles": [
-      "chamba_api",
-      "chamba_admin"
+      "chamba_admin",
+      "chamba_api"
     ],
     "returns": "jsonb",
     "volatility": "s",
@@ -2802,6 +3222,25 @@
     "path": "/api/v1/account/my-sessions"
   },
   {
+    "set": false,
+    "args": [
+      {
+        "name": "p_role",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "my_shipments",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "transport",
+    "method": "GET",
+    "path": "/api/v1/transport/my-shipments"
+  },
+  {
     "set": true,
     "args": [],
     "name": "my_tickets",
@@ -2973,6 +3412,30 @@
     "module": null,
     "method": "POST",
     "path": "/api/v1/internal/order-delivery"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": false
+      }
+    ],
+    "name": "pay_order_with_wallet",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/pay-order-with-wallet"
   },
   {
     "set": false,
@@ -4005,6 +4468,11 @@
         "name": "p_share",
         "type": "boolean",
         "required": false
+      },
+      {
+        "name": "p_avatar",
+        "type": "uuid",
+        "required": false
       }
     ],
     "name": "save_contact",
@@ -4211,6 +4679,25 @@
     "module": "requests",
     "method": "GET",
     "path": "/api/v1/requests/service-feed"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "set_avatar",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/set-avatar"
   },
   {
     "set": false,
@@ -4540,6 +5027,25 @@
     "set": false,
     "args": [
       {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "shipment_tracking",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "transport",
+    "method": "GET",
+    "path": "/api/v1/transport/shipment-tracking"
+  },
+  {
+    "set": false,
+    "args": [
+      {
         "name": "p_plan",
         "type": "uuid",
         "required": true
@@ -4694,6 +5200,25 @@
     "module": "admin",
     "method": "POST",
     "path": "/api/v1/admin/support-ticket"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "take_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/take-shipment"
   },
   {
     "set": false,
@@ -4908,6 +5433,50 @@
     "module": "contracts",
     "method": "POST",
     "path": "/api/v1/contracts/update-shared-location"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_accuracy",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_heading",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_speed",
+        "type": "double precision",
+        "required": false
+      }
+    ],
+    "name": "update_shipment_location",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/update-shipment-location"
   },
   {
     "set": false,

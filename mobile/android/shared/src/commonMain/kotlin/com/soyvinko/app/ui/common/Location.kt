@@ -6,7 +6,13 @@ import coil3.PlatformContext
 
 data class GeoPos(val lat: Double, val lon: Double, val accuracy: Float? = null)
 
-data class MapMarker(val pos: GeoPos, val title: String, val color: Int = 0xFF6F3DFF.toInt())
+data class MapMarker(
+    val pos: GeoPos,
+    val title: String,
+    val color: Int = 0xFF6F3DFF.toInt(),
+    val iconType: String? = null,
+    val avatarUrl: String? = null,
+)
 
 /** ¿Hay permiso de ubicación (precisa o aproximada)? */
 expect fun hasLocationPermission(context: PlatformContext): Boolean
@@ -36,6 +42,7 @@ expect fun OsmMap(
     center: GeoPos? = null,
     zoom: Double = 15.0,
     drawLine: Boolean = false,
+    routePoints: List<GeoPos>? = null,
     onTap: ((GeoPos) -> Unit)? = null,
 )
 

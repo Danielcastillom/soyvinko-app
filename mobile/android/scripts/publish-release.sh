@@ -47,7 +47,8 @@ docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp/home -e GRADLE_USER_HOME=/gr
   -v "$GRADLE_HOME_DIR":/gradle -v "$ROOT":/project -v "$SIGNING_DIR":/signing:ro -w /project \
   ghcr.io/cirruslabs/android-sdk:35 bash -c '
     set -e; mkdir -p /tmp/home; echo sdk.dir=/opt/android-sdk-linux > local.properties
-    ./gradlew --no-daemon -q assembleRelease -PsoyvinkoSigning=/signing/signing.properties 2>&1 | grep -v "^w: " || true
+    rm -rf app/build/outputs/apk/release
+    ./gradlew --no-daemon assembleRelease -PsoyvinkoSigning=/signing/signing.properties
     test -f app/build/outputs/apk/release/app-release.apk
     # La firma debe ser la de la clave permanente o las apps instaladas rechazarán la actualización.
     $ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk | grep "SHA-256" | head -1 > app/build/outputs/apk/release/cert.txt

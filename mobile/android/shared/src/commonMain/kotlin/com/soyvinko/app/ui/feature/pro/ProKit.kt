@@ -184,6 +184,7 @@ fun dial(context: PlatformContext, phone: String) {
 object ProSignals {
     var setup by mutableIntStateOf(0)
     var orders by mutableIntStateOf(0)
+    var wallet by mutableIntStateOf(0)
 }
 
 /** Categorías activas (catalog) como mapa id → nombre. */

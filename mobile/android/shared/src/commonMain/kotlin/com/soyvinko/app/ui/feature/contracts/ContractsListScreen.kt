@@ -126,15 +126,8 @@ fun ContractsListScreen(nav: NavHostController) {
                                 EmptyBox(
                                     "Aquí empieza el trabajo en equipo",
                                     "Cuando ambas partes acepten una solicitud, encontrarás el servicio, su chat y la ubicación aquí.",
-                                    actionLabel = if (user.isProfessional) "Ver oportunidades" else "Explorar profesionales",
-                                    onAction = {
-                                        if (user.isProfessional) nav.navigate(Routes.OPPORTUNITIES)
-                                        else nav.navigate(Routes.EXPLORE) {
-                                            popUpTo(nav.graph.findStartDestination().route.orEmpty()) { saveState = true }
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    },
+                                    actionLabel = "Explorar profesionales",
+                                    onAction = { nav.navigate(Routes.CATEGORIES) },
                                 )
                             } else {
                                 EmptyBox(

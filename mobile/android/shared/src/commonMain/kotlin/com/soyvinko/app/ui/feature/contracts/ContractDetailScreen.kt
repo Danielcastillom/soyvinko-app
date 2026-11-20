@@ -82,6 +82,7 @@ import com.soyvinko.app.ui.common.obj
 import com.soyvinko.app.ui.common.objects
 import com.soyvinko.app.ui.common.rememberResource
 import com.soyvinko.app.ui.common.s
+import com.soyvinko.app.ui.common.shareViaWhatsApp
 import com.soyvinko.app.ui.common.statusLabel
 import com.soyvinko.app.ui.components.Banner
 import com.soyvinko.app.ui.components.BannerTone
@@ -227,6 +228,45 @@ private fun DetailContent(
             )
             "disputed" -> Banner("Se reportó un problema en este servicio. Soporte está revisando el caso y te escribirá por tus canales registrados.")
             "completed" -> Banner("Servicio finalizado el ${date(ctx.c.s("completed_at"))}. ¡Gracias por confiar en SoyVinko!", BannerTone.Success)
+        }
+        if (ctx.status == "completed") {
+            val platformContext = LocalPlatformContext.current
+            VCard {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text("Comprobante Digital Oficial", style = MaterialTheme.typography.titleMedium, color = Vinko.Mint)
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Comparte el resumen y comprobante verificado de este servicio con tu cliente o contraparte.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Vinko.Muted,
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    PrimaryButton(
+                        text = "Enviar Comprobante por WhatsApp",
+                        onClick = {
+                            val receipt = """
+🧾 *COMPROBANTE DE CONTRATO FINALIZADO*
+*SOYVINKO VENEZUELA*
+──────────────────────
+📌 *Contrato Folio:* #${ctx.id.take(8).uppercase()}
+📋 *Estado:* ✅ FINALIZADO CON ÉXITO
+🛠️ *Servicio:* ${ctx.c.s("title").orEmpty().ifBlank { "Servicio Profesional" }}
+👤 *Cliente:* ${ctx.c.s("customer_name").orEmpty().ifBlank { "Cliente" }}
+👷 *Profesional:* ${ctx.c.s("professional_name") ?: ctx.counterpart}
+💰 *Monto Acordado:* ${money(ctx.latestTerms.l("amount_minor") ?: 0L, ctx.latestTerms.s("currency") ?: "USD")}
+🛡️ *Garantía:* Contrato formalizado y verificado
+──────────────────────
+✅ _Operación digital respaldada por SoyVinko._
+🌐 _https://soyvinko.com_
+                            """.trimIndent()
+                            shareViaWhatsApp(platformContext, receipt)
+                        },
+                    )
+                }
+            }
         }
         if (ctx.termsPendingForMe) Banner(
             "${ctx.nameOf(ctx.latestTerms.s("proposed_by"))} propuso nuevas condiciones. Revísalas en \"Alcance y condiciones\".",

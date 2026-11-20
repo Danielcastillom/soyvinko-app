@@ -25,6 +25,22 @@ fun openWhatsApp(context: PlatformContext, phone: String, text: String? = null):
     return openExternalUrl(context, "whatsapp://send?phone=$digits" + (text?.let { "&text=" + encodeUrlComponent(it) } ?: ""))
 }
 
+/**
+ * Comparte texto o comprobante en WhatsApp, enviando directo al destinatario si se indica el número,
+ * o abriendo el selector de contactos de WhatsApp para compartir con cualquier persona.
+ */
+fun shareViaWhatsApp(context: PlatformContext, text: String, phone: String? = null): Boolean {
+    val encoded = encodeUrlComponent(text)
+    if (!phone.isNullOrBlank()) {
+        var digits = phone.filter { it.isDigit() }
+        if (digits.startsWith("0")) digits = "58" + digits.drop(1)
+        if (openExternalUrl(context, "whatsapp://send?phone=$digits&text=$encoded")) return true
+        if (openExternalUrl(context, "https://api.whatsapp.com/send?phone=$digits&text=$encoded")) return true
+    }
+    if (openExternalUrl(context, "whatsapp://send?text=$encoded")) return true
+    return openExternalUrl(context, "https://api.whatsapp.com/send?text=$encoded")
+}
+
 /** Codificación de componentes de URL (RFC 3986). */
 fun encodeUrlComponent(value: String): String = buildString {
     value.encodeToByteArray().forEach { b ->

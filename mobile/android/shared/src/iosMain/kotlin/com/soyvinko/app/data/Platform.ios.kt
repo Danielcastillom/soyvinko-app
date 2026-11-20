@@ -59,9 +59,45 @@ class KeychainTokenStorage(private val service: String = "com.soyvinko.app.sessi
         get() = read("user")
         set(value) = write("user", value)
 
+    override var avatarFileId: String?
+        get() = read("avatar_file_id")
+        set(value) = write("avatar_file_id", value)
+
+    override var appMode: String?
+        get() = read("app_mode")
+        set(value) = write("app_mode", value)
+
+    override var biometricEnabled: Boolean
+        get() = read("biometric_enabled") == "true"
+        set(value) = write("biometric_enabled", if (value) "true" else null)
+
+    override var biometricEmail: String?
+        get() = read("biometric_email")
+        set(value) = write("biometric_email", value)
+
+    override var biometricRefreshToken: String?
+        get() = read("biometric_refresh")
+        set(value) = write("biometric_refresh", value)
+
+    override var biometricLockOnLeave: Boolean
+        get() = read("biometric_lock") != "false"
+        set(value) = write("biometric_lock", if (value) "true" else "false")
+
     override fun clear() {
+        clear(clearBiometrics = false)
+    }
+
+    override fun clear(clearBiometrics: Boolean) {
         write("refresh_token", null)
         write("user", null)
+        write("avatar_file_id", null)
+        write("app_mode", null)
+        if (clearBiometrics) {
+            write("biometric_enabled", null)
+            write("biometric_email", null)
+            write("biometric_refresh", null)
+            write("biometric_lock", null)
+        }
     }
 
     /** Arma la consulta del Keychain como CFDictionary y libera todo al terminar. */

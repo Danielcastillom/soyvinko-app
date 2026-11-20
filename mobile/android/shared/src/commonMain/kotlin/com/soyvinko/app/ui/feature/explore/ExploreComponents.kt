@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,6 +33,8 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.Verified
 import androidx.compose.material.icons.outlined.WorkspacePremium
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -62,14 +65,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soyvinko.app.data.UploadPart
+import com.soyvinko.app.ui.common.ApiImage
 import com.soyvinko.app.ui.common.LocalApp
 import coil3.ImageLoader
 import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
+import com.soyvinko.app.ui.common.rememberApiImageLoader
 import com.soyvinko.app.ui.common.money
 import com.soyvinko.app.ui.theme.Manrope
 import com.soyvinko.app.ui.theme.Vinko
 
-val CardShape = RoundedCornerShape(20.dp)
+val CardShape = RoundedCornerShape(14.dp)
 
 private val Covers = listOf(
     Brush.linearGradient(listOf(Color(0xFF3B1D8F), Vinko.Primary)),
@@ -127,15 +133,50 @@ fun Cover(image: String?, index: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Avatar(initials: String, size: Dp = 44.dp, border: Boolean = true) {
+fun Avatar(
+    initials: String,
+    size: Dp = 44.dp,
+    border: Boolean = true,
+    photoUrl: String? = null,
+    onClick: (() -> Unit)? = null,
+) {
+    val app = LocalApp.current
+    var hasError by remember(photoUrl) { mutableStateOf(false) }
     Box(
         Modifier
             .size(size)
+            .clip(CircleShape)
             .background(Brush.linearGradient(listOf(Vinko.Primary, Vinko.Lavender)), CircleShape)
-            .then(if (border) Modifier.border(2.dp, Color.White, CircleShape) else Modifier),
+            .then(if (border) Modifier.border(2.dp, Color.White, CircleShape) else Modifier)
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center,
     ) {
-        Text(initials, fontFamily = Manrope, fontWeight = FontWeight.ExtraBold, fontSize = (size.value * 0.36f).sp, color = Color.White)
+        Text(
+            initials.trim().take(2).uppercase().ifEmpty { "V" },
+            fontFamily = Manrope,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = (size.value * 0.36f).sp,
+            color = Color.White,
+        )
+        if (!photoUrl.isNullOrBlank() && !hasError) {
+            val url = when {
+                photoUrl.startsWith("http") -> photoUrl
+                photoUrl.startsWith("/") -> app.api.absoluteUrl(photoUrl)
+                else -> app.api.absoluteUrl("/api/v1/files/$photoUrl")
+            }
+            AsyncImage(
+                model = url,
+                imageLoader = rememberApiImageLoader(),
+                contentDescription = initials,
+                contentScale = ContentScale.Crop,
+                onState = { state ->
+                    if (state is AsyncImagePainter.State.Error) {
+                        hasError = true
+                    }
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
     }
 }
 
@@ -148,14 +189,14 @@ fun Chip(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier.background(bg, RoundedCornerShape(50)).padding(horizontal = 10.dp, vertical = 4.dp),
+        modifier.background(bg, RoundedCornerShape(50)).padding(horizontal = 8.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) {
-            Icon(icon, contentDescription = null, tint = fg, modifier = Modifier.size(14.dp))
-            Spacer(Modifier.width(4.dp))
+            Icon(icon, contentDescription = null, tint = fg, modifier = Modifier.size(12.dp))
+            Spacer(Modifier.width(3.dp))
         }
-        Text(text, style = MaterialTheme.typography.labelMedium, color = fg, maxLines = 1)
+        Text(text, style = MaterialTheme.typography.labelMedium, fontSize = 11.sp, color = fg, maxLines = 1)
     }
 }
 
@@ -219,73 +260,82 @@ fun ProfessionalCard(
             .border(1.dp, Vinko.Line, CardShape)
             .clickable(onClick = onClick),
     ) {
-        Box(Modifier.fillMaxWidth().height(136.dp)) {
+        Box(Modifier.fillMaxWidth().height(96.dp)) {
             Cover(serviceImage(category?.slug), index, Modifier.fillMaxSize())
-            Row(Modifier.align(Alignment.TopStart).padding(12.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(Modifier.align(Alignment.TopStart).padding(8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 if (category != null) Chip(category.shortName(), fg = Vinko.Ink, bg = Color.White.copy(alpha = 0.92f))
                 if (pro.sponsored) Chip("Destacado", Icons.Outlined.WorkspacePremium, Vinko.Amber, Vinko.AmberBg)
             }
             if (topEnd != null) Box(Modifier.align(Alignment.TopEnd).padding(6.dp)) { topEnd() }
-            Row(Modifier.align(Alignment.BottomStart).padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                Avatar(pro.initials, 44.dp)
-                Spacer(Modifier.width(10.dp))
+            Row(Modifier.align(Alignment.BottomStart).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Avatar(pro.initials, 36.dp)
+                Spacer(Modifier.width(8.dp))
                 ModeChip(first?.deliveryMode, onDark = true)
             }
         }
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     pro.name,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
                 )
                 if (pro.verified) {
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(6.dp))
                     VerifiedChip()
                 }
+                Spacer(Modifier.width(6.dp))
+                RatingRow(pro.rating, pro.reviewCount)
             }
-            Text(
-                first?.title ?: "Servicios profesionales",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Vinko.Muted,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(Modifier.height(8.dp))
-            RatingRow(pro.rating, pro.reviewCount)
-            if (pro.bio != null) {
-                Spacer(Modifier.height(6.dp))
-                Text(pro.bio, style = MaterialTheme.typography.bodySmall, color = Vinko.Muted, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Outlined.Place, contentDescription = null, tint = Vinko.Subtle, modifier = Modifier.size(15.dp))
-                Spacer(Modifier.width(4.dp))
                 Text(
-                    pro.city ?: "Disponible en remoto",
+                    first?.title ?: "Servicios profesionales",
                     style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
                     color = Vinko.Muted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false),
+                    modifier = Modifier.weight(1f),
+                )
+                Spacer(Modifier.width(6.dp))
+                Icon(Icons.Outlined.Place, contentDescription = null, tint = Vinko.Subtle, modifier = Modifier.size(13.dp))
+                Spacer(Modifier.width(2.dp))
+                Text(
+                    pro.city ?: "Remoto",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 11.sp,
+                    color = Vinko.Muted,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 distanceLabel(pro.distanceM)?.let {
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(6.dp))
                     Chip("a $it", fg = Vinko.Cyan, bg = Vinko.CyanBg)
                 }
             }
-            Spacer(Modifier.height(12.dp))
-            Box(Modifier.fillMaxWidth().height(1.dp).background(Vinko.Line))
-            Spacer(Modifier.height(12.dp))
+            if (!pro.bio.isNullOrBlank()) {
+                Spacer(Modifier.height(4.dp))
+                Text(pro.bio, style = MaterialTheme.typography.bodySmall, fontSize = 11.sp, color = Color(0xFF6B7280), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            Spacer(Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Presupuesto desde", style = MaterialTheme.typography.bodySmall, color = Vinko.Muted)
-                    Text(money(first?.priceMin, first?.currency ?: "VES"), style = MaterialTheme.typography.titleMedium, color = Vinko.Ink)
+                    Text("Precio base / inspección", style = MaterialTheme.typography.labelSmall, fontSize = 10.sp, color = Vinko.Muted)
+                    Text(money(first?.priceMin, first?.currency ?: "VES"), style = MaterialTheme.typography.titleMedium, fontSize = 15.sp, color = Vinko.Ink, fontWeight = FontWeight.Bold)
                 }
-                Box(Modifier.size(40.dp).background(Vinko.Primary, CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.AutoMirrored.Outlined.ArrowForward, contentDescription = "Ver perfil de ${pro.name}", tint = Color.White, modifier = Modifier.size(20.dp))
+                Button(
+                    onClick = onClick,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Vinko.Primary),
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
+                    modifier = Modifier.height(32.dp),
+                ) {
+                    Text("Solicitar", style = MaterialTheme.typography.labelMedium, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -296,12 +346,11 @@ fun ProfessionalCard(
 @Composable
 fun ProfessionalCardSkeleton() {
     Column(Modifier.fillMaxWidth().clip(CardShape).background(Color.White).border(1.dp, Vinko.Line, CardShape)) {
-        Box(Modifier.fillMaxWidth().height(136.dp).background(Vinko.Tint))
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Box(Modifier.fillMaxWidth(0.6f).height(16.dp).background(Vinko.Tint, RoundedCornerShape(6.dp)))
+        Box(Modifier.fillMaxWidth().height(96.dp).background(Vinko.Tint))
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(Modifier.fillMaxWidth(0.6f).height(14.dp).background(Vinko.Tint, RoundedCornerShape(6.dp)))
             Box(Modifier.fillMaxWidth(0.4f).height(12.dp).background(Vinko.Tint, RoundedCornerShape(6.dp)))
-            Box(Modifier.fillMaxWidth(0.9f).height(12.dp).background(Vinko.Tint, RoundedCornerShape(6.dp)))
-            Box(Modifier.fillMaxWidth(0.3f).height(20.dp).background(Vinko.Tint, RoundedCornerShape(6.dp)))
+            Box(Modifier.fillMaxWidth(0.3f).height(18.dp).background(Vinko.Tint, RoundedCornerShape(6.dp)))
         }
     }
 }
@@ -411,10 +460,11 @@ fun AreaField(
 fun fieldColors() = OutlinedTextFieldDefaults.colors(
     focusedBorderColor = Vinko.Primary,
     unfocusedBorderColor = Vinko.Line,
-    focusedContainerColor = Color.White,
-    unfocusedContainerColor = Color.White,
-    disabledContainerColor = Color.White,
+    focusedContainerColor = Vinko.FieldBg,
+    unfocusedContainerColor = Vinko.FieldBg,
+    disabledContainerColor = Vinko.FieldBg,
     focusedLabelColor = Vinko.Primary,
+    unfocusedLabelColor = Vinko.Primary,
 )
 
 /** Lista desplegable (categoría, etc.). */

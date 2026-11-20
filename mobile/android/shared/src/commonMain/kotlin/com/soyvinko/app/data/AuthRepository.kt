@@ -17,6 +17,68 @@ class AuthRepository(private val api: ApiClient, private val storage: TokenStora
 
     fun hasSession(): Boolean = storage.refreshToken != null
 
+    /** Indica si el usuario dejó configurado el acceso biométrico en este dispositivo. */
+    fun isBiometricEnabled(): Boolean = storage.biometricEnabled && storage.biometricRefreshToken != null
+
+    fun biometricEmail(): String? = storage.biometricEmail
+
+    fun isBiometricLockOnLeave(): Boolean = storage.biometricLockOnLeave
+
+    fun setBiometricLockOnLeave(enabled: Boolean) {
+        storage.biometricLockOnLeave = enabled
+    }
+
+    /**
+     * Activa y deja configurado el acceso biométrico para la cuenta actual.
+     */
+    fun enableBiometric(email: String, refreshToken: String? = storage.refreshToken, lockOnLeave: Boolean = true) {
+        storage.biometricEnabled = true
+        storage.biometricEmail = email
+        if (refreshToken != null) {
+            storage.biometricRefreshToken = refreshToken
+        }
+        storage.biometricLockOnLeave = lockOnLeave
+    }
+
+    /**
+     * Desactiva el acceso biométrico y remueve las credenciales biométricas guardadas.
+     */
+    fun disableBiometric() {
+        storage.biometricEnabled = false
+        storage.biometricEmail = null
+        storage.biometricRefreshToken = null
+    }
+
+    /**
+     * Inicia sesión utilizando las credenciales biométricas guardadas sin pedir contraseña.
+     */
+    suspend fun loginWithBiometrics(): User {
+        val bioRefresh = storage.biometricRefreshToken
+            ?: throw ApiException("No hay acceso biométrico configurado. Inicia sesión con tu contraseña.", "biometric_not_configured", 401)
+        storage.refreshToken = bioRefresh
+        return try {
+            val payload = api.refreshSession(staleToken = null)
+            val user = payload.user ?: me()
+            payload.refreshToken?.let {
+                storage.biometricRefreshToken = it
+                storage.refreshToken = it
+            }
+            storage.biometricEmail = user.email
+            user
+        } catch (e: ApiException) {
+            if (e.isUnauthorized || e.status == 403) {
+                storage.biometricRefreshToken = null
+                storage.biometricEnabled = false
+                throw ApiException("Tu sesión biométrica expiró. Ingresa tu contraseña para reactivarla.", "session_expired", 401)
+            }
+            if (e.isNetwork) {
+                cachedUser() ?: throw e
+            } else {
+                throw e
+            }
+        }
+    }
+
     /** Recupera la sesión guardada; devuelve null si ya no es válida. */
     suspend fun restore(): User? {
         if (!hasSession()) return null
@@ -106,7 +168,13 @@ class AuthRepository(private val api: ApiClient, private val storage: TokenStora
     private fun saveSession(payload: AuthPayload): User {
         val user = payload.user ?: throw ApiException("No recibimos los datos de tu cuenta.", "bad_response", 200)
         api.accessToken = payload.accessToken
-        payload.refreshToken?.let { storage.refreshToken = it }
+        payload.refreshToken?.let {
+            storage.refreshToken = it
+            if (storage.biometricEnabled) {
+                storage.biometricRefreshToken = it
+                storage.biometricEmail = user.email
+            }
+        }
         storage.cachedUserJson = ApiJson.encodeToString(User.serializer(), user)
         return user
     }

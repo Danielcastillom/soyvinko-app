@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -36,12 +37,18 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.delay
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -67,6 +74,16 @@ val LocalShellScope = staticCompositionLocalOf<CoroutineScope?> { null }
 class SessionActions(val reloadUser: () -> Unit, val logout: () -> Unit)
 val LocalSession = staticCompositionLocalOf<SessionActions> { error("Sesión no disponible") }
 
+/** Modos de la aplicación: Cliente (servicios) vs Vendedor (comercio, órdenes, viajes, tienda) */
+enum class AppMode {
+    CLIENT,
+    SELLER,
+}
+
+val LocalAppMode = staticCompositionLocalOf<AppMode> { AppMode.CLIENT }
+val LocalSetAppMode = staticCompositionLocalOf<(AppMode) -> Unit> { {} }
+val LocalOpenDrawer = staticCompositionLocalOf<() -> Unit> { {} }
+
 /** Estado de una carga remota con recarga. */
 class Resource<T>(val data: T?, val error: String?, val loading: Boolean, val reload: () -> Unit)
 
@@ -87,14 +104,39 @@ fun <T> rememberResource(vararg keys: Any?, loader: suspend () -> T): Resource<T
             try {
                 data = loader()
                 error = null
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: ApiException) {
                 error = e.message
+            } catch (e: Exception) {
+                error = e.message ?: "No se pudieron cargar los datos."
             } finally {
                 loading = false
             }
         }
     }
     return Resource(data, error, loading) { version++ }
+}
+
+/** Repite `block` cada `intervalMs` solo mientras la pantalla está visible (se pausa en segundo plano). */
+@Composable
+fun PollWhileVisible(intervalMs: Long, vararg keys: Any?, block: suspend () -> Unit) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val current by rememberUpdatedState(block)
+    LaunchedEffect(lifecycle, intervalMs, *keys) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            while (true) {
+                delay(intervalMs)
+                try {
+                    current()
+                } catch (_: ApiException) {
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (_: Exception) {
+                }
+            }
+        }
+    }
 }
 
 /** Ejecuta una acción (POST) mostrando progreso y el resultado en el Snackbar. */
@@ -132,6 +174,7 @@ fun rememberAction(): ActionRunner {
 fun ScreenScaffold(
     title: String,
     onBack: (() -> Unit)? = null,
+    navigationIcon: (@Composable () -> Unit)? = null,
     actions: @Composable () -> Unit = {},
     floatingAction: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
@@ -139,16 +182,21 @@ fun ScreenScaffold(
 ) {
     Scaffold(
         containerColor = Vinko.Cream,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text(title, style = MaterialTheme.typography.titleLarge) },
+                title = { Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    if (onBack != null) IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Volver")
+                    if (navigationIcon != null) {
+                        navigationIcon()
+                    } else if (onBack != null) {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Volver")
+                        }
                     }
                 },
                 actions = { actions() },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Vinko.Cream),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
             )
         },
         floatingActionButton = floatingAction,
@@ -158,20 +206,20 @@ fun ScreenScaffold(
 }
 
 @Composable
-fun VCard(modifier: Modifier = Modifier, padding: Dp = 16.dp, content: @Composable ColumnScope.() -> Unit) {
+fun VCard(modifier: Modifier = Modifier, padding: Dp = 12.dp, content: @Composable ColumnScope.() -> Unit) {
     Column(
         modifier
             .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(18.dp))
-            .border(1.dp, Vinko.Line, RoundedCornerShape(18.dp))
+            .background(Color.White, RoundedCornerShape(14.dp))
+            .border(1.dp, Vinko.Line, RoundedCornerShape(14.dp))
             .padding(padding),
         content = content,
     )
 }
 
 @Composable
-fun IconTile(icon: ImageVector, tint: Color = Vinko.Primary, bg: Color = Vinko.Tint, size: Dp = 40.dp) {
-    Box(Modifier.size(size).background(bg, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+fun IconTile(icon: ImageVector, tint: Color = Vinko.Primary, bg: Color = Vinko.Tint, size: Dp = 34.dp) {
+    Box(Modifier.size(size).background(bg, RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(size / 2))
     }
 }

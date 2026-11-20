@@ -21,6 +21,7 @@ frontend/tsconfig.tsbuildinfo
 
 # Volcados y respaldos de la base de datos: contienen hashes de contraseñas y credenciales.
 /database_dump.sql
+/database_dump_*.sql
 /roles_dump.sql
 *.dump
 *.backup

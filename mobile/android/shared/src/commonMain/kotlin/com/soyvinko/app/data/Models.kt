@@ -16,6 +16,7 @@ data class User(
     @SerialName("contact_name") val contactName: String? = null,
     val roles: List<String> = emptyList(),
     val permissions: List<String> = emptyList(),
+    @SerialName("avatar_file_id") val avatarFileId: String? = null,
 ) {
     val firstName: String get() = name.trim().substringBefore(" ")
     val isProfessional: Boolean get() = "professional" in roles

@@ -12,8 +12,12 @@ data class AppInfo(
 )
 
 /** Servicios compartidos por todas las pantallas: `LocalApp.current.ops`, `.api`, `.auth`. */
-class AppServices(val info: AppInfo, storage: TokenStorage = platformTokenStorage()) {
+class AppServices(val info: AppInfo, val storage: TokenStorage = platformTokenStorage()) {
     val api = ApiClient(info.apiBaseUrl, storage, info.userAgent)
     val auth = AuthRepository(api, storage)
     val ops = Ops(api)
+
+    var avatarFileId: String?
+        get() = storage.avatarFileId ?: auth.cachedUser()?.avatarFileId
+        set(value) { storage.avatarFileId = value }
 }

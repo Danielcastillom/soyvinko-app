@@ -1,10 +1,13 @@
 package com.soyvinko.app.ui.feature.profile
 
+import com.soyvinko.app.data.ApiException
 import com.soyvinko.app.ui.common.isValidEmail
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,6 +64,25 @@ import com.soyvinko.app.ui.components.BannerTone
 import com.soyvinko.app.ui.components.PrimaryButton
 import com.soyvinko.app.ui.components.SecondaryButton
 import com.soyvinko.app.ui.components.VinkoTextField
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import com.soyvinko.app.ui.common.ApiImage
+import com.soyvinko.app.ui.common.rememberCameraCapture
+import com.soyvinko.app.ui.common.rememberPhotoPicker
+import com.soyvinko.app.ui.common.uploadFile
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import com.soyvinko.app.ui.common.LocalUser
 import com.soyvinko.app.ui.theme.Vinko
 import kotlinx.serialization.json.JsonObject
 
@@ -69,19 +91,131 @@ import kotlinx.serialization.json.JsonObject
 fun AccountScreen(onBack: () -> Unit) {
     val app = LocalApp.current
     val account = rememberResource { app.ops.call("my_account").requireObj() }
-    val prefs = rememberResource { app.ops.call("payment_preferences").obj() }
     val kyc = rememberResource { app.ops.call("my_kyc").objects() }
     val rifLocked = kyc.data?.firstOrNull()?.let { kycStateOf(it) } == KycState.Approved
 
     ScreenScaffold("Cuenta", onBack = onBack) { padding ->
         ResourceView(account) { data ->
             ProfilePage(padding) {
+                ProfilePhotoSection(data, account.reload)
                 if (data.s("account_type") == "juridico") CompanyCard(data, rifLocked, account.reload)
                 else PersonCard(data, rifLocked, account.reload)
                 ContactsCard(data.list("contacts"), account.reload)
-                PaymentCard(prefs.data, prefs.reload)
+                // PaymentCard hidden ("Esconder Preferencias de pago")
             }
         }
+    }
+}
+
+@Composable
+private fun ProfilePhotoSection(data: JsonObject, reload: () -> Unit) {
+    val app = LocalApp.current
+    val session = LocalSession.current
+    val snackbar = LocalSnackbar.current
+    val scope = rememberCoroutineScope()
+    var uploading by remember { mutableStateOf(false) }
+    var photoError by remember { mutableStateOf<String?>(null) }
+    val avatarId = data.s("avatar_file_id") ?: app.avatarFileId
+    var showPickerChoice by remember { mutableStateOf(false) }
+
+    val pickPhoto = rememberPhotoPicker(max = 1) { parts ->
+        val part = parts.firstOrNull() ?: return@rememberPhotoPicker
+        scope.launch(Dispatchers.Main.immediate) {
+            uploading = true
+            photoError = null
+            try {
+                val fileId = app.uploadFile(part, "avatar")
+                app.ops.call("set_avatar", "file" to fileId)
+                app.avatarFileId = fileId
+                session.reloadUser()
+                reload()
+                snackbar.notify("Foto de perfil actualizada.")
+            } catch (e: ApiException) {
+                photoError = e.message
+            } catch (e: Exception) {
+                photoError = e.message ?: "No se pudo actualizar la foto."
+            } finally {
+                uploading = false
+            }
+        }
+    }
+
+    val cameraPhoto = rememberCameraCapture(
+        onDenied = { photoError = "Permiso de cámara no concedido." },
+        front = true,
+    ) { part ->
+        scope.launch(Dispatchers.Main.immediate) {
+            uploading = true
+            photoError = null
+            try {
+                val fileId = app.uploadFile(part, "avatar")
+                app.ops.call("set_avatar", "file" to fileId)
+                app.avatarFileId = fileId
+                session.reloadUser()
+                reload()
+                snackbar.notify("Foto de perfil actualizada.")
+            } catch (e: ApiException) {
+                photoError = e.message
+            } catch (e: Exception) {
+                photoError = e.message ?: "No se pudo actualizar la foto."
+            } finally {
+                uploading = false
+            }
+        }
+    }
+
+    VCard {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            EditableAvatar(
+                name = data.s("name").orEmpty(),
+                photoUrl = avatarId,
+                size = 76.dp,
+                loading = uploading,
+                onClick = { showPickerChoice = true },
+            )
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text("Foto de perfil", style = MaterialTheme.typography.titleMedium)
+                Text("Tu imagen de identidad en SoyVinko.", style = MaterialTheme.typography.bodySmall, color = Vinko.Muted)
+                Spacer(Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(
+                        onClick = { showPickerChoice = true },
+                        enabled = !uploading,
+                    ) {
+                        Icon(Icons.Outlined.PhotoCamera, contentDescription = null, tint = Vinko.Primary, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text(if (uploading) "Subiendo…" else "Cambiar foto", color = Vinko.Primary, style = MaterialTheme.typography.labelMedium)
+                    }
+                }
+            }
+        }
+        if (photoError != null) {
+            Spacer(Modifier.height(8.dp))
+            Banner(photoError!!)
+        }
+    }
+
+    if (showPickerChoice) {
+        AlertDialog(
+            onDismissRequest = { showPickerChoice = false },
+            containerColor = Color.White,
+            title = { Text("Elegir foto de perfil", style = MaterialTheme.typography.titleLarge) },
+            text = { Text("Selecciona cómo deseas agregar tu foto de perfil.", style = MaterialTheme.typography.bodyMedium, color = Vinko.Muted) },
+            confirmButton = {
+                TextButton(onClick = { showPickerChoice = false; pickPhoto() }) {
+                    Text("Galería de fotos", color = Vinko.Primary, style = MaterialTheme.typography.labelLarge)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showPickerChoice = false; cameraPhoto() }) {
+                    Text("Tomar foto", color = Vinko.Primary, style = MaterialTheme.typography.labelLarge)
+                }
+            },
+        )
     }
 }
 
@@ -230,12 +364,24 @@ private fun ContactsCard(contacts: List<JsonObject>, reload: () -> Unit) {
         contacts.forEachIndexed { i, c ->
             if (i > 0) Divider()
             Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                val icon = when (c.s("kind")) {
-                    "email" -> Icons.Outlined.AlternateEmail
-                    "whatsapp" -> Icons.AutoMirrored.Outlined.Chat
-                    else -> Icons.Outlined.Phone
+                val contactAvatar = c.s("avatar_file_id")
+                if (!contactAvatar.isNullOrBlank()) {
+                    Box(
+                        Modifier
+                            .size(38.dp)
+                            .clip(CircleShape)
+                            .border(1.5.dp, Vinko.Primary.copy(alpha = 0.5f), CircleShape),
+                    ) {
+                        ApiImage(contactAvatar, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                    }
+                } else {
+                    val icon = when (c.s("kind")) {
+                        "email" -> Icons.Outlined.AlternateEmail
+                        "whatsapp" -> Icons.AutoMirrored.Outlined.Chat
+                        else -> Icons.Outlined.Phone
+                    }
+                    com.soyvinko.app.ui.common.IconTile(icon, size = 36.dp)
                 }
-                com.soyvinko.app.ui.common.IconTile(icon, size = 36.dp)
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text(c.s("label") ?: CONTACT_KINDS.toMap()[c.s("kind")].orEmpty(), style = MaterialTheme.typography.titleSmall)
@@ -288,10 +434,28 @@ private fun ContactsCard(contacts: List<JsonObject>, reload: () -> Unit) {
 private fun ContactDialog(onDismiss: () -> Unit, onSaved: () -> Unit) {
     val app = LocalApp.current
     val submit = rememberSubmitter()
+    val scope = rememberCoroutineScope()
     var kind by rememberSaveable { mutableStateOf("whatsapp") }
     var label by rememberSaveable { mutableStateOf("") }
     var value by rememberSaveable { mutableStateOf("") }
     var share by rememberSaveable { mutableStateOf(true) }
+    var contactAvatarId by rememberSaveable { mutableStateOf<String?>(null) }
+    var photoUploading by remember { mutableStateOf(false) }
+
+    val pickContactPhoto = rememberPhotoPicker(max = 1) { parts ->
+        val part = parts.firstOrNull() ?: return@rememberPhotoPicker
+        scope.launch(Dispatchers.Main.immediate) {
+            photoUploading = true
+            try {
+                val fileId = app.uploadFile(part, "avatar")
+                contactAvatarId = fileId
+            } catch (_: Exception) {
+            } finally {
+                photoUploading = false
+            }
+        }
+    }
+
     val valueError = when {
         value.isEmpty() -> null
         kind == "email" && !isValidEmail(value) -> "Escribe un correo válido."
@@ -313,6 +477,37 @@ private fun ContactDialog(onDismiss: () -> Unit, onSaved: () -> Unit) {
                     keyboardType = if (kind == "email") KeyboardType.Email else KeyboardType.Phone,
                     error = valueError ?: submit.fieldErrors["value"],
                 )
+                // Foto o imagen del contacto
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (contactAvatarId != null) {
+                            Box(
+                                Modifier.size(40.dp).clip(CircleShape).border(1.5.dp, Vinko.Primary, CircleShape),
+                            ) {
+                                ApiImage(contactAvatarId, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                            }
+                            Spacer(Modifier.width(10.dp))
+                            Text("Imagen adjunta", style = MaterialTheme.typography.bodySmall, color = Vinko.Mint)
+                        } else {
+                            Text("Imagen / Tarjeta de contacto", style = MaterialTheme.typography.bodySmall, color = Vinko.Muted)
+                        }
+                    }
+                    if (contactAvatarId != null) {
+                        IconButton(onClick = { contactAvatarId = null }, modifier = Modifier.size(32.dp)) {
+                            Icon(Icons.Outlined.Close, contentDescription = "Quitar foto", tint = Vinko.Coral, modifier = Modifier.size(18.dp))
+                        }
+                    } else {
+                        TextButton(onClick = pickContactPhoto, enabled = !photoUploading) {
+                            Icon(Icons.Outlined.AddPhotoAlternate, contentDescription = null, tint = Vinko.Primary, modifier = Modifier.size(18.dp))
+                            Spacer(Modifier.width(4.dp))
+                            Text(if (photoUploading) "Subiendo…" else "Adjuntar foto", color = Vinko.Primary, style = MaterialTheme.typography.labelMedium)
+                        }
+                    }
+                }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
                         Text("Compartir después de contratar", style = MaterialTheme.typography.titleSmall)
@@ -328,7 +523,7 @@ private fun ContactDialog(onDismiss: () -> Unit, onSaved: () -> Unit) {
                 enabled = valid && !submit.busy,
                 onClick = {
                     submit.run {
-                        app.ops.call("save_contact", "kind" to kind, "label" to label.trim(), "value" to value.trim(), "share" to share)
+                        app.ops.call("save_contact", "kind" to kind, "label" to label.trim(), "value" to value.trim(), "share" to share, "avatar" to contactAvatarId)
                         onSaved()
                     }
                 },

@@ -14,28 +14,40 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Paleta del portal web (frontend/src/styles.css).
+// Paleta oficial de la Guía Visual de Marca Vinko.
 object Vinko {
-    val Primary = Color(0xFF6F3DFF)
-    val PrimaryHover = Color(0xFF5B2FE6)
-    val Lavender = Color(0xFF9B7BFF)
-    val Lilac = Color(0xFFC6B2FF)
-    val Ink = Color(0xFF18112C)
-    val Dark = Color(0xFF150D2B)
-    val DarkSurface = Color(0xFF1E1538)
-    val Muted = Color(0xFF6D6786)
-    val Subtle = Color(0xFF8A84A2)
-    val Line = Color(0xFFE6E2F0)
-    val Cream = Color(0xFFFAF7FF)
-    val Tint = Color(0xFFF0EBFF)
-    val Mint = Color(0xFF0C8E72)
+    // 2. Paleta de colores oficial
+    val DeepPurple = Color(0xFF4B1FAE)    // Morado Profundo (#4B1FAE)
+    val Primary = Color(0xFF6F3DFF)       // Violeta Principal (#6F3DFF)
+    val PrimaryHover = Color(0xFF4B1FAE)  // Morado Profundo (#4B1FAE)
+    val Lavender = Color(0xFF9B7BFF)      // Lavanda Dinámica (#9B7BFF)
+    val Lilac = Color(0xFFC6B2FF)         // Lila Suave (#C6B2FF)
+    val LightGray = Color(0xFFF5F5F7)     // Gris Claro (#F5F5F7)
+    val Cream = Color(0xFFFFFFFF)         // Blanco (#FFFFFF)
+
+    // 3. Colores complementarios sugeridos
+    val MintLight = Color(0xFF6EE7C8)     // Verde Menta (#6EE7C8)
+    val Mint = Color(0xFF0C8E72)          // Verde Menta accesible para texto y acentos
     val MintBg = Color(0xFFE6FAF5)
+    val CyanLight = Color(0xFF42C9FF)     // Azul Cian (#42C9FF)
+    val Cyan = Color(0xFF0284C7)          // Azul Cian contrastado
+    val CyanBg = Color(0xFFEBF8FF)
+    val YellowSoft = Color(0xFFFFD76A)    // Amarillo Suave (#FFD76A)
     val Amber = Color(0xFF9E7300)
     val AmberBg = Color(0xFFFFF6DB)
-    val Coral = Color(0xFFD13B59)
+    val CoralLight = Color(0xFFFF8FA3)    // Coral Claro (#FF8FA3)
+    val Coral = Color(0xFFD13B59)         // Coral para avisos
     val CoralBg = Color(0xFFFFF0F3)
-    val Cyan = Color(0xFF0284C7)
-    val CyanBg = Color(0xFFEBF8FF)
+
+    // Neutros y superficies
+    val Ink = Color(0xFF150D2B)           // Tipografía principal
+    val Dark = Color(0xFF150D2B)
+    val DarkSurface = Color(0xFF1E1538)
+    val Muted = Color(0xFF6B7280)
+    val Subtle = Color(0xFF9CA3AF)
+    val Line = Color(0xFFE5E7EB)
+    val Tint = Color(0xFFF3F0FF)          // Tinte lavanda suave
+    val FieldBg = Color(0xFFF5F5F7)       // Gris Claro (#F5F5F7)
 }
 
 @Composable
@@ -86,7 +98,7 @@ private val VinkoColors = lightColorScheme(
     onBackground = Vinko.Ink,
     surface = Color.White,
     onSurface = Vinko.Ink,
-    surfaceVariant = Vinko.Tint,
+    surfaceVariant = Vinko.FieldBg,
     onSurfaceVariant = Vinko.Muted,
     outline = Vinko.Line,
     outlineVariant = Vinko.Line,

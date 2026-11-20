@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBalance
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.PhoneAndroid
@@ -168,8 +169,17 @@ fun WithdrawScreen(onBack: () -> Unit, onAddMethod: () -> Unit, notice: String? 
                 else -> VCard(padding = 14.dp) {
                     active.forEachIndexed { i, m ->
                         if (i > 0) Divider()
+                        val provider = m.s("provider").orEmpty()
+                        val isCrypto = provider.startsWith("crypto_") || provider == "binance_pay"
+                        val icon = when {
+                            isCrypto -> Icons.Outlined.AccountBalanceWallet
+                            provider == "pago_movil" -> Icons.Outlined.PhoneAndroid
+                            else -> Icons.Outlined.AccountBalance
+                        }
+                        val iconTint = if (isCrypto) Vinko.Mint else Vinko.Primary
+                        val iconBg = if (isCrypto) Vinko.MintBg else Vinko.Tint
                         Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                            IconTile(if (m.s("provider") == "pago_movil") Icons.Outlined.PhoneAndroid else Icons.Outlined.AccountBalance, size = 38.dp)
+                            IconTile(icon, tint = iconTint, bg = iconBg, size = 38.dp)
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(m.s("label") ?: "Cuenta", style = MaterialTheme.typography.titleSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)

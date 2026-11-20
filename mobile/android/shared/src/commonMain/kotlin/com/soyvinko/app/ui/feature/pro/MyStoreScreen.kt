@@ -29,15 +29,20 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Percent
+import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,9 +55,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.soyvinko.app.ui.common.AppMode
 import com.soyvinko.app.ui.common.EmptyBox
 import com.soyvinko.app.ui.common.IconTile
 import com.soyvinko.app.ui.common.LocalApp
+import com.soyvinko.app.ui.common.LocalAppMode
+import com.soyvinko.app.ui.common.LocalOpenDrawer
 import com.soyvinko.app.ui.common.LocalUser
 import com.soyvinko.app.ui.common.ResourceView
 import com.soyvinko.app.ui.common.ScreenScaffold
@@ -75,29 +83,36 @@ import com.soyvinko.app.ui.components.VinkoTextField
 import com.soyvinko.app.ui.screens.HeroGradient
 import com.soyvinko.app.ui.shell.Routes
 import com.soyvinko.app.ui.theme.Vinko
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 
 @Composable
 fun MyStoreScreen(nav: NavHostController) {
     val app = LocalApp.current
-    val user = LocalUser.current
-    if (!user.isProfessional) {
-        NotProfessional(nav, "Mi tienda", "Activa tu perfil profesional para abrir tu tienda y vender en el Marketplace.")
-        return
-    }
+    val mode = LocalAppMode.current
+    val openDrawer = LocalOpenDrawer.current
     val pro = rememberResource { app.ops.call("my_professional") }
-    ScreenScaffold("Mi tienda", onBack = { nav.popBackStack() }) { padding ->
+    ScreenScaffold(
+        "Mi tienda y catálogo",
+        onBack = if (mode == AppMode.SELLER) null else { { nav.popBackStack() } },
+        navigationIcon = if (mode == AppMode.SELLER) {
+            {
+                IconButton(onClick = openDrawer) {
+                    Icon(Icons.Outlined.Menu, contentDescription = "Menú", tint = Vinko.Ink)
+                }
+            }
+        } else null,
+    ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
             ResourceView(pro) { data ->
                 val p = data.obj()
-                val store = p.o("store")
+                val store = p?.o("store")
                 when {
-                    p == null -> EmptyBox("Activa tu perfil profesional", "Necesitas un perfil profesional para abrir tu tienda.", "Activar perfil") { nav.navigate(Routes.PRO) }
                     store?.s("status") == "suspended" -> Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Banner("Tu tienda está suspendida y no aparece en el Marketplace. Escríbenos para revisar tu caso.")
                         SecondaryButton("Contactar a soporte", onClick = { nav.navigate(Routes.SUPPORT) })
                     }
-                    store == null || store.s("status") != "active" -> StoreActivation(p, nav, onActivated = pro.reload)
+                    store == null || store.s("status") != "active" -> StoreActivation(p ?: JsonObject(emptyMap()), nav, onActivated = pro.reload)
                     else -> StoreDashboard(store, nav)
                 }
             }
@@ -113,9 +128,10 @@ fun MyStoreScreen(nav: NavHostController) {
 private fun StoreActivation(p: JsonObject, nav: NavHostController, onActivated: () -> Unit) {
     val app = LocalApp.current
     val form = rememberFormAction()
-    val base = p.o("store")?.s("name") ?: p.s("business_name") ?: ""
+    val user = LocalUser.current
+    val base = p.o("store")?.s("name") ?: p.s("business_name") ?: user.name
     var name by rememberSaveable { mutableStateOf(base) }
-    var slug by rememberSaveable { mutableStateOf(p.o("store")?.s("slug") ?: slugify(base)) }
+    var slug by rememberSaveable { mutableStateOf(p.o("store")?.s("slug") ?: slugify(base.ifBlank { "tienda-${user.firstName.ifBlank { "vendedor" }}" })) }
     var slugEdited by rememberSaveable { mutableStateOf(false) }
     var description by rememberSaveable { mutableStateOf(p.o("store")?.s("description") ?: "") }
     var tried by rememberSaveable { mutableStateOf(false) }
@@ -125,7 +141,7 @@ private fun StoreActivation(p: JsonObject, nav: NavHostController, onActivated: 
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Column(Modifier.fillMaxWidth().background(HeroGradient, RoundedCornerShape(24.dp)).padding(22.dp)) {
+        Column(Modifier.fillMaxWidth().background(Vinko.Primary, RoundedCornerShape(24.dp)).padding(22.dp)) {
             Box(Modifier.size(52.dp).background(Color.White.copy(alpha = 0.14f), CircleShape), contentAlignment = Alignment.Center) {
                 androidx.compose.material3.Icon(Icons.Outlined.Storefront, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
             }
@@ -145,9 +161,6 @@ private fun StoreActivation(p: JsonObject, nav: NavHostController, onActivated: 
         }
         Text("Datos de tu tienda", style = MaterialTheme.typography.titleLarge)
         form.error?.let { Banner(it) }
-        if (form.errorCode == "marketplace_entitlement_required") {
-            SecondaryButton("Ver planes y Vinkos", onClick = { nav.navigate(Routes.WALLET) })
-        }
         VinkoTextField(
             name,
             {
@@ -179,7 +192,7 @@ private fun StoreActivation(p: JsonObject, nav: NavHostController, onActivated: 
             }
         })
         Text(
-            "Abrir una tienda requiere un plan profesional con Marketplace activo.",
+            "Abrir tu tienda en el Marketplace es 100% gratuito, con 0% de comisión en ventas y control de inventario directo.",
             style = MaterialTheme.typography.bodySmall,
             color = Vinko.Muted,
         )
@@ -268,7 +281,10 @@ private fun StoreDashboard(store: JsonObject, nav: NavHostController) {
         }
 
         Segmented(
-            listOf("products" to "Productos (${list.size})", "orders" to when (pendingSales) { 0 -> "Pedidos"; 1 -> "Pedidos (1 nuevo)"; else -> "Pedidos ($pendingSales nuevos)" }),
+            listOf(
+                "products" to "Inventario (${list.size})",
+                "orders" to when (pendingSales) { 0 -> "Pedidos (${sales.size})"; 1 -> "Pedidos (1 nuevo)"; else -> "Pedidos ($pendingSales nuevos)" },
+            ),
             tab,
             { tab = it },
         )
@@ -285,6 +301,25 @@ private fun StoreDashboard(store: JsonObject, nav: NavHostController) {
                         "Añadir producto",
                     ) { form.reset(); creating = true }
                 } else {
+                    val scope = rememberCoroutineScope()
+                    fun adjustStock(prod: JsonObject, delta: Int) {
+                        val current = (prod.l("stock") ?: 0L).toInt()
+                        val next = (current + delta).coerceAtLeast(0)
+                        scope.launch {
+                            runCatching {
+                                app.ops.call(
+                                    "update_product",
+                                    "product" to prod.s("id"),
+                                    "name" to (prod.s("name") ?: ""),
+                                    "description" to (prod.s("description") ?: ""),
+                                    "price" to (prod.l("price_minor") ?: 0L),
+                                    "stock" to next,
+                                    "status" to (prod.s("status") ?: "active"),
+                                )
+                                products.reload()
+                            }
+                        }
+                    }
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         items.forEach { p ->
                             StoreProductRow(
@@ -295,6 +330,7 @@ private fun StoreDashboard(store: JsonObject, nav: NavHostController) {
                                     pickFor = p.s("id")
                                     pick()
                                 },
+                                onAdjustStock = { delta -> adjustStock(p, delta) },
                             )
                         }
                         Text(
@@ -367,7 +403,13 @@ fun JsonObject.photos(): List<ProductPhoto> =
     }.orEmpty()
 
 @Composable
-private fun StoreProductRow(p: JsonObject, uploading: Boolean, onEdit: () -> Unit, onPhoto: () -> Unit) {
+private fun StoreProductRow(
+    p: JsonObject,
+    uploading: Boolean,
+    onEdit: () -> Unit,
+    onPhoto: () -> Unit,
+    onAdjustStock: ((Int) -> Unit)? = null,
+) {
     val stock = p.l("stock") ?: 0L
     val photos = p.photos()
     VCard(padding = 12.dp) {
@@ -394,17 +436,57 @@ private fun StoreProductRow(p: JsonObject, uploading: Boolean, onEdit: () -> Uni
                 p.s("sku")?.takeIf { it.isNotBlank() }?.let { Text("SKU $it", style = MaterialTheme.typography.bodySmall, color = Vinko.Subtle) }
                 Spacer(Modifier.height(4.dp))
                 Text(money(p.l("price_minor"), p.s("currency")?.trim()), style = MaterialTheme.typography.titleSmall, color = Vinko.Primary)
-                Text(
-                    if (stock <= 0) "Sin stock" else "$stock ${if (stock == 1L) "unidad" else "unidades"} en stock",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (stock <= 0) Vinko.Coral else Vinko.Muted,
-                )
                 if (photos.any { !it.approved }) {
                     Spacer(Modifier.height(4.dp))
                     Pill("Foto en revisión", Vinko.Amber, Vinko.AmberBg)
                 } else if (photos.isEmpty()) {
                     Spacer(Modifier.height(4.dp))
                     Pill("Sin fotos", Vinko.Muted, Vinko.Tint)
+                }
+            }
+        }
+        Spacer(Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Vinko.Tint, RoundedCornerShape(10.dp))
+                .padding(horizontal = 10.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(Icons.Outlined.Inventory2, contentDescription = null, tint = Vinko.Primary, modifier = Modifier.size(16.dp))
+            Spacer(Modifier.width(6.dp))
+            Text(
+                if (stock <= 0) "Inventario: Agotado" else "Inventario: $stock unids.",
+                style = MaterialTheme.typography.labelMedium,
+                color = if (stock <= 0) Vinko.Coral else Vinko.Ink,
+                modifier = Modifier.weight(1f),
+            )
+            if (onAdjustStock != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Box(
+                        Modifier
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .background(if (stock > 0) Color.White else Color.Transparent)
+                            .clickable(enabled = stock > 0) { onAdjustStock(-1) },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(Icons.Outlined.Remove, contentDescription = "Menos", tint = if (stock > 0) Vinko.Primary else Vinko.Lilac, modifier = Modifier.size(14.dp))
+                    }
+                    Text("$stock", style = MaterialTheme.typography.titleSmall, color = Vinko.Primary)
+                    Box(
+                        Modifier
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .background(Color.White)
+                            .clickable { onAdjustStock(1) },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(Icons.Outlined.Add, contentDescription = "Más", tint = Vinko.Primary, modifier = Modifier.size(14.dp))
+                    }
                 }
             }
         }

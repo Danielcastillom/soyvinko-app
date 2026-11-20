@@ -66,6 +66,8 @@ fun movementLabel(e: JsonObject): String {
     return when (kind) {
         "topup" -> if (credit) "Recarga de saldo" else "Compra de Vinkos"
         "vinko_purchase" -> "Compra de Vinkos"
+        "order_payment" -> if (credit) "Venta en Marketplace (Cobro)" else "Pago de pedido en Marketplace"
+        "order_refund" -> if (credit) "Reembolso de pedido cancelado" else "Reembolso debitado"
         "contract_funded" -> if (credit) "Devolución de custodia" else "Pago reservado en custodia"
         "contract_released" -> if (credit) "Pago recibido por un servicio" else "Pago liberado al profesional"
         "contract_refunded", "escrow_refund" -> "Reembolso de servicio"

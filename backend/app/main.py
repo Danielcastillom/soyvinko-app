@@ -91,6 +91,7 @@ for module in [
     "admin",
     "files",
     "integrations",
+    "transport",
 ]:
     app.include_router(importlib.import_module(f"app.modules.{module}.router").router)
 

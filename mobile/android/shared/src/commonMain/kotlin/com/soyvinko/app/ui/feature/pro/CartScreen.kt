@@ -1,6 +1,8 @@
 package com.soyvinko.app.ui.feature.pro
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,14 +20,23 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Handshake
 import androidx.compose.material.icons.outlined.Storefront
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -34,20 +45,39 @@ import com.soyvinko.app.ui.common.IconTile
 import com.soyvinko.app.ui.common.LocalApp
 import com.soyvinko.app.ui.common.ScreenScaffold
 import com.soyvinko.app.ui.common.VCard
+import com.soyvinko.app.ui.common.l
 import com.soyvinko.app.ui.common.money
+import com.soyvinko.app.ui.common.obj
+import com.soyvinko.app.ui.common.rememberResource
 import com.soyvinko.app.ui.components.Banner
 import com.soyvinko.app.ui.components.PrimaryButton
 import com.soyvinko.app.ui.shell.Routes
 import com.soyvinko.app.ui.theme.Vinko
+import kotlinx.serialization.json.JsonPrimitive
 
-/** Carrito y confirmación del pedido (create_order con clave de idempotencia). */
+/** Carrito y confirmación del pedido con selección de método de pago (Wallet o Acordar con vendedor). */
 @Composable
 fun CartScreen(nav: NavHostController) {
     val app = LocalApp.current
     val form = rememberFormAction()
     val lines = MarketCart.lines
     val storeId = MarketCart.storeId
-    val currency = MarketCart.currency
+    val currency = MarketCart.currency ?: "USD"
+
+    val walletRes = rememberResource(currency, ProSignals.wallet) {
+        app.ops.call("money_wallet", "currency" to currency)
+    }
+    val availableMinor = walletRes.data.obj()?.l("available_minor") ?: 0L
+    val hasEnoughBalance = availableMinor >= MarketCart.total
+    var paymentMethod by rememberSaveable { mutableStateOf("wallet") } // "wallet" o "agreement"
+
+    val isWallet = paymentMethod == "wallet"
+    val canSubmit = if (isWallet) hasEnoughBalance else true
+    val buttonTitle = when {
+        isWallet && hasEnoughBalance -> "Pagar con Wallet · ${money(MarketCart.total, currency)}"
+        isWallet && !hasEnoughBalance -> "Saldo insuficiente en Wallet"
+        else -> "Confirmar pedido · ${money(MarketCart.total, currency)}"
+    }
 
     ScreenScaffold(
         "Tu carrito",
@@ -57,21 +87,32 @@ fun CartScreen(nav: NavHostController) {
                 Column(Modifier.fillMaxWidth().background(Color.White).navigationBarsPadding()) {
                     LineDivider()
                     PrimaryButton(
-                        "Confirmar pedido · ${money(MarketCart.total, currency)}",
+                        buttonTitle,
                         loading = form.busy,
+                        enabled = canSubmit && !form.busy,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                         onClick = {
                             val items = lines.map { mapOf("product_id" to it.productId, "quantity" to it.qty) }
                             val key = MarketCart.checkoutKey
+                            val successMsg = if (isWallet) {
+                                "¡Pedido pagado con éxito con saldo de tu Wallet!"
+                            } else {
+                                "Pedido enviado. Te avisaremos cuando el vendedor lo acepte."
+                            }
                             form.run(
-                                "Pedido enviado. Te avisaremos cuando el vendedor lo acepte.",
+                                successMsg,
                                 onSuccess = {
                                     MarketCart.clear()
                                     ProSignals.orders++
+                                    ProSignals.wallet++
                                     nav.navigate(Routes.ORDERS) { popUpTo(CART) { inclusive = true } }
                                 },
                             ) {
-                                app.ops.call("create_order", "store" to storeId, "items" to items, "key" to key)
+                                val orderRes = app.ops.call("create_order", "store" to storeId, "items" to items, "key" to key)
+                                val orderId = (orderRes as? JsonPrimitive)?.content ?: orderRes.toString().trim('"')
+                                if (isWallet && orderId.isNotBlank()) {
+                                    app.ops.call("pay_order_with_wallet", "order" to orderId, "key" to key)
+                                }
                             }
                         },
                     )
@@ -133,7 +174,153 @@ fun CartScreen(nav: NavHostController) {
                     Spacer(Modifier.height(6.dp))
                     LineDivider()
                     Spacer(Modifier.height(6.dp))
-                    KeyValue("Total a pagar al vendedor", money(MarketCart.total, currency), strong = true, valueColor = Vinko.Primary)
+                    KeyValue("Total a pagar", money(MarketCart.total, currency), strong = true, valueColor = Vinko.Primary)
+                }
+
+                // Selector de Método de Pago
+                VCard {
+                    Text("Método de pago", style = MaterialTheme.typography.titleSmall)
+                    Spacer(Modifier.height(12.dp))
+
+                    // Opción 1: Saldo de Wallet
+                    val isWalletSelected = paymentMethod == "wallet"
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(14.dp))
+                            .border(
+                                width = if (isWalletSelected) 2.dp else 1.dp,
+                                color = if (isWalletSelected) Vinko.Primary else Vinko.Line,
+                                shape = RoundedCornerShape(14.dp)
+                            )
+                            .background(if (isWalletSelected) Vinko.Tint.copy(alpha = 0.5f) else Color.White)
+                            .clickable { paymentMethod = "wallet" }
+                            .padding(14.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                Modifier
+                                    .size(22.dp)
+                                    .border(2.dp, if (isWalletSelected) Vinko.Primary else Vinko.Muted, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (isWalletSelected) {
+                                    Box(Modifier.size(12.dp).background(Vinko.Primary, CircleShape))
+                                }
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            IconTile(Icons.Outlined.AccountBalanceWallet, tint = Vinko.Primary, bg = Vinko.Tint)
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Saldo de mi Wallet", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                                    Spacer(Modifier.width(8.dp))
+                                    Box(
+                                        Modifier
+                                            .background(Vinko.MintBg, RoundedCornerShape(6.dp))
+                                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                                    ) {
+                                        Text("Recomendado", style = MaterialTheme.typography.labelSmall, color = Vinko.Mint, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                                Spacer(Modifier.height(2.dp))
+                                Text(
+                                    "Disponible: ${money(availableMinor, currency)}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontWeight = FontWeight.Medium,
+                                    color = if (hasEnoughBalance) Vinko.Mint else Vinko.Coral
+                                )
+                            }
+                        }
+
+                        if (isWalletSelected) {
+                            Spacer(Modifier.height(10.dp))
+                            if (hasEnoughBalance) {
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .background(Vinko.MintBg, RoundedCornerShape(10.dp))
+                                        .padding(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = Vinko.Mint, modifier = Modifier.size(18.dp))
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(
+                                        "Saldo suficiente. El pago se descontará de forma instantánea y segura.",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Vinko.Mint,
+                                    )
+                                }
+                            } else {
+                                Column(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .background(Vinko.CoralBg, RoundedCornerShape(10.dp))
+                                        .padding(12.dp)
+                                ) {
+                                    Text(
+                                        "Saldo insuficiente para pagar este pedido (${money(MarketCart.total, currency)}). Te faltan ${money(MarketCart.total - availableMinor, currency)}.",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Vinko.Coral,
+                                        fontWeight = FontWeight.Medium,
+                                    )
+                                    Spacer(Modifier.height(8.dp))
+                                    SmallButton(
+                                        "Recargar saldo de Wallet",
+                                        onClick = { nav.navigate(Routes.WALLET) },
+                                        tone = Tone.Soft,
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(Modifier.height(10.dp))
+
+                    // Opción 2: Acordar con el vendedor
+                    val isAgreementSelected = paymentMethod == "agreement"
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(14.dp))
+                            .border(
+                                width = if (isAgreementSelected) 2.dp else 1.dp,
+                                color = if (isAgreementSelected) Vinko.Primary else Vinko.Line,
+                                shape = RoundedCornerShape(14.dp)
+                            )
+                            .background(if (isAgreementSelected) Vinko.Tint.copy(alpha = 0.5f) else Color.White)
+                            .clickable { paymentMethod = "agreement" }
+                            .padding(14.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                Modifier
+                                    .size(22.dp)
+                                    .border(2.dp, if (isAgreementSelected) Vinko.Primary else Vinko.Muted, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (isAgreementSelected) {
+                                    Box(Modifier.size(12.dp).background(Vinko.Primary, CircleShape))
+                                }
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            IconTile(Icons.Outlined.Handshake, tint = Vinko.Ink, bg = Vinko.LightGray)
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text("Acordar con el vendedor", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                                Spacer(Modifier.height(2.dp))
+                                Text("Pago Móvil, Efectivo, Transferencia o Zelle", style = MaterialTheme.typography.bodySmall, color = Vinko.Muted)
+                            }
+                        }
+                        if (isAgreementSelected) {
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                "Coordinarás los detalles y cuentas bancarias directamente con el comercio una vez acepte el pedido.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Vinko.Muted,
+                            )
+                        }
+                    }
                 }
 
                 VCard {
@@ -141,7 +328,14 @@ fun CartScreen(nav: NavHostController) {
                     Spacer(Modifier.height(10.dp))
                     Step(1, "Confirmas el pedido y las unidades quedan apartadas.")
                     Step(2, "El vendedor acepta tu pedido.")
-                    Step(3, "Compartes tus datos de entrega y acuerdan el pago directo (Pago Móvil, transferencia, efectivo o Zelle).")
+                    Step(
+                        3,
+                        if (isWallet) {
+                            "Tu pedido queda 100% pagado y protegido con el saldo de tu Wallet."
+                        } else {
+                            "Compartes tus datos de entrega y acuerdan el pago directo (Pago Móvil, efectivo o Zelle)."
+                        }
+                    )
                     Step(4, "Recibes los productos y confirmas la recepción en Mis pedidos.", last = true)
                 }
                 Spacer(Modifier.height(8.dp))

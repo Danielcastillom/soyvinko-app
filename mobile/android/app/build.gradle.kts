@@ -73,6 +73,7 @@ dependencies {
     // Toda la app (pantallas, datos, plataforma) vive en :shared, común con iOS.
     implementation(project(":shared"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.biometric)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

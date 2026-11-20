@@ -1,10 +1,12 @@
 package com.soyvinko.app
 
+import android.content.Context
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -25,11 +27,12 @@ private val UpdaterFactory: ViewModelProvider.Factory = viewModelFactory {
     initializer { UpdateViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]!!) }
 }
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        checkAppUpdated()
         setContent {
             SoyVinkoTheme {
                 val session: SessionViewModel = viewModel(factory = AppViewModels)
@@ -54,6 +57,23 @@ class MainActivity : ComponentActivity() {
                 // Misma raíz que iOS; mientras carga se ve la pantalla de arranque del sistema.
                 SoyVinkoRoot(session = session, loading = {})
             }
+        }
+    }
+
+    private fun checkAppUpdated() {
+        val prefs = getSharedPreferences("soyvinko_app_meta", Context.MODE_PRIVATE)
+        val lastCode = prefs.getInt("last_installed_version_code", 0)
+        val currentCode = BuildConfig.VERSION_CODE
+        val justUpdated = intent.getBooleanExtra("just_updated", false) || (lastCode in 1 until currentCode)
+
+        prefs.edit().putInt("last_installed_version_code", currentCode).apply()
+
+        if (justUpdated) {
+            Toast.makeText(
+                this,
+                "✨ ¡SoyVinko se actualizó exitosamente a la versión ${BuildConfig.VERSION_NAME}!",
+                Toast.LENGTH_LONG,
+            ).show()
         }
     }
 }

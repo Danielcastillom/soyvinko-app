@@ -76,7 +76,16 @@ object AppInstaller {
                 }
             }
             // Al terminar con éxito, Android reemplaza la app y cierra este proceso.
-            PackageInstaller.STATUS_SUCCESS -> _status.value = InstallStatus.Idle
+            PackageInstaller.STATUS_SUCCESS -> {
+                _status.value = InstallStatus.Idle
+                val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    putExtra("just_updated", true)
+                }
+                if (launchIntent != null) {
+                    try { context.startActivity(launchIntent) } catch (_: Exception) {}
+                }
+            }
             PackageInstaller.STATUS_FAILURE_ABORTED -> _status.value =
                 InstallStatus.Failed("Cancelaste la instalación. Esta actualización es obligatoria para seguir usando SoyVinko.")
             PackageInstaller.STATUS_FAILURE_CONFLICT, PackageInstaller.STATUS_FAILURE_INCOMPATIBLE -> _status.value =

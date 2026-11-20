@@ -75,6 +75,10 @@
     "path": "/api/v1/marketplace/advance-order",
     "method": "POST"
   },
+  "advance_shipment": {
+    "path": "/api/v1/transport/advance-shipment",
+    "method": "POST"
+  },
   "approve_escrow_refund": {
     "path": "/api/v1/contracts/approve-escrow-refund",
     "method": "POST"
@@ -97,6 +101,10 @@
   },
   "available_requests": {
     "path": "/api/v1/requests/available-requests",
+    "method": "GET"
+  },
+  "available_shipments": {
+    "path": "/api/v1/transport/available-shipments",
     "method": "GET"
   },
   "cancel_contract": {
@@ -165,6 +173,10 @@
   },
   "create_request": {
     "path": "/api/v1/requests/create-request",
+    "method": "POST"
+  },
+  "create_shipment": {
+    "path": "/api/v1/transport/create-shipment",
     "method": "POST"
   },
   "create_topup": {
@@ -315,6 +327,10 @@
     "path": "/api/v1/account/my-sessions",
     "method": "GET"
   },
+  "my_shipments": {
+    "path": "/api/v1/transport/my-shipments",
+    "method": "GET"
+  },
   "my_tickets": {
     "path": "/api/v1/support/my-tickets",
     "method": "GET"
@@ -341,6 +357,10 @@
   },
   "open_ticket": {
     "path": "/api/v1/support/open-ticket",
+    "method": "POST"
+  },
+  "pay_order_with_wallet": {
+    "path": "/api/v1/marketplace/pay-order-with-wallet",
     "method": "POST"
   },
   "payment_preferences": {
@@ -507,6 +527,10 @@
     "path": "/api/v1/requests/service-feed",
     "method": "GET"
   },
+  "set_avatar": {
+    "path": "/api/v1/account/set-avatar",
+    "method": "POST"
+  },
   "set_branch_hours": {
     "path": "/api/v1/professionals/set-branch-hours",
     "method": "POST"
@@ -547,6 +571,10 @@
     "path": "/api/v1/contracts/share-location",
     "method": "POST"
   },
+  "shipment_tracking": {
+    "path": "/api/v1/transport/shipment-tracking",
+    "method": "GET"
+  },
   "start_purchase": {
     "path": "/api/v1/wallet/start-purchase",
     "method": "POST"
@@ -565,6 +593,10 @@
   },
   "support_ticket": {
     "path": "/api/v1/admin/support-ticket",
+    "method": "POST"
+  },
+  "take_shipment": {
+    "path": "/api/v1/transport/take-shipment",
     "method": "POST"
   },
   "ticket_thread": {
@@ -589,6 +621,10 @@
   },
   "update_shared_location": {
     "path": "/api/v1/contracts/update-shared-location",
+    "method": "POST"
+  },
+  "update_shipment_location": {
+    "path": "/api/v1/transport/update-shipment-location",
     "method": "POST"
   },
   "withdraw_proposal": {

@@ -164,7 +164,7 @@ actual fun LiveLocation(enabled: Boolean, intervalMs: Long, onUpdate: (GeoPos) -
 }
 
 /** Marcador con el color de la app (morado, verde…). */
-private class ColoredPin(val argb: Int) : MKPointAnnotation()
+private class ColoredPin(val argb: Int, val iconType: String? = null) : MKPointAnnotation()
 
 /**
  * Mapa con Apple Maps (MapKit). Muestra marcadores y opcionalmente una línea entre ellos;
@@ -177,6 +177,7 @@ actual fun OsmMap(
     center: GeoPos?,
     zoom: Double,
     drawLine: Boolean,
+    routePoints: List<GeoPos>?,
     onTap: ((GeoPos) -> Unit)?,
 ) {
     val delegate = remember {
@@ -188,6 +189,14 @@ actual fun OsmMap(
                     view.annotation = pin
                     view.markerTintColor = uiColor(pin.argb)
                     view.canShowCallout = true
+                    view.glyphText = when (pin.iconType) {
+                        "avatar" -> "👤"
+                        "moto" -> "🏍️"
+                        "carro" -> "🚗"
+                        "pickup" -> "🛻"
+                        "camion" -> "🚚"
+                        else -> null
+                    }
                     view
                 }
             }
@@ -215,15 +224,24 @@ actual fun OsmMap(
             map.removeAnnotations(map.annotations.filterIsInstance<ColoredPin>())
             map.removeOverlays(map.overlays)
             map.addAnnotations(markers.map { m ->
-                ColoredPin(m.color).apply {
+                ColoredPin(m.color, m.iconType).apply {
                     setCoordinate(coordinate(m.pos))
                     setTitle(m.title)
                 }
             })
-            if (drawLine && markers.size >= 2) map.addOverlay(polylineOf(markers.map { it.pos }))
+            val pointsToDraw = when {
+                !routePoints.isNullOrEmpty() -> routePoints
+                drawLine && markers.size >= 2 -> markers.map { it.pos }
+                else -> emptyList()
+            }
+            if (pointsToDraw.size >= 2) map.addOverlay(polylineOf(pointsToDraw))
             when {
                 center != null -> map.setCenterCoordinate(coordinate(center), animated = true)
                 markers.size == 1 -> map.setCenterCoordinate(coordinate(markers[0].pos), animated = true)
+                pointsToDraw.size > 1 && !state.fitted -> {
+                    state.fitted = true
+                    dispatch_async(dispatch_get_main_queue()) { map.fit(pointsToDraw, maxZoom = 16.0) }
+                }
                 markers.size > 1 && !state.fitted -> {
                     state.fitted = true
                     dispatch_async(dispatch_get_main_queue()) { map.fit(markers.map { it.pos }, maxZoom = 16.0) }

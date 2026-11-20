@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -134,9 +135,11 @@ fun VinkoTextField(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Vinko.Primary,
             unfocusedBorderColor = Vinko.Line,
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
+            focusedContainerColor = Vinko.FieldBg,
+            unfocusedContainerColor = Vinko.FieldBg,
+            disabledContainerColor = Vinko.FieldBg,
             focusedLabelColor = Vinko.Primary,
+            unfocusedLabelColor = Vinko.Primary,
         ),
     )
 }
@@ -269,3 +272,140 @@ fun SectionLabel(text: String) {
 
 @Composable
 fun FieldSpacer() = Spacer(Modifier.height(12.dp))
+
+@Composable
+fun AuthBrandHeader(
+    title: String,
+    subtitle: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(76.dp)
+                .background(Vinko.Tint, RoundedCornerShape(20.dp)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Image(
+                painter = painterResource(Res.drawable.ic_logo_mark),
+                contentDescription = "Vinko Logo",
+                modifier = Modifier.size(46.dp),
+            )
+        }
+        Spacer(Modifier.height(18.dp))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.ExtraBold,
+            color = Vinko.Ink,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = subtitle,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Vinko.Muted,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+fun OrDivider(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        HorizontalDivider(modifier = Modifier.weight(1f), color = Vinko.Line)
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .background(Vinko.Tint, RoundedCornerShape(8.dp))
+                .padding(horizontal = 10.dp, vertical = 2.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = "Ó",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = Vinko.Subtle,
+            )
+        }
+        HorizontalDivider(modifier = Modifier.weight(1f), color = Vinko.Line)
+    }
+}
+
+@Composable
+fun SocialAuthButton(
+    text: String,
+    icon: @Composable () -> Unit,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        shape = RoundedCornerShape(12.dp),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Vinko.Line),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.White,
+            contentColor = Vinko.Ink,
+        ),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            icon()
+            Spacer(Modifier.width(10.dp))
+            Text(
+                text = text,
+                style = MaterialTheme.typography.titleSmall,
+                color = Vinko.Ink,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+    }
+}
+
+@Composable
+fun GoogleLogo(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(20.dp)
+            .background(Vinko.Tint, RoundedCornerShape(6.dp)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "G",
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 13.sp,
+            color = Color(0xFF4285F4),
+        )
+    }
+}
+
+@Composable
+fun AppleLogo(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(20.dp)
+            .background(Vinko.Tint, RoundedCornerShape(6.dp)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "",
+            fontWeight = FontWeight.Bold,
+            fontSize = 15.sp,
+            color = Vinko.Ink,
+        )
+    }
+}
+

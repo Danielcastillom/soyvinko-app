@@ -91,7 +91,7 @@ VENEZUELAN_BANKS = {
 
 class Destination(BaseModel):
     model_config = ConfigDict(extra="ignore")
-    method_type: Literal["bank_transfer", "pago_movil", "sandbox"] | None = None
+    method_type: Literal["bank_transfer", "pago_movil", "crypto", "sandbox"] | None = None
     currency: str = Field(pattern="^(VES|USD)$")
     label: str | None = Field(default=None, max_length=120)
 
@@ -103,6 +103,10 @@ class Destination(BaseModel):
     # Pago Móvil
     phone_prefix: str | None = None
     phone_number: str | None = None
+
+    # Criptomoneda / USDT
+    crypto_network: Literal["trc20", "bep20", "polygon", "binance_pay"] | None = None
+    crypto_address: str | None = None
 
     # Identificación del titular
     holder_name: str | None = None
@@ -149,6 +153,10 @@ def add_destination(body: Destination, request: Request, user=Depends(principal)
 
     is_bank = body.method_type == "bank_transfer" or (body.method_type is None and bool(body.account_number))
     is_pago_movil = body.method_type == "pago_movil" or (body.method_type is None and bool(body.phone_number) and not body.account_number)
+    is_crypto = body.method_type == "crypto" or bool(body.crypto_address)
+
+    doc_type = None
+    doc_num = None
 
     if is_bank:
         clean_acc = re.sub(r"\D", "", body.account_number or "")
@@ -196,6 +204,36 @@ def add_destination(body: Destination, request: Request, user=Depends(principal)
         masked = f"{clean_phone[:4]} •••• {clean_phone[-3:]} · {_masked_document(doc_type, doc_num)}"
         currency = "VES"
 
+    elif is_crypto:
+        net = (body.crypto_network or "trc20").lower()
+        addr = (body.crypto_address or "").strip()
+        if not addr:
+            raise HTTPException(422, "Indica la dirección de billetera o Binance Pay ID.")
+        if net == "binance_pay":
+            if not (re.match(r"^\d{8,10}$", addr) or re.match(r"^[^@]+@[^@]+\.[^@]+$", addr)):
+                raise HTTPException(422, "Ingresa un Binance Pay ID numérico (8 a 10 dígitos) o correo electrónico válido registrado en Binance.")
+            provider = "binance_pay"
+            label = body.label.strip() if (body.label and body.label.strip()) else "Binance Pay (USDT)"
+            masked = f"Binance Pay · {addr[:4]}•••{addr[-4:] if len(addr) > 8 else ''}"
+        elif net == "trc20":
+            if not re.match(r"^T[a-zA-HJ-NP-Z0-9]{33}$", addr):
+                raise HTTPException(422, "Dirección TRC-20 (Tron) inválida. Debe comenzar con 'T' y tener 34 caracteres Base58.")
+            provider = "crypto_trc20"
+            label = body.label.strip() if (body.label and body.label.strip()) else "USDT (Tron TRC-20)"
+            masked = f"TRC20 · {addr[:6]}••••{addr[-4:]}"
+        elif net in ("bep20", "polygon"):
+            if not re.match(r"^0x[a-fA-F0-9]{40}$", addr):
+                raise HTTPException(422, f"Dirección {net.upper()} inválida. Debe comenzar con '0x' y tener 42 caracteres hexadecimales.")
+            provider = f"crypto_{net}"
+            net_name = "BNB Chain (BEP-20)" if net == "bep20" else "Polygon"
+            label = body.label.strip() if (body.label and body.label.strip()) else f"USDT ({net_name})"
+            masked = f"{net.upper()} · {addr[:6]}••••{addr[-4:]}"
+        else:
+            raise HTTPException(422, "Red de criptomoneda no soportada.")
+
+        currency = "USD"
+        token = f"crypto:{net}:" + cipher.encrypt(addr.encode()).decode()
+
     else:
         # Modo sandbox / cuenta de prueba
         sandbox()
@@ -207,15 +245,23 @@ def add_destination(body: Destination, request: Request, user=Depends(principal)
 
     if provider != "sandbox" and not user.get("email_verified"):
         raise HTTPException(
-            403, "Confirma tu correo electrónico antes de registrar una cuenta para recibir retiros."
+            403, "Confirma tu correo electrónico antes de registrar un método para recibir retiros."
         )
-    if provider != "sandbox" and f"{doc_type}-{doc_num}" not in _verified_identities(user["id"]):
-        # Una cuenta robada no puede desviar retiros a una cuenta bancaria de terceros.
-        raise HTTPException(
-            409,
-            "El titular de la cuenta debe ser tú: su documento tiene que coincidir con tu verificación de "
-            "identidad aprobada. Completa o espera la aprobación de tu KYC e inténtalo de nuevo.",
-        )
+    if provider in ("ve_bank", "pago_movil"):
+        if f"{doc_type}-{doc_num}" not in _verified_identities(user["id"]):
+            # Una cuenta robada no puede desviar retiros a una cuenta bancaria de terceros.
+            raise HTTPException(
+                409,
+                "El titular de la cuenta debe ser tú: su documento tiene que coincidir con tu verificación de "
+                "identidad aprobada. Completa o espera la aprobación de tu KYC e inténtalo de nuevo.",
+            )
+    elif provider.startswith("crypto_") or provider == "binance_pay":
+        # Para retiros cripto, requerir que el usuario tenga KYC aprobado (al menos una identidad verificada)
+        if not _verified_identities(user["id"]):
+            raise HTTPException(
+                409,
+                "Para registrar retiros en criptomonedas (USDT), necesitas tener tu verificación de identidad (KYC) aprobada.",
+            )
 
     ident = call(
         "add_payout_method",

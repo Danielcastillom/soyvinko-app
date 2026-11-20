@@ -112,7 +112,7 @@ fun RequestsScreen(nav: NavHostController) {
     var filter by rememberSaveable { mutableStateOf("all") }
     ScreenScaffold(
         "Mis solicitudes",
-        onBack = { nav.popBackStack() },
+        onBack = { if (!nav.popBackStack()) nav.navigate(Routes.HOME) },
         floatingAction = {
             ExtendedFloatingActionButton(
                 onClick = { nav.navigate(Routes.newRequest()) },

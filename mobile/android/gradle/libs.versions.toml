@@ -5,8 +5,8 @@ coil3 = "3.0.4"
 kotlinxDatetime = "0.6.1"
 jbLifecycle = "2.8.4"
 jbNavigation = "2.8.0-alpha10"
-agp = "8.7.3"
-kotlin = "2.1.0"
+agp = "9.5.1"
+kotlin = "2.2.10"
 coreKtx = "1.15.0"
 lifecycle = "2.8.7"
 activityCompose = "1.9.3"
@@ -16,6 +16,7 @@ okhttp = "4.12.0"
 serialization = "1.7.3"
 coroutines = "1.9.0"
 securityCrypto = "1.1.0-alpha06"
+biometric = "1.2.0-alpha05"
 splashscreen = "1.0.1"
 junit = "4.13.2"
 playLocation = "21.3.0"
@@ -50,6 +51,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }

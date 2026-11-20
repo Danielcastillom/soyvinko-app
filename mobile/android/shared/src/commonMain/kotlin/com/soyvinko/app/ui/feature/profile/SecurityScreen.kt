@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Devices
+import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Laptop
 import androidx.compose.material.icons.outlined.Lock
@@ -27,8 +28,13 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import com.soyvinko.app.biometric.BiometricResult
+import com.soyvinko.app.biometric.BiometricStatus
+import com.soyvinko.app.biometric.rememberBiometricManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,11 +79,131 @@ fun SecurityScreen(onBack: () -> Unit) {
     ScreenScaffold("Seguridad", onBack = onBack) { padding ->
         ProfilePage(padding) {
             EmailCard()
-            SectionLabel("Acceso")
+            SectionLabel("Acceso y biometría")
+            BiometricCard()
             PasswordCard()
             MfaCard()
             SectionLabel("Dispositivos conectados")
             SessionsCard()
+        }
+    }
+}
+
+@Composable
+private fun BiometricCard() {
+    val app = LocalApp.current
+    val user = LocalUser.current
+    val snackbar = LocalSnackbar.current
+    val biometric = rememberBiometricManager()
+    val status = remember { biometric.checkStatus() }
+    var enabled by remember { mutableStateOf(app.auth.isBiometricEnabled()) }
+    var lockOnLeave by remember { mutableStateOf(app.auth.isBiometricLockOnLeave()) }
+
+    VCard {
+        CardHeader(
+            icon = Icons.Outlined.Fingerprint,
+            title = "Acceso biométrico",
+            subtitle = "Usa tu huella dactilar o Face ID para acceder a la app al cerrar sesión o volver a ella.",
+            tint = if (enabled) Vinko.Mint else Vinko.Primary,
+            bg = if (enabled) Vinko.MintBg else Vinko.Tint,
+            trailing = {
+                Pill(
+                    text = if (enabled) "Activo" else "Inactivo",
+                    fg = if (enabled) Vinko.Mint else Vinko.Muted,
+                    bg = if (enabled) Vinko.MintBg else Vinko.Tint,
+                )
+            },
+        )
+        Spacer(Modifier.height(12.dp))
+
+        when (status) {
+            BiometricStatus.NotAvailable -> {
+                Banner("Tu dispositivo no cuenta con sensor biométrico compatible.", BannerTone.Info)
+            }
+            BiometricStatus.NotEnrolled -> {
+                Banner(
+                    "No tienes huellas dactilares o datos biométricos registrados en tu dispositivo. Regístralos en los ajustes de tu teléfono para activar esta función.",
+                    BannerTone.Info,
+                )
+            }
+            BiometricStatus.Available -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
+                        Text(
+                            text = "Iniciar sesión con huella / Face ID",
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            text = "Permite ingresar de inmediato cada vez que cierres sesión sin ingresar tu contraseña.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Vinko.Muted,
+                        )
+                    }
+                    Switch(
+                        checked = enabled,
+                        onCheckedChange = { active ->
+                            if (active) {
+                                biometric.authenticate(
+                                    title = "Activar acceso biométrico",
+                                    subtitle = "Verifica tu huella dactilar o Face ID para configurar el acceso seguro",
+                                    onResult = { result ->
+                                        when (result) {
+                                            is BiometricResult.Success -> {
+                                                app.auth.enableBiometric(user.email, lockOnLeave = lockOnLeave)
+                                                enabled = true
+                                                snackbar.notify("¡Acceso biométrico activado y configurado!")
+                                            }
+                                            is BiometricResult.Error -> {
+                                                snackbar.notify(result.message)
+                                            }
+                                            is BiometricResult.Canceled -> {}
+                                        }
+                                    },
+                                )
+                            } else {
+                                app.auth.disableBiometric()
+                                enabled = false
+                                snackbar.notify("Acceso biométrico desactivado.")
+                            }
+                        },
+                        colors = SwitchDefaults.colors(checkedTrackColor = Vinko.Primary),
+                    )
+                }
+
+                if (enabled) {
+                    Divider()
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
+                            Text(
+                                text = "Bloquear app al salir",
+                                style = MaterialTheme.typography.titleSmall,
+                            )
+                            Text(
+                                text = "Solicita confirmación biométrica cada vez que minimices o dejes la app.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Vinko.Muted,
+                            )
+                        }
+                        Switch(
+                            checked = lockOnLeave,
+                            onCheckedChange = { lock ->
+                                lockOnLeave = lock
+                                app.auth.setBiometricLockOnLeave(lock)
+                                snackbar.notify(if (lock) "Bloqueo al salir activado." else "Bloqueo al salir desactivado.")
+                            },
+                            colors = SwitchDefaults.colors(checkedTrackColor = Vinko.Primary),
+                        )
+                    }
+                }
+            }
         }
     }
 }

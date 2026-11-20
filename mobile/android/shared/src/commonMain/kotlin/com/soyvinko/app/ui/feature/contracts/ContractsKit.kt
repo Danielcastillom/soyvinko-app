@@ -277,20 +277,10 @@ fun rememberOp(): OpRunner {
         }
     }
 }
-
 /** Repite `block` cada `intervalMs` solo mientras la pantalla está visible (se pausa en segundo plano). */
 @Composable
 fun PollWhileVisible(intervalMs: Long, vararg keys: Any?, block: suspend () -> Unit) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val current by rememberUpdatedState(block)
-    LaunchedEffect(lifecycle, intervalMs, *keys) {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            while (true) {
-                delay(intervalMs)
-                try { current() } catch (_: ApiException) { }
-            }
-        }
-    }
+    com.soyvinko.app.ui.common.PollWhileVisible(intervalMs, *keys, block = block)
 }
 
 // ---------------------------------------------------------------------------------------------

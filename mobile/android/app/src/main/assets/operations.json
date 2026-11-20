@@ -1,598 +1,5432 @@
-{
-  "accept_direct_request": {
-    "path": "/api/v1/requests/accept-direct-request",
-    "method": "POST"
-  },
-  "accept_proposal": {
-    "path": "/api/v1/requests/accept-proposal",
-    "method": "POST"
-  },
-  "accept_terms": {
-    "path": "/api/v1/contracts/accept-terms",
-    "method": "POST"
-  },
-  "activate_professional": {
-    "path": "/api/v1/professionals/activate-professional",
-    "method": "POST"
-  },
-  "activate_store": {
-    "path": "/api/v1/marketplace/activate-store",
-    "method": "POST"
-  },
-  "active_plans": {
-    "path": "/api/v1/wallet/active-plans",
-    "method": "GET"
-  },
-  "add_address_ve": {
-    "path": "/api/v1/account/add-address",
-    "method": "POST"
-  },
-  "add_branch_ve": {
-    "path": "/api/v1/professionals/add-branch",
-    "method": "POST"
-  },
-  "add_credential": {
-    "path": "/api/v1/professionals/add-credential",
-    "method": "POST"
-  },
-  "add_offering": {
-    "path": "/api/v1/professionals/add-offering",
-    "method": "POST"
-  },
-  "add_portfolio": {
-    "path": "/api/v1/professionals/add-portfolio",
-    "method": "POST"
-  },
-  "add_product": {
-    "path": "/api/v1/marketplace/add-product",
-    "method": "POST"
-  },
-  "add_product_image": {
-    "path": "/api/v1/marketplace/add-product-image",
-    "method": "POST"
-  },
-  "add_professional_contact": {
-    "path": "/api/v1/professionals/add-professional-contact",
-    "method": "POST"
-  },
-  "admin_advance_order": {
-    "path": "/api/v1/admin/admin-advance-order",
-    "method": "POST"
-  },
-  "admin_list": {
-    "path": "/api/v1/admin/admin-list",
-    "method": "GET"
-  },
-  "admin_overview": {
-    "path": "/api/v1/admin/admin-overview",
-    "method": "GET"
-  },
-  "advance_contract": {
-    "path": "/api/v1/contracts/advance-contract",
-    "method": "POST"
-  },
-  "advance_order": {
-    "path": "/api/v1/marketplace/advance-order",
-    "method": "POST"
-  },
-  "approve_escrow_refund": {
-    "path": "/api/v1/contracts/approve-escrow-refund",
-    "method": "POST"
-  },
-  "archive_address": {
-    "path": "/api/v1/account/archive-address",
-    "method": "POST"
-  },
-  "assign_role": {
-    "path": "/api/v1/admin/assign-role",
-    "method": "POST"
-  },
-  "attach_kyc_file": {
-    "path": "/api/v1/support/attach-kyc-file",
-    "method": "POST"
-  },
-  "attach_request_file": {
-    "path": "/api/v1/requests/attach-request-file",
-    "method": "POST"
-  },
-  "available_requests": {
-    "path": "/api/v1/requests/available-requests",
-    "method": "GET"
-  },
-  "cancel_contract": {
-    "path": "/api/v1/contracts/cancel-contract",
-    "method": "POST"
-  },
-  "cancel_request": {
-    "path": "/api/v1/requests/cancel-request",
-    "method": "POST"
-  },
-  "cancel_withdrawal": {
-    "path": "/api/v1/wallet/cancel-withdrawal",
-    "method": "POST"
-  },
-  "catalog": {
-    "path": "/api/v1/public/catalog",
-    "method": "GET"
-  },
-  "chat_messages": {
-    "path": "/api/v1/contracts/chat-messages",
-    "method": "GET"
-  },
-  "configure_category": {
-    "path": "/api/v1/admin/configure-category",
-    "method": "POST"
-  },
-  "configure_plan": {
-    "path": "/api/v1/admin/configure-plan",
-    "method": "POST"
-  },
-  "configure_vinko_exchange_rate": {
-    "path": "/api/v1/admin/configure-vinko-exchange-rate",
-    "method": "POST"
-  },
-  "configure_withdrawal_fee": {
-    "path": "/api/v1/admin/configure-withdrawal-fee",
-    "method": "POST"
-  },
-  "confirm_external_payment": {
-    "path": "/api/v1/contracts/confirm-external-payment",
-    "method": "POST"
-  },
-  "contract_contacts": {
-    "path": "/api/v1/contracts/contract-contacts",
-    "method": "GET"
-  },
-  "contract_detail": {
-    "path": "/api/v1/contracts/contract-detail",
-    "method": "GET"
-  },
-  "convert_money_to_vinkos": {
-    "path": "/api/v1/wallet/convert-money-to-vinkos",
-    "method": "POST"
-  },
-  "create_customer_request": {
-    "path": "/api/v1/requests/create-customer-request",
-    "method": "POST"
-  },
-  "create_order": {
-    "path": "/api/v1/marketplace/create-order",
-    "method": "POST"
-  },
-  "create_remote_request": {
-    "path": "/api/v1/requests/create-remote-request",
-    "method": "POST"
-  },
-  "create_request": {
-    "path": "/api/v1/requests/create-request",
-    "method": "POST"
-  },
-  "create_topup": {
-    "path": "/api/v1/wallet/create-topup",
-    "method": "POST"
-  },
-  "dashboard": {
-    "path": "/api/v1/account/dashboard",
-    "method": "GET"
-  },
-  "disable_payout_method": {
-    "path": "/api/v1/wallet/disable-payout-method",
-    "method": "POST"
-  },
-  "discover": {
-    "path": "/api/v1/public/discover",
-    "method": "GET"
-  },
-  "dispute_contract": {
-    "path": "/api/v1/contracts/dispute-contract",
-    "method": "POST"
-  },
-  "escrow_details": {
-    "path": "/api/v1/contracts/escrow-details",
-    "method": "GET"
-  },
-  "external_payment_reports": {
-    "path": "/api/v1/contracts/external-payment-reports",
-    "method": "GET"
-  },
-  "fund_contract": {
-    "path": "/api/v1/contracts/fund-contract",
-    "method": "POST"
-  },
-  "geo_municipalities": {
-    "path": "/api/v1/public/geo-municipalities",
-    "method": "GET"
-  },
-  "geo_parish": {
-    "path": "/api/v1/public/geo-parish",
-    "method": "GET"
-  },
-  "geo_parishes": {
-    "path": "/api/v1/public/geo-parishes",
-    "method": "GET"
-  },
-  "geo_states": {
-    "path": "/api/v1/public/geo-states",
-    "method": "GET"
-  },
-  "get_vinko_exchange_rates": {
-    "path": "/api/v1/wallet/get-vinko-exchange-rates",
-    "method": "GET"
-  },
-  "kyc_case": {
-    "path": "/api/v1/admin/kyc-case",
-    "method": "POST"
-  },
-  "locate_parish": {
-    "path": "/api/v1/public/locate-parish",
-    "method": "POST"
-  },
-  "location_status": {
-    "path": "/api/v1/contracts/location-status",
-    "method": "GET"
-  },
-  "manage_ticket": {
-    "path": "/api/v1/admin/manage-ticket",
-    "method": "POST"
-  },
-  "marketplace": {
-    "path": "/api/v1/public/marketplace",
-    "method": "GET"
-  },
-  "moderate_file": {
-    "path": "/api/v1/admin/moderate-file",
-    "method": "POST"
-  },
-  "moderate_request": {
-    "path": "/api/v1/admin/moderate-request",
-    "method": "POST"
-  },
-  "moderate_review": {
-    "path": "/api/v1/admin/moderate-review",
-    "method": "POST"
-  },
-  "money_history": {
-    "path": "/api/v1/wallet/money-history",
-    "method": "GET"
-  },
-  "money_wallet": {
-    "path": "/api/v1/wallet/money-wallet",
-    "method": "GET"
-  },
-  "my_account": {
-    "path": "/api/v1/account/my-account",
-    "method": "GET"
-  },
-  "my_contracts": {
-    "path": "/api/v1/contracts/my-contracts",
-    "method": "GET"
-  },
-  "my_credit_purchases": {
-    "path": "/api/v1/wallet/my-credit-purchases",
-    "method": "GET"
-  },
-  "my_favorites": {
-    "path": "/api/v1/professionals/my-favorites",
-    "method": "GET"
-  },
-  "my_files": {
-    "path": "/api/v1/support/my-files",
-    "method": "GET"
-  },
-  "my_kyc": {
-    "path": "/api/v1/support/my-kyc",
-    "method": "GET"
-  },
-  "my_notifications": {
-    "path": "/api/v1/account/my-notifications",
-    "method": "GET"
-  },
-  "my_orders": {
-    "path": "/api/v1/marketplace/my-orders",
-    "method": "GET"
-  },
-  "my_payout_methods": {
-    "path": "/api/v1/wallet/my-payout-methods",
-    "method": "GET"
-  },
-  "my_products": {
-    "path": "/api/v1/marketplace/my-products",
-    "method": "GET"
-  },
-  "my_professional": {
-    "path": "/api/v1/professionals/my-professional",
-    "method": "GET"
-  },
-  "my_proposals": {
-    "path": "/api/v1/requests/my-proposals",
-    "method": "GET"
-  },
-  "my_requests": {
-    "path": "/api/v1/requests/my-requests",
-    "method": "GET"
-  },
-  "my_sessions": {
-    "path": "/api/v1/account/my-sessions",
-    "method": "GET"
-  },
-  "my_tickets": {
-    "path": "/api/v1/support/my-tickets",
-    "method": "GET"
-  },
-  "my_topups": {
-    "path": "/api/v1/wallet/my-topups",
-    "method": "GET"
-  },
-  "my_wallet": {
-    "path": "/api/v1/wallet/my-wallet",
-    "method": "POST"
-  },
-  "my_withdrawals": {
-    "path": "/api/v1/wallet/my-withdrawals",
-    "method": "GET"
-  },
-  "navigate": {
-    "path": "/api/v1/contracts/navigate",
-    "method": "GET"
-  },
-  "nearby_professionals": {
-    "path": "/api/v1/public/nearby-professionals",
-    "method": "POST"
-  },
-  "open_ticket": {
-    "path": "/api/v1/support/open-ticket",
-    "method": "POST"
-  },
-  "payment_preferences": {
-    "path": "/api/v1/account/payment-preferences",
-    "method": "GET"
-  },
-  "professional_assets": {
-    "path": "/api/v1/professionals/professional-assets",
-    "method": "GET"
-  },
-  "professional_map_markers": {
-    "path": "/api/v1/public/professional-map-markers",
-    "method": "POST"
-  },
-  "professional_profile": {
-    "path": "/api/v1/professionals/professional-profile",
-    "method": "GET"
-  },
-  "professional_reviews": {
-    "path": "/api/v1/professionals/professional-reviews",
-    "method": "GET"
-  },
-  "propose_terms": {
-    "path": "/api/v1/contracts/propose-terms",
-    "method": "POST"
-  },
-  "protect_service_request": {
-    "path": "/api/v1/requests/protect-service-request",
-    "method": "POST"
-  },
-  "publish_request": {
-    "path": "/api/v1/requests/publish-request",
-    "method": "POST"
-  },
-  "quote_contract_funding": {
-    "path": "/api/v1/contracts/quote-contract-funding",
-    "method": "POST"
-  },
-  "quote_withdrawal": {
-    "path": "/api/v1/wallet/quote-withdrawal",
-    "method": "POST"
-  },
-  "rate_contract": {
-    "path": "/api/v1/contracts/rate-contract",
-    "method": "POST"
-  },
-  "read_notification": {
-    "path": "/api/v1/account/read-notification",
-    "method": "POST"
-  },
-  "refund_contract_credit": {
-    "path": "/api/v1/admin/refund-contract-credit",
-    "method": "POST"
-  },
-  "release_contract_funds": {
-    "path": "/api/v1/contracts/release-contract-funds",
-    "method": "POST"
-  },
-  "remove_branch": {
-    "path": "/api/v1/professionals/remove-branch",
-    "method": "POST"
-  },
-  "remove_contact": {
-    "path": "/api/v1/account/remove-contact",
-    "method": "POST"
-  },
-  "remove_credential": {
-    "path": "/api/v1/professionals/remove-credential",
-    "method": "POST"
-  },
-  "remove_offering": {
-    "path": "/api/v1/professionals/remove-offering",
-    "method": "POST"
-  },
-  "remove_portfolio_item": {
-    "path": "/api/v1/professionals/remove-portfolio-item",
-    "method": "POST"
-  },
-  "remove_product_image": {
-    "path": "/api/v1/marketplace/remove-product-image",
-    "method": "POST"
-  },
-  "remove_professional_contact": {
-    "path": "/api/v1/professionals/remove-professional-contact",
-    "method": "POST"
-  },
-  "remove_request_image": {
-    "path": "/api/v1/requests/remove-request-image",
-    "method": "POST"
-  },
-  "reply_ticket": {
-    "path": "/api/v1/support/reply-ticket",
-    "method": "POST"
-  },
-  "report_external_payment": {
-    "path": "/api/v1/contracts/report-external-payment",
-    "method": "POST"
-  },
-  "report_position": {
-    "path": "/api/v1/contracts/report-position",
-    "method": "POST"
-  },
-  "request_delivery_changes": {
-    "path": "/api/v1/contracts/request-delivery-changes",
-    "method": "POST"
-  },
-  "request_escrow_refund": {
-    "path": "/api/v1/contracts/request-escrow-refund",
-    "method": "POST"
-  },
-  "request_offering": {
-    "path": "/api/v1/requests/request-offering",
-    "method": "POST"
-  },
-  "request_proposals": {
-    "path": "/api/v1/requests/request-proposals",
-    "method": "GET"
-  },
-  "request_withdrawal": {
-    "path": "/api/v1/wallet/request-withdrawal",
-    "method": "POST"
-  },
-  "resolve_escrow_refund": {
-    "path": "/api/v1/admin/resolve-escrow-refund",
-    "method": "POST"
-  },
-  "respond_review": {
-    "path": "/api/v1/professionals/respond-review",
-    "method": "POST"
-  },
-  "review_kyc": {
-    "path": "/api/v1/admin/review-kyc",
-    "method": "POST"
-  },
-  "revoke_location": {
-    "path": "/api/v1/contracts/revoke-location",
-    "method": "POST"
-  },
-  "revoke_session": {
-    "path": "/api/v1/account/revoke-session",
-    "method": "POST"
-  },
-  "save_contact": {
-    "path": "/api/v1/account/save-contact",
-    "method": "POST"
-  },
-  "search_professionals": {
-    "path": "/api/v1/professionals/search-professionals",
-    "method": "GET"
-  },
-  "search_remote_professionals": {
-    "path": "/api/v1/professionals/search-remote-professionals",
-    "method": "GET"
-  },
-  "send_attachment": {
-    "path": "/api/v1/contracts/send-attachment",
-    "method": "POST"
-  },
-  "send_message": {
-    "path": "/api/v1/contracts/send-message",
-    "method": "POST"
-  },
-  "service_feed": {
-    "path": "/api/v1/requests/service-feed",
-    "method": "GET"
-  },
-  "set_branch_hours": {
-    "path": "/api/v1/professionals/set-branch-hours",
-    "method": "POST"
-  },
-  "set_coverage": {
-    "path": "/api/v1/professionals/set-coverage",
-    "method": "POST"
-  },
-  "set_favorite": {
-    "path": "/api/v1/professionals/set-favorite",
-    "method": "POST"
-  },
-  "set_offering_delivery": {
-    "path": "/api/v1/professionals/set-offering-delivery",
-    "method": "POST"
-  },
-  "set_payment_preference": {
-    "path": "/api/v1/account/set-payment-preference",
-    "method": "POST"
-  },
-  "set_professional_plan": {
-    "path": "/api/v1/admin/set-professional-plan",
-    "method": "POST"
-  },
-  "set_store_plan": {
-    "path": "/api/v1/admin/set-store-plan",
-    "method": "POST"
-  },
-  "set_store_status": {
-    "path": "/api/v1/admin/set-store-status",
-    "method": "POST"
-  },
-  "set_user_status": {
-    "path": "/api/v1/admin/set-user-status",
-    "method": "POST"
-  },
-  "share_location": {
-    "path": "/api/v1/contracts/share-location",
-    "method": "POST"
-  },
-  "start_purchase": {
-    "path": "/api/v1/wallet/start-purchase",
-    "method": "POST"
-  },
-  "store_products": {
-    "path": "/api/v1/marketplace/store-products",
-    "method": "GET"
-  },
-  "submit_delivery": {
-    "path": "/api/v1/contracts/submit-delivery",
-    "method": "POST"
-  },
-  "submit_proposal": {
-    "path": "/api/v1/requests/submit-proposal",
-    "method": "POST"
-  },
-  "support_ticket": {
-    "path": "/api/v1/admin/support-ticket",
-    "method": "POST"
-  },
-  "ticket_thread": {
-    "path": "/api/v1/support/ticket-thread",
-    "method": "GET"
-  },
-  "update_account": {
-    "path": "/api/v1/account/update-account",
-    "method": "POST"
-  },
-  "update_offering": {
-    "path": "/api/v1/professionals/update-offering",
-    "method": "POST"
-  },
-  "update_product": {
-    "path": "/api/v1/marketplace/update-product",
-    "method": "POST"
-  },
-  "update_professional": {
-    "path": "/api/v1/professionals/update-professional",
-    "method": "POST"
-  },
-  "update_shared_location": {
-    "path": "/api/v1/contracts/update-shared-location",
-    "method": "POST"
-  },
-  "withdraw_proposal": {
-    "path": "/api/v1/requests/withdraw-proposal",
-    "method": "POST"
+[
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "accept_direct_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/accept-direct-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_proposal",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "accept_proposal",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/accept-proposal"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_terms",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "accept_terms",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/accept-terms"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_slug",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_business_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_bio",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "activate_professional",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/activate-professional"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_slug",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "activate_store",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/activate-store"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "active_plans",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/active-plans"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_label",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_country",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_line",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_instructions",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "add_address",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/add-address"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_label",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_country",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_state",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_municipality",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_parish",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_line",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_instructions",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "add_address_ve",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/add-address"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_country",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_line",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_public_address",
+        "type": "boolean",
+        "required": false
+      }
+    ],
+    "name": "add_branch",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/add-branch"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_country",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_state",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_municipality",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_parish",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_line",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_public_address",
+        "type": "boolean",
+        "required": false
+      }
+    ],
+    "name": "add_branch_ve",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/add-branch"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_issuer",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_issued",
+        "type": "date",
+        "required": false
+      },
+      {
+        "name": "p_expires",
+        "type": "date",
+        "required": false
+      }
+    ],
+    "name": "add_credential",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/add-credential"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_price_minor",
+        "type": "bigint",
+        "required": false
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "add_offering",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/add-offering"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_token",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_label",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_masked",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "add_payout_method",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/add-payout-method"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "add_portfolio",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/add-portfolio"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_store",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_sku",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_price",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_stock",
+        "type": "integer",
+        "required": true
+      }
+    ],
+    "name": "add_product",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/add-product"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_product",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "add_product_image",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/add-product-image"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_branch",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_kind",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_label",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_value",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "add_professional_contact",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/add-professional-contact"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_action",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "admin_advance_order",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/admin-advance-order"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "admin_file_key",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/admin-file-key"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_resource",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "admin_list",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "admin",
+    "method": "GET",
+    "path": "/api/v1/admin/admin-list"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "admin_overview",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "admin",
+    "method": "GET",
+    "path": "/api/v1/admin/admin-overview"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_action",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "advance_contract",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/advance-contract"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_action",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "advance_order",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/advance-order"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_action",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "advance_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/advance-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "approve_escrow_refund",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/approve-escrow-refund"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_address",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "archive_address",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/archive-address"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_role",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_enable",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "assign_role",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/assign-role"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_case",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_kind",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "attach_kyc_file",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "support",
+    "method": "POST",
+    "path": "/api/v1/support/attach-kyc-file"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "attach_request_file",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/attach-request-file"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_email",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "auth_account",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": null,
+    "method": "GET",
+    "path": "/api/v1/internal/auth-account"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_email",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_purpose",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "auth_challenge",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-challenge"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "auth_change_password",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-change-password"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_hash",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_purpose",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_password_hash",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "auth_consume_challenge",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "boolean",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-consume-challenge"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "auth_mfa",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": null,
+    "method": "GET",
+    "path": "/api/v1/internal/auth-mfa"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_session",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "auth_principal",
+    "roles": [
+      "chamba_api",
+      "chamba_auth"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": null,
+    "method": "GET",
+    "path": "/api/v1/internal/auth-principal"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_bucket",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_seconds",
+        "type": "integer",
+        "required": true
+      }
+    ],
+    "name": "auth_rate_limit",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "boolean",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-rate-limit"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_success",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "auth_record_attempt",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-record-attempt"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "auth_revoke_refresh",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-revoke-refresh"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_old_hash",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_new_hash",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_expires",
+        "type": "timestamp with time zone",
+        "required": true
+      }
+    ],
+    "name": "auth_rotate_session",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-rotate-session"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_encrypted",
+        "type": "bytea",
+        "required": true
+      },
+      {
+        "name": "p_enabled",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "auth_set_mfa",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/auth-set-mfa"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "available_requests",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "record",
+    "volatility": "s",
+    "module": "requests",
+    "method": "GET",
+    "path": "/api/v1/requests/available-requests"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_radius_km",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "available_shipments",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "transport",
+    "method": "GET",
+    "path": "/api/v1/transport/available-shipments"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "cancel_contract",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/cancel-contract"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "cancel_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/cancel-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_withdrawal",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "cancel_withdrawal",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/cancel-withdrawal"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "catalog",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/catalog"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_before",
+        "type": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "name": "p_before_id",
+        "type": "uuid",
+        "required": false
+      }
+    ],
+    "name": "chat_messages",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/chat-messages"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "claim_notifications",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/claim-notifications"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_slug",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_active",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "p_parent",
+        "type": "uuid",
+        "required": false
+      }
+    ],
+    "name": "configure_category",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/configure-category"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_credits",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_price",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_weight",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_positioning_days",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_marketplace_days",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_active",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "configure_plan",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/configure-plan"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_rate_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "configure_vinko_exchange_rate",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/configure-vinko-exchange-rate"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_basis_points",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "configure_withdrawal_fee",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/configure-withdrawal-fee"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_report",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "confirm_external_payment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/confirm-external-payment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_purchase",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_event",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_payment",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_amount",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_payload_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "confirm_purchase",
+    "roles": [
+      "chamba_billing"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/confirm-purchase"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_topup",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_event",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_payment",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_amount",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "confirm_topup",
+    "roles": [
+      "chamba_billing"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/confirm-topup"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_withdrawal",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_event",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_payment",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_result",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_net",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "confirm_withdrawal",
+    "roles": [
+      "chamba_billing"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/confirm-withdrawal"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "contract_contacts",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/contract-contacts"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "contract_detail",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/contract-detail"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_vinkos",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "convert_money_to_vinkos",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/convert-money-to-vinkos"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_delivery_mode",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_address",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_budget",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_radius_m",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_files",
+        "type": "uuid[]",
+        "required": false
+      },
+      {
+        "name": "p_protect",
+        "type": "boolean",
+        "required": false
+      }
+    ],
+    "name": "create_customer_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/create-customer-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_store",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_items",
+        "type": "jsonb",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "create_order",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/create-order"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_mode",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_target",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_requirements",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_offered_price",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "create_remote_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/create-remote-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_mode",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_target",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_address",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_radius_m",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_budget_min",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_budget_max",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "create_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/create-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_refresh_hash",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_device",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": true
+      }
+    ],
+    "name": "create_session",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/create-session"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_origin_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_destination_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_fare_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_cargo_image_file_id",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_passenger_count",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_is_bargain",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_estimated_fare_minor",
+        "type": "bigint",
+        "required": false
+      }
+    ],
+    "name": "create_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/create-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_vehicle_type",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_origin_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_origin_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_destination_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_destination_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_fare_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_origin_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_contact_phone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_destination_instructions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "create_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/create-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_amount",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "create_topup",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/create-topup"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "dashboard",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "account",
+    "method": "GET",
+    "path": "/api/v1/account/dashboard"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_outbox",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_attempt",
+        "type": "integer",
+        "required": true
+      }
+    ],
+    "name": "deliver_in_app",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/deliver-in-app"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_method",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "disable_payout_method",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/disable-payout-method"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_mode",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "discover",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/discover"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "dispute_contract",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/dispute-contract"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "escrow_details",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/escrow-details"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "expire_requests",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "integer",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/expire-requests"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": false
+      }
+    ],
+    "name": "external_payment_reports",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/external-payment-reports"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "file_object_key",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/file-object-key"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_id",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_attempt",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_success",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "p_channel",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_provider_id",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_error",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "finish_notification",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/finish-notification"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_wallet",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_event",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "flag_money_incident",
+    "roles": [
+      "chamba_billing"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/flag-money-incident"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_quote",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "fund_contract",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/fund-contract"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_state",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "geo_municipalities",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/geo-municipalities"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_parish",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "geo_parish",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/geo-parish"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_municipality",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "geo_parishes",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/geo-parishes"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "geo_states",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/geo-states"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "get_vinko_exchange_rates",
+    "roles": [
+      "chamba_admin",
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/get-vinko-exchange-rates"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_case",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "kyc_case",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/kyc-case"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      }
+    ],
+    "name": "locate_parish",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "POST",
+    "path": "/api/v1/public/locate-parish"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "location_status",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/location-status"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_ticket",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_status",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_assignee",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_note",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "manage_ticket",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/manage-ticket"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "marketplace",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "GET",
+    "path": "/api/v1/public/marketplace"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_approve",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "moderate_file",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/moderate-file"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_approve",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "moderate_request",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/moderate-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_review",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_status",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "moderate_review",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/moderate-review"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_before",
+        "type": "bigint",
+        "required": false
+      }
+    ],
+    "name": "money_history",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/money-history"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "money_wallet",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/money-wallet"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "my_account",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "account",
+    "method": "GET",
+    "path": "/api/v1/account/my-account"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_contracts",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/my-contracts"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_credit_purchases",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/my-credit-purchases"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_favorites",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/my-favorites"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_files",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "support",
+    "method": "GET",
+    "path": "/api/v1/support/my-files"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_kyc",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "support",
+    "method": "GET",
+    "path": "/api/v1/support/my-kyc"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_notifications",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "account",
+    "method": "GET",
+    "path": "/api/v1/account/my-notifications"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_orders",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "marketplace",
+    "method": "GET",
+    "path": "/api/v1/marketplace/my-orders"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_payout_methods",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/my-payout-methods"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_products",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "marketplace",
+    "method": "GET",
+    "path": "/api/v1/marketplace/my-products"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "my_professional",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/my-professional"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_proposals",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "requests",
+    "method": "GET",
+    "path": "/api/v1/requests/my-proposals"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_requests",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "requests",
+    "method": "GET",
+    "path": "/api/v1/requests/my-requests"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_sessions",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "account",
+    "method": "GET",
+    "path": "/api/v1/account/my-sessions"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_role",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "my_shipments",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "transport",
+    "method": "GET",
+    "path": "/api/v1/transport/my-shipments"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_tickets",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "support",
+    "method": "GET",
+    "path": "/api/v1/support/my-tickets"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_topups",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/my-topups"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "my_wallet",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/my-wallet"
+  },
+  {
+    "set": true,
+    "args": [],
+    "name": "my_withdrawals",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "wallet",
+    "method": "GET",
+    "path": "/api/v1/wallet/my-withdrawals"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "navigate",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "GET",
+    "path": "/api/v1/contracts/navigate"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_radius_m",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_verified_only",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "nearby_professionals",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "POST",
+    "path": "/api/v1/public/nearby-professionals"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_subject",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": false
+      }
+    ],
+    "name": "open_ticket",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "support",
+    "method": "POST",
+    "path": "/api/v1/support/open-ticket"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "order_delivery",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/order-delivery"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "payment_preferences",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "account",
+    "method": "GET",
+    "path": "/api/v1/account/payment-preferences"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_withdrawal",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "prepare_withdrawal",
+    "roles": [
+      "chamba_billing"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/prepare-withdrawal"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "professional_assets",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/professional-assets"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_professionals",
+        "type": "uuid[]",
+        "required": true
+      },
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": false
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_radius_m",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "professional_map_markers",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "public",
+    "method": "POST",
+    "path": "/api/v1/public/professional-map-markers"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_professional",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "professional_profile",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/professional-profile"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_professional",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "professional_reviews",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/professional-reviews"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_price",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_method",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_terms",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "propose_terms",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/propose-terms"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "protect_service_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/protect-service-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "publish_request",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/publish-request"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "quote_contract_funding",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/quote-contract-funding"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_method",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_amount",
+        "type": "bigint",
+        "required": false
+      }
+    ],
+    "name": "quote_withdrawal",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/quote-withdrawal"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_rating",
+        "type": "smallint",
+        "required": true
+      },
+      {
+        "name": "p_recommends",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "p_comment",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "rate_contract",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/rate-contract"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_notification",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "read_notification",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/read-notification"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_ticket",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "refund_contract_credit",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "bigint",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/refund-contract-credit"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_owner",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_object_key",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_mime",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_bytes",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_sha256",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_purpose",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_exif_removed",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "register_upload",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/register-upload"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_email",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_argon2id_hash",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_account_type",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_business_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_rif",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_contact_name",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "register_user",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/register-user"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_delivery",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "release_contract_funds",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/release-contract-funds"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_branch",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_branch",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/remove-branch"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contact",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_contact",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/remove-contact"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_credential",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_credential",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/remove-credential"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_offering",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_offering",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/remove-offering"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_item",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_portfolio_item",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/remove-portfolio-item"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_product",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_product_image",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/remove-product-image"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contact",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_professional_contact",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/remove-professional-contact"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "remove_request_image",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/remove-request-image"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_ticket",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_body",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "reply_ticket",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "support",
+    "method": "POST",
+    "path": "/api/v1/support/reply-ticket"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_amount",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_method",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "report_external_payment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/report-external-payment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_accuracy",
+        "type": "integer",
+        "required": true
+      }
+    ],
+    "name": "report_position",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/report-position"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_delivery",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "request_delivery_changes",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/request-delivery-changes"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "request_escrow_refund",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/request-escrow-refund"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_offering",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_address",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_files",
+        "type": "uuid[]",
+        "required": false
+      },
+      {
+        "name": "p_protect",
+        "type": "boolean",
+        "required": false
+      }
+    ],
+    "name": "request_offering",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/request-offering"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "request_proposals",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "requests",
+    "method": "GET",
+    "path": "/api/v1/requests/request-proposals"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_quote",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "request_withdrawal",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/request-withdrawal"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_ticket",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "resolve_escrow_refund",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/resolve-escrow-refund"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_refresh_hash",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "resolve_session",
+    "roles": [
+      "chamba_auth"
+    ],
+    "returns": "uuid",
+    "volatility": "s",
+    "module": null,
+    "method": "GET",
+    "path": "/api/v1/internal/resolve-session"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_review",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_response",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "respond_review",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/respond-review"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_case",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_status",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": false
+      }
+    ],
+    "name": "review_kyc",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/review-kyc"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "revoke_location",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/revoke-location"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_session",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "revoke_session",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/revoke-session"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_kind",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_label",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_value",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_share",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_avatar",
+        "type": "uuid",
+        "required": false
+      }
+    ],
+    "name": "save_contact",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/save-contact"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_address",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_radius_m",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_sort",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_verified_only",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_max_price",
+        "type": "bigint",
+        "required": false
+      },
+      {
+        "name": "p_min_rating",
+        "type": "numeric",
+        "required": false
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "search_professionals",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "record",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/search-professionals"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_currency",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_max_price",
+        "type": "bigint",
+        "required": false
+      },
+      {
+        "name": "p_verified_only",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "search_remote_professionals",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "professionals",
+    "method": "GET",
+    "path": "/api/v1/professionals/search-remote-professionals"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "send_attachment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/send-attachment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_body",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "send_message",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/send-message"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_delivery_mode",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_offset",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "service_feed",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "requests",
+    "method": "GET",
+    "path": "/api/v1/requests/service-feed"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "set_avatar",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/set-avatar"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_branch",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_weekday",
+        "type": "smallint",
+        "required": true
+      },
+      {
+        "name": "p_opens",
+        "type": "time without time zone",
+        "required": true
+      },
+      {
+        "name": "p_closes",
+        "type": "time without time zone",
+        "required": true
+      }
+    ],
+    "name": "set_branch_hours",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/set-branch-hours"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_branch",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_category",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_radius_m",
+        "type": "integer",
+        "required": true
+      }
+    ],
+    "name": "set_coverage",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/set-coverage"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_professional",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_enabled",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "set_favorite",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/set-favorite"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_offering",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_mode",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "set_offering_delivery",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/set-offering-delivery"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_required",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "set_payment_preference",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/set-payment-preference"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_professional",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_plan",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "set_professional_plan",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/set-professional-plan"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_store",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_plan",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "set_store_plan",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/set-store-plan"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_store",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_status",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "set_store_status",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "text",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/set-store-status"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_user",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_status",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "set_user_status",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/set-user-status"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_hours",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_accuracy",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "share_location",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/share-location"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_order",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_address_ciphertext",
+        "type": "bytea",
+        "required": true
+      },
+      {
+        "name": "p_key_id",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "share_order_delivery",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/share-order-delivery"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "shipment_tracking",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "transport",
+    "method": "GET",
+    "path": "/api/v1/transport/shipment-tracking"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_plan",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "start_purchase",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "wallet",
+    "method": "POST",
+    "path": "/api/v1/wallet/start-purchase"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_store",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "store_products",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "marketplace",
+    "method": "GET",
+    "path": "/api/v1/marketplace/store-products"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_summary",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_key",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_files",
+        "type": "uuid[]",
+        "required": false
+      }
+    ],
+    "name": "submit_delivery",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/submit-delivery"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_external_reference",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "submit_kyc",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/submit-kyc"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_request",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_message",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_price_minor",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_expires_at",
+        "type": "timestamp with time zone",
+        "required": true
+      }
+    ],
+    "name": "submit_proposal",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "uuid",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/submit-proposal"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_ticket",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_reason",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "support_ticket",
+    "roles": [
+      "chamba_admin"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "admin",
+    "method": "POST",
+    "path": "/api/v1/admin/support-ticket"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "take_shipment",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/take-shipment"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_ticket",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "ticket_thread",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": "support",
+    "method": "GET",
+    "path": "/api/v1/support/ticket-thread"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_locale",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_timezone",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_business_name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_rif",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "p_contact_name",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "name": "update_account",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "account",
+    "method": "POST",
+    "path": "/api/v1/account/update-account"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_offering",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_title",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_price",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_active",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "update_offering",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/update-offering"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_product",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_description",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_price",
+        "type": "bigint",
+        "required": true
+      },
+      {
+        "name": "p_stock",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_status",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "update_product",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "marketplace",
+    "method": "POST",
+    "path": "/api/v1/marketplace/update-product"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_bio",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_years",
+        "type": "integer",
+        "required": true
+      },
+      {
+        "name": "p_accepts",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "name": "update_professional",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "professionals",
+    "method": "POST",
+    "path": "/api/v1/professionals/update-professional"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_contract",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_accuracy",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "update_shared_location",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "contracts",
+    "method": "POST",
+    "path": "/api/v1/contracts/update-shared-location"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_shipment",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_lon",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_lat",
+        "type": "double precision",
+        "required": true
+      },
+      {
+        "name": "p_accuracy",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "p_heading",
+        "type": "double precision",
+        "required": false
+      },
+      {
+        "name": "p_speed",
+        "type": "double precision",
+        "required": false
+      }
+    ],
+    "name": "update_shipment_location",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "jsonb",
+    "volatility": "v",
+    "module": "transport",
+    "method": "POST",
+    "path": "/api/v1/transport/update-shipment-location"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_method",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_owner",
+        "type": "uuid",
+        "required": true
+      },
+      {
+        "name": "p_provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "p_token",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "name": "verify_payout_method",
+    "roles": [
+      "chamba_billing"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/verify-payout-method"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_proposal",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "withdraw_proposal",
+    "roles": [
+      "chamba_api"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": "requests",
+    "method": "POST",
+    "path": "/api/v1/requests/withdraw-proposal"
+  },
+  {
+    "set": true,
+    "args": [
+      {
+        "name": "p_limit",
+        "type": "integer",
+        "required": false
+      }
+    ],
+    "name": "worker_files_to_purge",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "jsonb",
+    "volatility": "s",
+    "module": null,
+    "method": "GET",
+    "path": "/api/v1/internal/worker-files-to-purge"
+  },
+  {
+    "set": false,
+    "args": [],
+    "name": "worker_housekeeping",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/worker-housekeeping"
+  },
+  {
+    "set": false,
+    "args": [
+      {
+        "name": "p_file",
+        "type": "uuid",
+        "required": true
+      }
+    ],
+    "name": "worker_mark_file_purged",
+    "roles": [
+      "chamba_worker"
+    ],
+    "returns": "void",
+    "volatility": "v",
+    "module": null,
+    "method": "POST",
+    "path": "/api/v1/internal/worker-mark-file-purged"
   }
-}
+]

@@ -15,6 +15,7 @@ object Routes {
     const val PROFILE = "profile"
 
     // Explorar y solicitudes (feature.explore)
+    const val CATEGORIES = "categories"
     const val PROFESSIONAL = "professional/{id}"
     const val REQUESTS = "requests"
     const val REQUEST = "requests/detail/{id}"
@@ -47,14 +48,22 @@ object Routes {
     const val PRO_SETUP = "pro/setup"
     const val MARKETPLACE = "marketplace"
     const val STORE = "marketplace/store/{id}"
+    const val CART = "marketplace/cart"
     const val ORDERS = "marketplace/orders"
     const val MY_STORE = "marketplace/mine"
+
+    // Transportes, Envíos y Delivery tipo Uber (feature.transport)
+    const val TRANSPORT = "transport"
+    const val TRANSPORT_NEW = "transport/new"
+    const val SHIPMENT_TRACKING = "transport/{id}/tracking"
 
     // Administración, solo personal (feature.admin)
     const val ADMIN = "admin"
     const val ADMIN_RESOURCE = "admin/resource/{resource}"
 
-    val TABS = setOf(HOME, EXPLORE, CONTRACTS, WALLET, PROFILE)
+    val CLIENT_TABS = setOf(HOME, REQUESTS, CONTRACTS, PROFILE)
+    val SELLER_TABS = setOf(MARKETPLACE, ORDERS, MY_STORE, TRANSPORT, PRO)
+    val TABS = CLIENT_TABS + SELLER_TABS
 
     fun professional(id: String) = "professional/$id"
     fun request(id: String) = "requests/detail/$id"
@@ -63,6 +72,7 @@ object Routes {
     fun contract(id: String) = "contracts/$id"
     fun chat(id: String) = "contracts/$id/chat"
     fun tracking(id: String) = "contracts/$id/tracking"
+    fun shipmentTracking(id: String) = "transport/$id/tracking"
     fun ticket(id: String) = "support/$id"
     fun legal(doc: String) = "legal/${encodeUrlComponent(doc)}" // terminos | privacidad | cookies | aviso-legal
     fun store(id: String) = "marketplace/store/$id"

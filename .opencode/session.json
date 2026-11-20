@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "activeSessionID": "ses_e716ade68ffekN4DIPuxYCiIlp",
+  "activeModelKey": "opencode-go/deepseek-v4.1-flash",
+  "activeEffort": "max",
+  "workspaceDirectory": "/var/www/chamba",
+  "isRemote": true,
+  "remoteName": "ssh-remote",
+  "updatedAt": "2026-11-02T14:25:53.387Z"
+}
